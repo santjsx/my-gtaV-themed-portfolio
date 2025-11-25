@@ -72,6 +72,7 @@
                 #27ae60 3px,
                 #27ae60 4px
             );
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             -webkit-text-stroke: 1px rgba(0,0,0,0.5);
@@ -122,7 +123,6 @@
             background: #333;
             height: 8px;
             width: 100%;
-            skew: -15deg;
             transform: skewX(-15deg);
         }
         .skill-fill {
@@ -516,6 +516,7 @@
             opacity: 0;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: linear-gradient(to bottom, #F1C40F 50%, #B7950B 50%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             -webkit-text-stroke: 2px black;
@@ -576,4 +577,147 @@
             .mp-title { font-size: 3rem; }
             .mp-stat-row { font-size: 0.9rem; }
             .mp-completion { font-size: 1.5rem; }
+        }
+
+        /* =========================================
+           NEW HERO SECTION STYLES (GTA V THEME)
+           ========================================= */
+
+        /* Hero Title */
+        .gta-hero-title {
+            font-family: 'Pricedown', 'Fugaz One', cursive;
+            font-size: 6rem;
+            line-height: 0.9;
+            color: white;
+            text-shadow: 
+                4px 4px 0 #000,
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .gta-hero-title {
+                font-size: 9rem;
+            }
+        }
+
+        /* Stats Panel (Character Switch Wheel Style) */
+        .gta-stats-panel {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 1.5rem;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .gta-stats-panel::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: 10%; right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        }
+
+        .gta-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 0.4rem;
+        }
+
+        .gta-stat-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .gta-stat-label {
+            color: #888;
+        }
+
+        .gta-stat-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Mission Objective Badge */
+        .mission-objective {
+            background: linear-gradient(90deg, rgba(0,0,0,0.9), rgba(20,20,20,0.9));
+            border-left: 4px solid var(--neon-yellow);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            transform: skewX(-10deg);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+        }
+
+        .objective-text {
+            transform: skewX(10deg);
+            font-family: 'Chakra Petch', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .objective-label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--neon-yellow);
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .objective-content {
+            display: block;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* GTA Buttons */
+        .btn-gta {
+            padding: 1rem 2.5rem;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gta-primary {
+            background: white;
+            color: black;
+            border: none;
+        }
+
+        .btn-gta-primary:hover {
+            background: var(--neon-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-gta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-gta-secondary:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
         }
