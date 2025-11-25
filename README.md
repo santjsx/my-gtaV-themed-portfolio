@@ -1,125 +1,89 @@
-📁 CLASSIFIED DOSSIER: SANTHOSH REDDY // [THE ROOKIE]
+📁 CLASSIFIED DOSSIER: SANTHOSH REDDY // THE ROOKIE
+🕶️ GRAND THEFT PORTFOLIO (GTA-P)
 
-[00] PROJECT OVERVIEW: GRAND THEFT PORTFOLIO (GTA-P)
+A GTA V–themed personal portfolio engineered as a neon-drenched, HUD-inspired Single Page Application (SPA).
+The objective: present skills, projects, and identity as Heists, Loadouts, and Mission Logs to secure a high-value developer role.
 
-This is the personal portfolio of Santhosh Reddy, a highly motivated MERN Stack Recruit. The design is engineered to replicate the Grand Theft Auto V HUD and Pause Menu interface, employing a sleek, neon-drenched, and highly interactive Single Page Application (SPA) structure.
+🧰 01 — THE LOADOUT (TECH STACK)
+Component	Technology	Purpose
+Frontend	HTML5, Tailwind CSS, Vanilla JS, GSAP, Lucide/Remix Icons	Pixel-perfect responsive UI with fast, utility-first styling and rich animations.
+Animation	GSAP	Drives magnetic hovers, cinematic transitions, and the GTA Weapon Wheel mechanics.
+Architecture	Single Page Application (SPA) w/ URL Hashing	Multi-page feel without routing libraries. Fully self-contained.
+Audio	Web Audio API	Synthesizes UI SFX (hover, click, startup). Bypasses autoplay restrictions via user interaction.
+🧩 02 — CORE SYSTEMS
+🛡️ A. Navigation (Pause Menu / iFruit)
 
-OBJECTIVE: Secure a high-value development position by presenting skills and experience as a series of Heists, Loadouts, and Mission Logs.
+Desktop: GTA V Pause Menu–style header (Brief, Stats, Loadout, Heists, Contact).
+Mobile: iFruit Phone UI — full-screen bottom-up overlay with app-style navigation icons.
 
-[01] THE LOADOUT (TECH STACK)
+🔫 B. Skills (Tech Loadout Wheel)
 
-Component
+A stylized GTA Weapon Wheel mapping core skills as selectable “weapons.”
 
-Technology
+Unlocked (HTML/CSS): Full stats + neon cyan glow
 
-Rationale
+In Progress (JS): Partial stats
 
-Frontend
+Locked (React/Node/Mongo/etc.): Grayed + lock icon
 
-HTML5, Tailwind CSS, Vanilla JS, GSAP, Lucide/Remix Icons
+Interaction: scroll or hover to cycle between skills.
 
-Used to build a pixel-perfect, highly responsive, and dynamically animated UI. Tailwind ensures rapid, utility-first styling.
+📋 C. Projects (Heist Planning Board)
 
-Animation
+Projects displayed as tactical Heist Plans pinned on a planning board:
 
-GSAP (GreenSock)
+Mission Status (PASSED / ONGOING)
 
-Powers all complex interactions, magnetic hovers, page transitions, and the Weapon Wheel rotation for maximum smoothness.
+Est. Payout: $500
 
-Architecture
+Tech stack icons
 
-Single Page Application (SPA) with URL Hashing
+Training-sim themed descriptions
 
-Provides a multi-page feel without complicated routing libraries, perfect for a fast, self-contained single file.
+📞 D. Contact (Comms Uplink)
 
-Audio
+A secure communication terminal with:
 
-Web Audio API (Vanilla JS)
+Form submission animation
 
-Synthesizes all UI sound effects (click, hover, startup) directly within the file, bypassing browser autoplay restrictions via user interaction.
+"MISSION PASSED" cinematic overlay
 
-[02] CORE SYSTEMS: BREAKDOWN
+Integrated audio/visual feedback
 
-A. 🛡️ NAVIGATION (PAUSE MENU / iFRUIT)
+🕹️ 03 — OPERATION MANUAL (USAGE)
 
-Desktop: Utilizes a fixed, stylized header mirroring the GTA V Pause Menu tabs (Brief, Stats, Loadout, Heists, Contact).
+Everything runs from one file: index.html
 
-Mobile: Deploys a full-screen, bottom-up iFruit Phone overlay, with navigation links styled as App Icons for a touch-friendly experience.
+Deploy on:
 
-B. 🔫 SKILLS (TECH LOADOUT WHEEL)
+GitHub Pages
 
-Aesthetic: Designed as the iconic GTA V Weapon Wheel.
+Netlify
 
-Interaction: Users can cycle through skills (weapons) via mouse scroll or hover.
+Vercel
 
-Status Indicators:
+Startup sequence:
 
-Unlocked (HTML/CSS): Full stats, active neon-cyan glow.
+User clicks the “ENTER SYSTEM” splash screen → initializes AudioContext
 
-In Progress (JavaScript): Partial stats displayed.
+Portfolio loads with full HUD experience
 
-Locked (React, Node, Mongo, etc.): Grayed out with a Lock Icon, representing skills the Recruit has yet to acquire (learn/master).
+Audio Control:
 
-C. 📋 PROJECTS (HEIST PLANNING BOARD)
+Floating mute/unmute button (bottom-right)
 
-Projects are reframed as Training Sims (for a fresher) on a tactical Planning Board. Each card features:
-
-Mission Status (PASSED, ONGOING).
-
-Estimated Payout ($ 500).
-
-Required Tech Stack icons.
-
-D. 📞 CONTACT (COMMS UPLINK)
-
-The contact form is styled as a secure Comms Uplink Terminal, triggering a "MISSION PASSED" cinematic overlay upon submission.
-
-[03] OPERATION MANUAL (USAGE)
-
-The entire application is contained within a single index.html file, making deployment instant.
-
-Deployment: Upload index.html to any web server (GitHub Pages, Netlify, Vercel).
-
-Startup: On launch, the system presents a cinematic "ENTER SYSTEM" screen. Click the screen to initialize the Audio Context and begin the experience.
-
-Audio Control: Use the floating Mute/Unmute button in the bottom-right corner to control sound effects globally.
-
-[04] KNOWN ISSUES (BUGS & POLISH)
-
-Status
-
-Issue
-
-Description
-
-✅
-
-Autoplay Block
-
-Fixed via the "Click to Start" screen, ensuring audio initializes instantly upon user interaction.
-
-✅
-
-Express Logo
-
-Fixed visibility issue on dark background by forcing white color filter.
-
-🟡
-
-Mugshot
-
-Placeholder image used in the "FIB Dossier." Needs replacement with the actual subject's image for final deployment.
-
-🟡
-
-Links
-
-All external links (GitHub, LinkedIn, X) currently point to #. Must be updated for deployment.
-
-[05] CREW & CREDITS
+🐞 04 — KNOWN ISSUES (BUGS & POLISH)
+Status	Issue	Notes
+✅	Autoplay Block	Resolved using “Click to Start” screen.
+✅	Express Logo	Forced white filter to fix visibility on dark UI.
+🟡	Mugshot	Placeholder used in FIB Dossier — replace with final image.
+🟡	External Links	GitHub/LinkedIn/X currently set to # — update before deployment.
+👥 05 — CREW & CREDITS
 
 Recruit: Santhosh Reddy (The Rookie)
-Base Assets: Lucide Icons, Remix Icons, Devicon CDN
+
+Icons: Lucide Icons, Remix Icons, Devicon
+
 Animation Engine: GSAP (GreenSock)
 
 END OF TRANSMISSION.
