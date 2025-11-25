@@ -1,65 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Santhosh Reddy | The Full Stack Hustler</title>
-    <meta
-      name="description"
-      content="Portfolio of Santhosh Reddy, Aspiring Developer. GTA V Styled Interface."
-    />
-
+    <meta name="description" content="Portfolio of Santhosh Reddy, Aspiring Developer. GTA V Styled Interface.">
+    
     <!-- Fonts -->
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@400;500;600;700&family=Fugaz+One&display=swap"
-      rel="stylesheet"
-    />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chakra+Petch:wght@400;500;600;700&family=Fugaz+One&display=swap" rel="stylesheet">
+    
     <!-- Remix Icons -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              gta: {
-                black: "#0A0A0A",
-                charcoal: "#1A1A1A",
-                cyan: "#3498DB",
-                magenta: "#D4AF37",
-                yellow: "#F39C12",
-                green: "#2ECC71",
-                gray: "#888888",
-                red: "#E74C3C",
-                hudBlue: "#577083",
-                hudActive: "#89CFF0",
-                hudDark: "#0f171e",
-              },
-            },
-            fontFamily: {
-              display: ['"Archivo Black"', "sans-serif"],
-              hud: ['"Chakra Petch"', "sans-serif"],
-              price: ['"Fugaz One"', "cursive"],
-            },
-            spacing: {
-              128: "32rem",
-            },
-            backgroundImage: {
-              noise:
-                "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAA5OTkAAABMTExERERmZmYzMzMyMjJ43I3xAAAACHRSTlMAMwA3M3MzM3MzM3MzAAAAVklEQVQ4y2NgwA+YQYCBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYEA804AY6FxKtQAAAAASUVORK5CYII=')",
-            },
-          },
-        },
-      };
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gta: {
+                            black: '#0A0A0A',
+                            charcoal: '#1A1A1A',
+                            cyan: '#3498DB', 
+                            magenta: '#D4AF37', 
+                            yellow: '#F39C12',
+                            green: '#2ECC71',
+                            gray: '#888888',
+                            red: '#E74C3C', 
+                            hudBlue: '#577083',
+                            hudActive: '#89CFF0',
+                            hudDark: '#0f171e' 
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Archivo Black"', 'sans-serif'],
+                        hud: ['"Chakra Petch"', 'sans-serif'],
+                        price: ['"Fugaz One"', 'cursive']
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAA5OTkAAABMTExERERmZmYzMzMyMjJ43I3xAAAACHRSTlMAMwA3M3MzM3MzM3MzAAAAVklEQVQ4y2NgwA+YQYCBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYmBgYEA804AY6FxKtQAAAAASUVORK5CYII=')"
+                    }
+                }
+            }
+        }
     </script>
 
     <!-- Icons -->
@@ -68,11 +57,33 @@
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  </head>
-  <body class="font-hud bg-gta-black selection:bg-gta-cyan selection:text-black">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-hud bg-gta-black selection:bg-gta-cyan selection:text-black">
 
     <!-- Scanline Overlay -->
     <div class="scanlines"></div>
+
+    <!-- MISSION PASSED OVERLAY -->
+    <div id="mission-passed">
+        <div class="mp-title">MISSION PASSED</div>
+        <div class="mp-stats">
+            <div class="mp-stat-row">
+                <span>Message Status</span>
+                <span class="mp-stat-value">Sent</span>
+            </div>
+            <div class="mp-stat-row">
+                <span>Connection</span>
+                <span class="mp-stat-value">Secure</span>
+            </div>
+            <div class="mp-stat-row">
+                <span>Respect</span>
+                <span class="mp-stat-value text-gta-green">+ 100</span>
+            </div>
+            <div class="mp-completion">100% Completion</div>
+        </div>
+    </div>
 
     <!-- Transition Overlay -->
     <div id="transition-overlay">
@@ -84,6 +95,7 @@
                 <div class="h-full bg-white animate-[shimmer_1s_infinite] w-full transform -translate-x-full" id="loading-bar"></div>
             </div>
             <p class="text-xs text-white font-hud tracking-widest uppercase" id="loading-text">Initializing...</p>
+            <p class="text-sm text-gta-green font-hud tracking-widest uppercase mt-4 hidden animate-pulse" id="start-prompt">[ CLICK TO START ]</p>
             <style>
                 @keyframes shimmer {
                     0% { transform: translateX(-100%); }
@@ -95,9 +107,10 @@
     </div>
 
     <!-- ===== UNIQUE NAVIGATION ===== -->
+    <!-- Desktop: Pause Menu Header -->
     <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10 h-24 hidden md:flex items-center justify-between px-8">
         <div class="flex flex-col">
-            <span class="font-display text-2xl text-white uppercase tracking-tight">Santhosh Reddy</span>
+            <span class="font-display text-2xl text-white uppercase tracking-tight">Santhosh <span class="text-gta-green">Reddy</span></span>
             <span class="font-hud text-[10px] text-gray-400 uppercase tracking-widest">Los Santos Bank [Online]</span>
         </div>
         <div class="flex items-center h-full pt-4">
@@ -107,10 +120,16 @@
             <a href="#projects" class="nav-desktop-item" data-page="projects">Heists</a>
             <a href="#contact" class="nav-desktop-item" data-page="contact">Contact</a>
         </div>
-        <div class="text-right">
-            <!-- Updated Cash for a fresher -->
-            <span class="block font-price text-3xl text-gta-green tracking-wider">$ 500</span>
-            <div class="flex justify-end gap-1 mt-1">
+        <div class="text-right flex flex-col items-end">
+            <div class="flex items-center gap-4 mb-1">
+                <!-- MUTE BUTTON DESKTOP -->
+                <button id="mute-btn-desktop" class="text-gray-400 hover:text-white transition-colors flex items-center gap-2 uppercase font-hud text-xs tracking-widest" title="Toggle Audio">
+                    <span id="mute-text-desktop">Sound On</span>
+                    <i data-lucide="volume-2" id="mute-icon-desktop" class="w-4 h-4"></i>
+                </button>
+                <span class="block font-price text-3xl text-gta-green tracking-wider">$ 500</span>
+            </div>
+            <div class="flex justify-end gap-1">
                 <!-- Low wanted level / reputation -->
                 <svg class="w-4 h-4 star-filled" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 <svg class="w-4 h-4 star-empty" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="gray" stroke-width="2"/></svg>
@@ -129,10 +148,18 @@
             </div>
             <span class="font-hud text-xs text-gta-green uppercase tracking-widest">Connected</span>
         </div>
-        <button id="ifruit-trigger" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600 active:scale-90 transition-transform">
-            <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
-        </button>
+        <div class="flex gap-4">
+            <!-- MUTE BUTTON MOBILE -->
+            <button id="mute-btn-mobile" class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center border border-gray-700 active:scale-90 transition-transform">
+                <i data-lucide="volume-2" id="mute-icon-mobile" class="w-5 h-5 text-white"></i>
+            </button>
+            <button id="ifruit-trigger" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600 active:scale-90 transition-transform">
+                <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
+            </button>
+        </div>
     </nav>
+
+
 
     <!-- Mobile: iFruit Overlay -->
     <div id="ifruit-menu" class="ifruit-phone md:hidden">
@@ -211,20 +238,25 @@
                         <div class="flex items-center gap-4"><i data-lucide="file-lock" class="text-gta-cyan w-6 h-6"></i><span class="font-hud text-white uppercase tracking-widest">Subject ID: 839-21A // Santhosh Reddy</span></div>
                         <div class="font-hud text-gray-500 text-xs uppercase">Last Updated: 14:02 PM</div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3">
-                        <div class="col-span-1 bg-black/40 border-r border-white/10 p-8 flex flex-col items-center">
-                            <div class="w-48 h-48 bg-gray-800 border-4 border-white/20 mb-6 relative overflow-hidden flex items-center justify-center shadow-lg">
-                                <div class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-30"></div>
-                                <i data-lucide="user" class="w-24 h-24 text-white/20"></i>
-                                <div class="absolute bottom-2 w-full text-center bg-white/10 py-1"><span class="font-display text-xs uppercase tracking-widest text-white">Booking #49201</span></div>
+                    <!-- FIX: Ensuring grid splits correctly on Desktop (md:grid-cols-3) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
+                        
+                        <!-- Left Column: Profile (Takes 1 Col on Desktop) -->
+                        <div class="col-span-1 bg-black/40 border-r border-white/10 p-8 flex flex-col items-center justify-center md:justify-start">
+                            <div class="w-48 h-48 bg-gray-800 border-4 border-white/20 mb-6 relative overflow-hidden flex items-center justify-center shadow-lg shrink-0">
+                                <img src="https://i.pinimg.com/736x/08/3a/b0/083ab058596f9d0c925e9f9209a0d28e.jpg" class="absolute inset-0 w-full h-full object-cover" alt="Subject Mugshot">
+                                <div class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-30 z-10"></div>
+                                <div class="absolute bottom-2 w-full text-center bg-black/60 backdrop-blur-sm py-1 z-20"><span class="font-display text-xs uppercase tracking-widest text-white">Booking #49201</span></div>
                             </div>
                             <div class="w-full space-y-4 font-hud text-sm">
-                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">Alias</span><span class="text-gta-cyan uppercase">"The Rookie"</span></div>
-                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">DOB (Exp)</span><span class="text-white uppercase">2024 (0 Yrs)</span></div>
-                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">Affiliation</span><span class="text-white uppercase">Looking for Crew</span></div>
+                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">Alias</span><span class="text-gta-cyan uppercase">"The Architect"</span></div>
+                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">DOB (Exp)</span><span class="text-white uppercase">2021 (3+ Yrs)</span></div>
+                                <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">Affiliation</span><span class="text-white uppercase">Freelance / Remote</span></div>
                                 <div class="flex justify-between border-b border-white/10 pb-1"><span class="text-gray-500 uppercase">Status</span><span class="text-red-500 uppercase animate-pulse">Wanted for Hire</span></div>
                             </div>
                         </div>
+
+                        <!-- Right Column: Report (Takes 2 Cols on Desktop) -->
                         <div class="col-span-2 p-8 bg-noise">
                             <div class="mb-8">
                                 <h3 class="font-display text-2xl text-white uppercase mb-4 flex items-center gap-2"><span class="w-2 h-6 bg-gta-yellow"></span>Psychiatric Evaluation</h3>
@@ -406,10 +438,20 @@
                                 <div class="w-10 h-10 bg-gta-cyan/10 border border-gta-cyan/30 flex items-center justify-center rounded text-gta-cyan group-hover/item:bg-gta-cyan group-hover/item:text-black transition-colors"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
                                 <div><span class="block text-[10px] uppercase text-gray-500 tracking-widest">Current Location</span><span class="text-white text-sm tracking-wide">Los Santos, SA</span></div>
                             </div>
+                            <!-- Socials Grid -->
                             <div class="grid grid-cols-3 gap-2 mt-8">
-                                <a href="#" class="h-24 bg-blue-600/10 border border-blue-500/30 flex flex-col items-center justify-center gap-2 hover:bg-blue-600 hover:text-white transition-all group/icon"><i data-lucide="linkedin" class="w-6 h-6 text-blue-400 group-hover/icon:text-white"></i><span class="text-[8px] uppercase tracking-widest">LinkedIn</span></a>
-                                <a href="#" class="h-24 bg-gray-800/50 border border-gray-600/50 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group/icon"><i data-lucide="github" class="w-6 h-6 text-white group-hover/icon:text-black"></i><span class="text-[8px] uppercase tracking-widest">GitHub</span></a>
-                                <a href="#" class="h-24 bg-sky-500/10 border border-sky-400/30 flex flex-col items-center justify-center gap-2 hover:bg-sky-500 hover:text-white transition-all group/icon"><i data-lucide="twitter" class="w-6 h-6 text-sky-400 group-hover/icon:text-white"></i><span class="text-[8px] uppercase tracking-widest">Twitter</span></a>
+                                <a href="#" class="h-24 bg-blue-600/10 border border-blue-500/30 flex flex-col items-center justify-center gap-2 hover:bg-blue-600 hover:text-white transition-all group/icon">
+                                    <i data-lucide="linkedin" class="w-6 h-6 text-blue-400 group-hover/icon:text-white"></i>
+                                    <span class="text-[8px] uppercase tracking-widest">LinkedIn</span>
+                                </a>
+                                <a href="#" class="h-24 bg-gray-800/50 border border-gray-600/50 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group/icon">
+                                    <i data-lucide="github" class="w-6 h-6 text-white group-hover/icon:text-black"></i>
+                                    <span class="text-[8px] uppercase tracking-widest">GitHub</span>
+                                </a>
+                                <a href="#" class="h-24 bg-gray-900/80 border border-gray-700/50 flex flex-col items-center justify-center gap-2 hover:bg-white hover:text-black transition-all group/icon">
+                                    <i class="ri-twitter-x-fill text-2xl text-white group-hover/icon:text-black"></i>
+                                    <span class="text-[8px] uppercase tracking-widest">X</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -420,13 +462,13 @@
                                 <div class="flex items-center gap-2"><i data-lucide="terminal" class="w-4 h-4 text-gta-cyan"></i><span class="text-gta-cyan font-hud text-xs uppercase tracking-widest">COMMS_UPLINK_V2.0</span></div>
                                 <div class="flex gap-1"><div class="w-1.5 h-1.5 bg-gta-cyan rounded-full animate-pulse"></div><div class="w-1.5 h-1.5 bg-gta-cyan/50 rounded-full"></div><div class="w-1.5 h-1.5 bg-gta-cyan/20 rounded-full"></div></div>
                             </div>
-                            <form class="space-y-6 relative z-10">
+                            <form class="space-y-6 relative z-10" id="contact-form">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Codename</label><input type="text" class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="ENTER IDENTITY"></div>
-                                    <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Frequency</label><input type="email" class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="ENTER EMAIL"></div>
+                                    <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Codename</label><input type="text" required class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="ENTER IDENTITY"></div>
+                                    <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Frequency</label><input type="email" required class="w-full bg-white/5 border-b-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="ENTER EMAIL"></div>
                                 </div>
-                                <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Mission Parameters</label><textarea rows="5" class="w-full bg-white/5 border-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="BRIEFING DETAILS..."></textarea></div>
-                                <button type="button" class="w-full bg-gta-cyan text-black font-display text-xl uppercase py-4 hover:bg-white hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden group"><span class="relative z-10 flex items-center justify-center gap-2">Transmit Data <i data-lucide="send" class="w-5 h-5"></i></span><div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div></button>
+                                <div class="group"><label class="block text-[10px] uppercase tracking-widest text-gta-cyan mb-2 group-focus-within:text-white transition-colors">Mission Parameters</label><textarea rows="5" required class="w-full bg-white/5 border-2 border-white/20 p-3 text-white font-hud focus:border-gta-cyan focus:bg-white/10 focus:outline-none transition-all placeholder-gray-600 text-sm uppercase" placeholder="BRIEFING DETAILS..."></textarea></div>
+                                <button type="submit" class="w-full bg-gta-cyan text-black font-display text-xl uppercase py-4 hover:bg-white hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 relative overflow-hidden group"><span class="relative z-10 flex items-center justify-center gap-2">Transmit Data <i data-lucide="send" class="w-5 h-5"></i></span><div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div></button>
                             </form>
                         </div>
                         <div class="absolute -top-2 -right-2 w-16 h-16 border-t-4 border-r-4 border-white/20"></div>
@@ -447,11 +489,12 @@
             
             <div class="flex gap-6">
                 <a href="#" class="text-gray-500 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
-                <a href="#" class="text-gray-500 hover:text-gta-cyan transition-colors"><i data-lucide="x" class="w-5 h-5"></i></a>
+                <a href="#" class="text-gray-500 hover:text-gta-cyan transition-colors"><i class="ri-twitter-x-fill text-xl"></i></a>
                 <a href="#" class="text-gray-500 hover:text-gta-magenta transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
             </div>
         </div>
     </footer>
 
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>

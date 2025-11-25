@@ -1,6 +1,156 @@
-    // Initialize Icons
+        // Initialize Icons
         lucide.createIcons();
         gsap.registerPlugin(ScrollTrigger);
+
+        // --- AUDIO SYSTEM (Web Audio API) ---
+        const SoundManager = {
+            ctx: null,
+            isMuted: false,
+            
+            init: function() {
+                // Create context immediately if not exists
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+                return this.ctx;
+            },
+
+            resume: function() {
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    return this.ctx.resume();
+                }
+                return Promise.resolve();
+            },
+
+            toggleMute: function() {
+                this.isMuted = !this.isMuted;
+                this.updateUI();
+                return this.isMuted;
+            },
+
+            updateUI: function() {
+                const iconName = this.isMuted ? 'volume-x' : 'volume-2';
+                const text = this.isMuted ? 'Sound Off' : 'Sound On';
+                const colorClass = this.isMuted ? 'text-red-500' : 'text-gray-400';
+                
+                // Desktop
+                const dIcon = document.getElementById('mute-icon-desktop');
+                const dBtn = document.getElementById('mute-btn-desktop');
+                if (dIcon) {
+                    dIcon.parentElement.innerHTML = `<span id="mute-text-desktop">${text}</span><i data-lucide="${iconName}" id="mute-icon-desktop" class="w-4 h-4"></i>`;
+                    lucide.createIcons();
+                }
+                if (dBtn) dBtn.className = `transition-colors flex items-center gap-2 uppercase font-hud text-xs tracking-widest ${colorClass} hover:text-white`;
+
+                // Mobile
+                const mBtn = document.getElementById('mute-btn-mobile');
+                if (mBtn) {
+                    mBtn.innerHTML = `<i data-lucide="${iconName}" id="mute-icon-mobile" class="w-5 h-5 ${this.isMuted ? 'text-red-500' : 'text-white'}"></i>`;
+                    lucide.createIcons();
+                }
+            },
+
+            playTone: function(freq, type, duration, vol = 0.1) {
+                if (this.isMuted || !this.ctx) return;
+                
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                
+                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            },
+
+            playHover: function() {
+                this.playTone(800, 'sine', 0.05, 0.05);
+            },
+
+            playClick: function() {
+                this.playTone(200, 'square', 0.1, 0.05);
+            },
+
+            playScroll: function() {
+                this.playTone(150, 'sawtooth', 0.05, 0.03);
+            },
+
+            playStartup: function() {
+                if (this.isMuted || !this.ctx) return;
+                
+                const t = this.ctx.currentTime;
+                
+                // 1. The "Boom" (Low thud - punchier)
+                const osc1 = this.ctx.createOscillator();
+                const g1 = this.ctx.createGain();
+                osc1.type = 'square'; // Changed to square for more immediate presence
+                osc1.frequency.setValueAtTime(80, t);
+                osc1.frequency.exponentialRampToValueAtTime(10, t + 0.5); // Faster drop
+                
+                g1.gain.setValueAtTime(0.5, t); // Louder start
+                g1.gain.exponentialRampToValueAtTime(0.001, t + 1.0);
+                
+                osc1.connect(g1);
+                g1.connect(this.ctx.destination);
+                osc1.start(t);
+                osc1.stop(t + 1.0);
+
+                // 2. The "Siren" (Glassy swell)
+                const osc2 = this.ctx.createOscillator();
+                const g2 = this.ctx.createGain();
+                osc2.type = 'sawtooth';
+                osc2.frequency.setValueAtTime(400, t);
+                osc2.frequency.linearRampToValueAtTime(800, t + 0.1); // Fast swell
+                osc2.frequency.linearRampToValueAtTime(400, t + 1.5);
+                
+                g2.gain.setValueAtTime(0, t);
+                g2.gain.linearRampToValueAtTime(0.1, t + 0.1); // Fast attack
+                g2.gain.linearRampToValueAtTime(0, t + 2.0);
+                
+                osc2.connect(g2);
+                g2.connect(this.ctx.destination);
+                osc2.start(t);
+                osc2.stop(t + 2.0);
+            },
+            
+            playMissionSuccess: function() {
+                if (this.isMuted || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C Major Arpeggio
+                
+                notes.forEach((freq, i) => {
+                    // Optimized tone call
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, now + i * 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 1.5);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.05);
+                    osc.stop(now + i * 0.05 + 1.5);
+                });
+            }
+        };
+
+        // Define attachSounds function properly in global scope
+        function attachSounds() {
+            const interactiveElements = document.querySelectorAll('a, button, .wheel-slice, .mission-card, .app-icon, .cursor-pointer, .inventory-item');
+            interactiveElements.forEach(el => {
+                if (el.dataset.soundAttached) return;
+                el.addEventListener('mouseenter', () => SoundManager.playHover());
+                el.addEventListener('click', () => SoundManager.playClick());
+                el.dataset.soundAttached = "true";
+            });
+        }
 
         // --- NAVIGATION LOGIC ---
         const pages = document.querySelectorAll('.app-page');
@@ -8,6 +158,11 @@
         const overlay = document.getElementById('transition-overlay');
         const ifruitMenu = document.getElementById('ifruit-menu');
         const loadingText = document.getElementById('loading-text');
+        const startPrompt = document.getElementById('start-prompt');
+        const loadingBar = document.getElementById('loading-bar');
+
+        // Global state to track if we have passed the initial load
+        window.hasStarted = false;
 
         // GTA Loading Phrases
         const loadingPhrases = [
@@ -35,32 +190,43 @@
 
             ifruitMenu.classList.remove('open');
             
-            // Randomize loading text
-            if (loadingText) {
-                loadingText.textContent = loadingPhrases[Math.floor(Math.random() * loadingPhrases.length)];
-            }
+            // On subsequent navigations (not the first load), show the loader briefly
+            if (window.hasStarted) {
+                if (loadingText) {
+                    loadingText.textContent = loadingPhrases[Math.floor(Math.random() * loadingPhrases.length)];
+                }
+                if (startPrompt) startPrompt.classList.add('hidden'); // Ensure prompt is hidden for nav
+                if (loadingBar) loadingBar.parentElement.classList.remove('opacity-0'); // Show bar for nav
 
-            overlay.classList.remove('loader-hidden'); // Show loader
-
-            // Reduce delay for snappier feel (600ms -> 300ms active load)
-            setTimeout(() => {
-                pages.forEach(page => page.classList.remove('active'));
-                desktopNavItems.forEach(item => {
-                    item.classList.remove('active');
-                    if(item.getAttribute('data-page') === pageId) item.classList.add('active');
-                });
-
-                targetPage.classList.add('active');
-                window.scrollTo(0,0);
-
-                if(pageId === 'skills') initWeaponWheel();
-                refreshPageAnimations(pageId);
+                overlay.classList.remove('loader-hidden');
 
                 setTimeout(() => {
-                    overlay.classList.add('loader-hidden'); // Hide loader
-                }, 400); // Slight overlap to mask transition
+                    performNavigation(targetPage, pageId);
+                    setTimeout(() => {
+                        overlay.classList.add('loader-hidden');
+                    }, 400);
+                }, 300);
+            } else {
+                // Ideally we perform navigation setup behind the scenes during initial load too
+                performNavigation(targetPage, pageId);
+            }
+        }
 
-            }, 300);
+        function performNavigation(targetPage, pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            desktopNavItems.forEach(item => {
+                item.classList.remove('active');
+                if(item.getAttribute('data-page') === pageId) item.classList.add('active');
+            });
+
+            targetPage.classList.add('active');
+            window.scrollTo(0,0);
+
+            if(pageId === 'skills') initWeaponWheel();
+            refreshPageAnimations(pageId);
+            
+            // Re-attach sounds
+            setTimeout(attachSounds, 100);
         }
 
         function navigateToMobile(pageId) {
@@ -72,6 +238,7 @@
 
         function toggleIfruit() {
             ifruitMenu.classList.toggle('open');
+            SoundManager.playClick();
         }
 
         function refreshPageAnimations(pageId) {
@@ -87,16 +254,45 @@
 
         window.addEventListener('popstate', handleRouting);
         
-        // Initial Load Logic
+        // Initial Load Logic - MODIFIED for "Click to Start"
         window.addEventListener('load', () => {
-            handleRouting();
-            // Force loader hide after a safety timeout just in case
+            // 1. Prepare the view based on hash, but keep overlay up
+            const hash = window.location.hash.substring(1) || 'home';
+            const targetPage = document.getElementById(`page-${hash}`);
+            if(targetPage) performNavigation(targetPage, hash);
+
+            // 2. Show "Click to Start" after a brief fake load
             setTimeout(() => {
-                overlay.classList.add('loader-hidden');
-            }, 1000);
+                if (loadingText) loadingText.textContent = "Assets Loaded";
+                if (loadingBar) loadingBar.parentElement.classList.add('opacity-0'); // Hide bar
+                if (startPrompt) startPrompt.classList.remove('hidden'); // Show click prompt
+                
+                // Add global click listener for the first interaction
+                document.addEventListener('click', startExperience, { once: true });
+            }, 1500);
         });
 
+        function startExperience() {
+            if (window.hasStarted) return;
+            window.hasStarted = true;
+
+            // 1. Initialize Audio Context IMMEDIATELY on interaction
+            SoundManager.init();
+            
+            // 2. Resume and Play as fast as possible
+            SoundManager.resume().then(() => {
+                SoundManager.playStartup();
+            });
+
+            // 3. Hide Overlay with slight delay to sync with sound start
+            // Removing the slight delay might feel snappier visually, but we want sound to hit first.
+            // Let's hide immediately.
+            overlay.classList.add('loader-hidden');
+        }
+
         document.getElementById('ifruit-trigger').addEventListener('click', toggleIfruit);
+        document.getElementById('mute-btn-desktop').addEventListener('click', (e) => { e.stopPropagation(); SoundManager.toggleMute(); });
+        document.getElementById('mute-btn-mobile').addEventListener('click', (e) => { e.stopPropagation(); SoundManager.toggleMute(); });
 
         desktopNavItems.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -265,6 +461,7 @@
                 if (nextIndex < 0) nextIndex = skillsData.length - 1;
 
                 activateSlice(nextIndex);
+                SoundManager.playScroll(); // Add Scroll Sound
             }, { passive: false });
 
             activateSlice(0);
@@ -283,7 +480,7 @@
                 }
 
                 const itemHTML = `
-                    <div class="${itemClass}">
+                    <div class="${itemClass}" onclick="SoundManager.playClick()">
                         ${lockIcon}
                         <img src="${skill.icon}" class="w-16 h-16 object-contain mb-4" style="${imgStyle}" alt="${skill.category}">
                         <div class="item-stats">
@@ -297,6 +494,9 @@
                 mobileGrid.innerHTML += itemHTML;
             });
             lucide.createIcons();
+            
+            // Attach sounds to new elements
+            attachSounds();
         }
 
         function activateSlice(index) {
@@ -326,4 +526,28 @@
                     attachContainer.appendChild(span);
                 });
             }
+        }
+
+        // --- MISSION PASSED LOGIC ---
+        const contactForm = document.getElementById('contact-form');
+        const missionPassedOverlay = document.getElementById('mission-passed');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Play Sound
+                SoundManager.playMissionSuccess();
+
+                // Show Overlay
+                missionPassedOverlay.classList.add('visible');
+
+                // Optional: Reset form
+                contactForm.reset();
+
+                // Hide after delay
+                setTimeout(() => {
+                    missionPassedOverlay.classList.remove('visible');
+                }, 4000);
+            });
         }

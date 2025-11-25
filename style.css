@@ -1,4 +1,4 @@
- /* Core Reset & Custom GTA Styles */
+        /* Core Reset & Custom GTA Styles */
         :root {
             --neon-cyan: #3498DB;    
             --neon-magenta: #D4AF37; 
@@ -476,4 +476,104 @@
             color: #aaa;
             margin: 2px;
             display: inline-block;
+        }
+
+        /* =========================================
+           MISSION PASSED OVERLAY
+           ========================================= */
+        #mission-passed {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        #mission-passed.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mp-title {
+            font-family: 'Pricedown', 'Fugaz One', cursive;
+            font-size: 5rem;
+            line-height: 1;
+            color: #D4AF37; /* Gold */
+            text-shadow: 
+                3px 3px 0 #000,
+                -1px -1px 0 #000,  
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(to bottom, #F1C40F 50%, #B7950B 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 2px black;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        #mission-passed.visible .mp-title {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .mp-stats {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.5s ease 0.3s;
+            border-top: 2px solid rgba(255,255,255,0.1);
+        }
+
+        #mission-passed.visible .mp-stats {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mp-stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Chakra Petch', sans-serif;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mp-stat-value {
+            color: #D4AF37;
+            font-weight: bold;
+        }
+
+        .mp-completion {
+            font-family: 'Archivo Black', sans-serif;
+            color: #D4AF37;
+            font-size: 2rem;
+            margin-top: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Responsive Text */
+        @media (max-width: 768px) {
+            .mp-title { font-size: 3rem; }
+            .mp-stat-row { font-size: 0.9rem; }
+            .mp-completion { font-size: 1.5rem; }
         }
