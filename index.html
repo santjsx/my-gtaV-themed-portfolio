@@ -514,21 +514,16 @@
             >
               <!-- Left Column: Profile (Takes 1 Col on Desktop) -->
               <div
-                class="col-span-1 bg-black/40 border-r border-white/10 p-8 flex flex-col items-center justify-center md:justify-start"
+                class="col-span-1 bg-black/20 border-r border-white/10 p-8 flex flex-col items-center justify-center md:justify-start"
               >
-                <div
-                  class="w-48 h-48 bg-gray-800 border-4 border-white/20 mb-6 relative overflow-hidden flex items-center justify-center shadow-lg shrink-0"
-                >
+                <div class="profile-image-container shadow-lg shrink-0">
                   <img
                     src="https://i.pinimg.com/736x/08/3a/b0/083ab058596f9d0c925e9f9209a0d28e.jpg"
                     class="absolute inset-0 w-full h-full object-cover"
                     alt="Subject Mugshot"
                   />
                   <div
-                    class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-30 z-10"
-                  ></div>
-                  <div
-                    class="absolute bottom-2 w-full text-center bg-black/60 backdrop-blur-sm py-1 z-20"
+                    class="absolute bottom-0 w-full text-center bg-black/60 backdrop-blur-sm py-1 z-20"
                   >
                     <span
                       class="font-display text-xs uppercase tracking-widest text-white"
@@ -548,12 +543,12 @@
                   <div
                     class="flex justify-between border-b border-white/10 pb-1"
                   >
-                    <span class="text-gray-500 uppercase">Time Served</span>
+                    <span class="text-gray-500 uppercase">Experience</span>
                     <span class="text-white uppercase"
-                      >0 Years
+                      >Rookie
                       <span
                         class="text-gta-yellow text-[10px] ml-1 tracking-widest"
-                        >[ SERVED ]</span
+                        >[ TRAINING ]</span
                       ></span
                     >
                   </div>
@@ -577,7 +572,7 @@
               </div>
 
               <!-- Right Column: Report (Takes 2 Cols on Desktop) -->
-              <div class="col-span-2 p-8 bg-noise">
+              <div class="col-span-2 p-8 bg-transparent">
                 <div class="mb-8">
                   <h3
                     class="font-display text-2xl text-white uppercase mb-4 flex items-center gap-2"
@@ -585,9 +580,7 @@
                     <span class="w-2 h-6 bg-gta-yellow"></span>Psychiatric
                     Evaluation
                   </h3>
-                  <p
-                    class="font-hud text-gray-300 leading-relaxed text-sm tracking-wide text-justify"
-                  >
+                  <p class="dossier-text text-justify">
                     Subject is a recent initiate into the world of code.
                     Displays high aptitude for structural integrity (HTML) and
                     visual styling (CSS). Currently undergoing intensive mental
