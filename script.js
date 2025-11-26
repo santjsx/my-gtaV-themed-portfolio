@@ -426,6 +426,35 @@
                 SoundManager.playScroll(); // Add Scroll Sound
             }, { passive: false });
 
+            // Touch Support
+            let touchStartY = 0;
+            container.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: false });
+
+            container.addEventListener('touchmove', (e) => {
+                e.preventDefault(); // Prevent page scroll while using wheel
+                if (isScrolling) return;
+                
+                const touchEndY = e.touches[0].clientY;
+                const diff = touchStartY - touchEndY;
+
+                if (Math.abs(diff) > 30) { // Threshold for swipe
+                    isScrolling = true;
+                    setTimeout(() => isScrolling = false, 150);
+
+                    const direction = diff > 0 ? 1 : -1;
+                    let nextIndex = currentWheelIndex + direction;
+
+                    if (nextIndex >= skillsData.length) nextIndex = 0;
+                    if (nextIndex < 0) nextIndex = skillsData.length - 1;
+
+                    activateSlice(nextIndex);
+                    SoundManager.playScroll();
+                    touchStartY = touchEndY; // Reset for continuous scrolling
+                }
+            }, { passive: false });
+
             activateSlice(0);
 
             // MOBILE INVENTORY RENDER
@@ -487,6 +516,27 @@
                     span.innerText = tag;
                     attachContainer.appendChild(span);
                 });
+            }
+
+            // Mobile Details Update
+            const mobileCategory = document.getElementById('mobile-skill-category');
+            if(mobileCategory) {
+                mobileCategory.textContent = data.category;
+                document.getElementById('mobile-skill-count').textContent = `${countNum < 10 ? '0' + countNum : countNum} / ${totalNum < 10 ? '0' + totalNum : totalNum}`;
+                document.getElementById('mobile-stat-bar-1').style.width = data.stats[0] + '%';
+                document.getElementById('mobile-stat-bar-2').style.width = data.stats[1] + '%';
+                document.getElementById('mobile-stat-bar-3').style.width = data.stats[2] + '%';
+                
+                const mobileAttachContainer = document.getElementById('mobile-skill-attachments');
+                mobileAttachContainer.innerHTML = '';
+                if(data.attachments) {
+                    data.attachments.forEach(tag => {
+                        const span = document.createElement('span');
+                        span.className = 'attachment-tag font-hud';
+                        span.innerText = tag;
+                        mobileAttachContainer.appendChild(span);
+                    });
+                }
             }
         }
 

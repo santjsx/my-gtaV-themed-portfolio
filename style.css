@@ -243,6 +243,8 @@
             position: relative;
             width: 500px;
             height: 500px;
+            max-width: 90vw;
+            aspect-ratio: 1 / 1;
             margin: 0 auto;
             border-radius: 50%;
         }
@@ -300,8 +302,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
+            width: 40%;
+            height: 40%;
             border-radius: 50%;
             background: radial-gradient(circle at center, #000 60%, #1a1a1a 100%);
             display: flex;
@@ -754,5 +756,10 @@
             
             .gta-stat-row {
                 font-size: 0.8rem;
+            }
+
+            .wheel-container {
+                width: 320px;
+                height: 320px;
             }
         }

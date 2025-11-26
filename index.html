@@ -651,7 +651,7 @@
 
         <!-- Desktop Wheel (Hidden on Mobile) -->
         <div
-          class="hidden md:block scale-100 transition-transform duration-500"
+          class="scale-100 transition-transform duration-500"
         >
           <div class="wheel-container" id="wheel-container">
             <svg viewBox="0 0 600 600" class="w-full h-full drop-shadow-2xl">
@@ -669,7 +669,7 @@
             <div class="wheel-center">
               <div
                 id="center-content"
-                class="text-center w-full px-2 h-full flex flex-col justify-center relative"
+                class="text-center w-full px-2 h-full hidden md:flex flex-col justify-center relative"
               >
                 <div
                   class="absolute inset-0 bg-black/40 rounded-full z-[-1]"
@@ -746,9 +746,44 @@
           </div>
         </div>
 
+        <!-- Mobile Wheel Details (Visible on Mobile) -->
+        <div id="mobile-wheel-details" class="md:hidden w-full max-w-sm mx-auto mt-6 px-4">
+            <div class="bg-black/80 border border-white/10 p-4 rounded-lg backdrop-blur-md">
+                <div class="text-center mb-4">
+                    <h3 class="text-white font-display text-2xl uppercase tracking-tighter" id="mobile-skill-category">SELECT</h3>
+                    <p class="text-gta-cyan font-bold font-hud text-[10px] tracking-widest uppercase mt-1" id="mobile-skill-count">-- / --</p>
+                </div>
+                
+                <div id="mobile-skill-attachments" class="mb-4 flex flex-wrap justify-center gap-1">
+                    <!-- Injected via JS -->
+                </div>
+
+                <div class="space-y-2 font-hud">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">EXP</span>
+                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
+                            <div id="mobile-stat-bar-1" class="h-full bg-white w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">USE</span>
+                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
+                            <div id="mobile-stat-bar-2" class="h-full bg-white w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">SPD</span>
+                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
+                            <div id="mobile-stat-bar-3" class="h-full bg-white w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Mobile Inventory Grid (Visible on Mobile) -->
         <div
-          class="md:hidden w-full px-4 pb-20 overflow-y-auto h-[calc(100vh-200px)]"
+          class="hidden w-full px-4 pb-20 overflow-y-auto h-[calc(100vh-200px)]"
         >
           <div class="grid grid-cols-2 gap-4" id="mobile-inventory-grid">
             <!-- Items injected via JS -->
