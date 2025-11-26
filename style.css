@@ -603,7 +603,7 @@
 
         @media (min-width: 768px) {
             .gta-hero-title {
-                font-size: 9rem;
+                font-size: 7rem;
             }
         }
 
@@ -762,4 +762,133 @@
                 width: 320px;
                 height: 320px;
             }
+<<<<<<< HEAD
+=======
+        }
+
+        /* =========================================
+           DEVELOPER CREDITS (FOOTER INTEGRATED)
+           ========================================= */
+        .dev-credits-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            border-left: 3px solid var(--neon-magenta);
+            transform: skewX(-10deg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .dev-credits-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.5s;
+        }
+
+        .dev-credits-container:hover::before {
+            left: 150%;
+        }
+
+        .dev-credits-container:hover {
+            border-color: var(--neon-cyan);
+            border-left-color: var(--neon-cyan);
+            transform: skewX(-10deg) scale(1.02);
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.2);
+        }
+
+        .dev-status-light {
+            width: 6px;
+            height: 6px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-green);
+            animation: blink-status 2s infinite;
+            transform: skewX(10deg);
+        }
+
+        @keyframes blink-status {
+            0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--neon-green); }
+            50% { opacity: 0.4; box-shadow: 0 0 2px var(--neon-green); }
+        }
+
+        .dev-label {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 0.6rem;
+            color: #888;
+            letter-spacing: 2px;
+            font-weight: 700;
+            transform: skewX(10deg); /* Counter skew */
+            transition: color 0.3s;
+        }
+        
+        .dev-credits-container:hover .dev-label {
+            color: var(--neon-cyan);
+        }
+
+        .dev-name {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 0.9rem;
+            color: white;
+            letter-spacing: 1px;
+            transform: skewX(10deg); /* Counter skew */
+            position: relative;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .dev-credits-container:hover .dev-name {
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        /* Mobile Adjustments for Credits */
+        @media (max-width: 768px) {
+            .dev-credits-container {
+                width: auto;
+                justify-content: center;
+            }
+
+            /* Auto-animate on mobile every second */
+            .dev-name {
+                animation: mobile-glitch-pulse 2s infinite;
+            }
+            
+            .dev-credits-container {
+                animation: mobile-border-pulse 2s infinite;
+            }
+        }
+
+        @keyframes mobile-glitch-pulse {
+            0%, 90%, 100% { 
+                color: white; 
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            }
+            95% { 
+                color: var(--neon-cyan); 
+                text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            }
+        }
+
+        @keyframes mobile-border-pulse {
+            0%, 90%, 100% {
+                border-color: rgba(255, 255, 255, 0.1);
+                border-left-color: var(--neon-magenta);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            }
+            95% {
+                border-color: var(--neon-cyan);
+                border-left-color: var(--neon-cyan);
+                box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+            }
+
         }

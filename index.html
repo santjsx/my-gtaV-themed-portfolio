@@ -3,7 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Santhosh Reddy | The Full Stack Hustler</title>
+
+    <!-- Favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon_io/favicon-16x16.png"
+    />
+    <link rel="manifest" href="favicon_io/site.webmanifest" />
+
+    <title>Santhosh Reddy | GTA V Portfolio</title>
     <meta
       name="description"
       content="Portfolio of Santhosh Reddy, Aspiring Developer. GTA V Styled Interface."
@@ -528,7 +549,13 @@
                     class="flex justify-between border-b border-white/10 pb-1"
                   >
                     <span class="text-gray-500 uppercase">Time Served</span>
-                    <span class="text-white uppercase">3 Years <span class="text-gta-yellow text-[10px] ml-1 tracking-widest">[ SERVED ]</span></span>
+                    <span class="text-white uppercase"
+                      >0 Years
+                      <span
+                        class="text-gta-yellow text-[10px] ml-1 tracking-widest"
+                        >[ SERVED ]</span
+                      ></span
+                    >
                   </div>
                   <div
                     class="flex justify-between border-b border-white/10 pb-1"
@@ -650,9 +677,7 @@
         </div>
 
         <!-- Desktop Wheel (Hidden on Mobile) -->
-        <div
-          class="scale-100 transition-transform duration-500"
-        >
+        <div class="scale-100 transition-transform duration-500">
           <div class="wheel-container" id="wheel-container">
             <svg viewBox="0 0 600 600" class="w-full h-full drop-shadow-2xl">
               <defs>
@@ -747,38 +772,80 @@
         </div>
 
         <!-- Mobile Wheel Details (Visible on Mobile) -->
-        <div id="mobile-wheel-details" class="md:hidden w-full max-w-sm mx-auto mt-6 px-4">
-            <div class="bg-black/80 border border-white/10 p-4 rounded-lg backdrop-blur-md">
-                <div class="text-center mb-4">
-                    <h3 class="text-white font-display text-2xl uppercase tracking-tighter" id="mobile-skill-category">SELECT</h3>
-                    <p class="text-gta-cyan font-bold font-hud text-[10px] tracking-widest uppercase mt-1" id="mobile-skill-count">-- / --</p>
-                </div>
-                
-                <div id="mobile-skill-attachments" class="mb-4 flex flex-wrap justify-center gap-1">
-                    <!-- Injected via JS -->
-                </div>
-
-                <div class="space-y-2 font-hud">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">EXP</span>
-                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                            <div id="mobile-stat-bar-1" class="h-full bg-white w-0 transition-all duration-300"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">USE</span>
-                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                            <div id="mobile-stat-bar-2" class="h-full bg-white w-0 transition-all duration-300"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right">SPD</span>
-                        <div class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]">
-                            <div id="mobile-stat-bar-3" class="h-full bg-white w-0 transition-all duration-300"></div>
-                        </div>
-                    </div>
-                </div>
+        <div
+          id="mobile-wheel-details"
+          class="md:hidden w-full max-w-sm mx-auto mt-6 px-4"
+        >
+          <div
+            class="bg-black/80 border border-white/10 p-4 rounded-lg backdrop-blur-md"
+          >
+            <div class="text-center mb-4">
+              <h3
+                class="text-white font-display text-2xl uppercase tracking-tighter"
+                id="mobile-skill-category"
+              >
+                SELECT
+              </h3>
+              <p
+                class="text-gta-cyan font-bold font-hud text-[10px] tracking-widest uppercase mt-1"
+                id="mobile-skill-count"
+              >
+                -- / --
+              </p>
             </div>
+
+            <div
+              id="mobile-skill-attachments"
+              class="mb-4 flex flex-wrap justify-center gap-1"
+            >
+              <!-- Injected via JS -->
+            </div>
+
+            <div class="space-y-2 font-hud">
+              <div class="flex items-center gap-2">
+                <span
+                  class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right"
+                  >EXP</span
+                >
+                <div
+                  class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]"
+                >
+                  <div
+                    id="mobile-stat-bar-1"
+                    class="h-full bg-white w-0 transition-all duration-300"
+                  ></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right"
+                  >USE</span
+                >
+                <div
+                  class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]"
+                >
+                  <div
+                    id="mobile-stat-bar-2"
+                    class="h-full bg-white w-0 transition-all duration-300"
+                  ></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="text-[10px] uppercase text-gray-500 font-bold w-8 text-right"
+                  >SPD</span
+                >
+                <div
+                  class="h-2 flex-1 bg-gray-800 border border-gray-700 skew-x-[-15deg]"
+                >
+                  <div
+                    id="mobile-stat-bar-3"
+                    class="h-full bg-white w-0 transition-all duration-300"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Mobile Inventory Grid (Visible on Mobile) -->
@@ -1301,30 +1368,52 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-black border-t border-white/10 py-12">
+    <!-- Footer (Socials & Credits) -->
+    <footer class="bg-black border-t border-white/10 py-8 pb-24 md:pb-8">
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6"
       >
         <div class="flex items-center gap-4">
           <span class="font-display text-2xl text-white">SR</span>
-          <span class="text-gray-600 font-hud text-sm"
-            >© 2024 Santhosh Reddy.</span
-          >
+          <!-- Cool Credits Integrated -->
+          <div class="dev-credits-container group/dev cursor-default">
+            <div class="dev-status-light"></div>
+            <span class="dev-label">ARCHITECT //</span>
+            <span class="dev-name glitch-hover" data-text="SANTHOSH REDDY"
+              >SANTHOSH REDDY</span
+            >
+
+            <!-- HUD Corner Accents -->
+            <div
+              class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-gta-cyan opacity-0 group-hover/dev:opacity-100 transition-opacity"
+            ></div>
+            <div
+              class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-gta-cyan opacity-0 group-hover/dev:opacity-100 transition-opacity"
+            ></div>
+          </div>
         </div>
 
-        <div class="flex gap-6">
-          <a href="#" class="text-gray-500 hover:text-white transition-colors"
+        <div class="flex gap-4 items-center">
+          <a
+            href="#"
+            class="text-gray-500 hover:text-white transition-colors flex items-center justify-center w-8 h-8"
             ><i data-lucide="github" class="w-5 h-5"></i
           ></a>
           <a
             href="#"
-            class="text-gray-500 hover:text-gta-cyan transition-colors"
-            ><i class="ri-twitter-x-fill text-xl"></i
+            class="text-gray-500 hover:text-gta-cyan transition-colors flex items-center justify-center w-8 h-8"
+            ><i class="ri-twitter-x-fill text-lg"></i
           ></a>
           <a
             href="#"
-            class="text-gray-500 hover:text-gta-magenta transition-colors"
+            class="text-gray-500 hover:text-gta-magenta transition-colors flex items-center justify-center w-8 h-8"
             ><i data-lucide="linkedin" class="w-5 h-5"></i
+          ></a>
+          <a
+            href="https://discord.com/users/1284925883240550552"
+            target="_blank"
+            class="text-gray-500 hover:text-[#5865F2] transition-colors flex items-center justify-center w-8 h-8"
+            ><i class="ri-discord-fill text-xl"></i
           ></a>
         </div>
       </div>
