@@ -82,43 +82,7 @@
                 this.playTone(150, 'sawtooth', 0.05, 0.03);
             },
 
-            playStartup: function() {
-                if (this.isMuted || !this.ctx) return;
-                
-                const t = this.ctx.currentTime;
-                
-                // 1. The "Boom" (Low thud - punchier)
-                const osc1 = this.ctx.createOscillator();
-                const g1 = this.ctx.createGain();
-                osc1.type = 'square'; // Changed to square for more immediate presence
-                osc1.frequency.setValueAtTime(80, t);
-                osc1.frequency.exponentialRampToValueAtTime(10, t + 0.5); // Faster drop
-                
-                g1.gain.setValueAtTime(0.5, t); // Louder start
-                g1.gain.exponentialRampToValueAtTime(0.001, t + 1.0);
-                
-                osc1.connect(g1);
-                g1.connect(this.ctx.destination);
-                osc1.start(t);
-                osc1.stop(t + 1.0);
 
-                // 2. The "Siren" (Glassy swell)
-                const osc2 = this.ctx.createOscillator();
-                const g2 = this.ctx.createGain();
-                osc2.type = 'sawtooth';
-                osc2.frequency.setValueAtTime(400, t);
-                osc2.frequency.linearRampToValueAtTime(800, t + 0.1); // Fast swell
-                osc2.frequency.linearRampToValueAtTime(400, t + 1.5);
-                
-                g2.gain.setValueAtTime(0, t);
-                g2.gain.linearRampToValueAtTime(0.1, t + 0.1); // Fast attack
-                g2.gain.linearRampToValueAtTime(0, t + 2.0);
-                
-                osc2.connect(g2);
-                g2.connect(this.ctx.destination);
-                osc2.start(t);
-                osc2.stop(t + 2.0);
-            },
             
             playMissionSuccess: function() {
                 if (this.isMuted || !this.ctx) return;
@@ -280,9 +244,7 @@
             SoundManager.init();
             
             // 2. Resume and Play as fast as possible
-            SoundManager.resume().then(() => {
-                SoundManager.playStartup();
-            });
+            SoundManager.resume();
 
             // 3. Hide Overlay with slight delay to sync with sound start
             // Removing the slight delay might feel snappier visually, but we want sound to hit first.
