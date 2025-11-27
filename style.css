@@ -821,8 +821,6 @@
                 width: 320px;
                 height: 320px;
             }
-<<<<<<< HEAD
-=======
         }
 
         /* =========================================
@@ -951,3 +949,35 @@
             }
 
         }
+    /* =========================================
+       LOGO ANIMATION STYLES
+       ========================================= */
+    .logo-style-1 {
+        font-family: 'Archivo Black', sans-serif !important;
+        letter-spacing: normal;
+        line-height: 1.2 !important;
+    }
+    .logo-style-2 {
+        font-family: 'Chakra Petch', sans-serif !important;
+        font-weight: 700;
+        letter-spacing: 1px;
+        line-height: 1.2 !important;
+    }
+    .logo-style-3 {
+        font-family: 'Fugaz One', cursive !important;
+        letter-spacing: 1px;
+        line-height: 1.2 !important;
+    }
+    .logo-style-4 {
+        font-family: 'Courier New', monospace !important;
+        font-weight: 900;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        line-height: 1.2 !important;
+    }
+    .logo-style-5 {
+        font-family: 'Impact', sans-serif !important;
+        letter-spacing: 2px;
+        font-weight: normal;
+        line-height: 1.2 !important;
+    }

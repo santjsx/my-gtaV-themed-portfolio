@@ -644,3 +644,37 @@ if (contactForm) {
     }, 4000);
   });
 }
+
+// --- LOGO ANIMATION LOGIC ---
+// --- LOGO ANIMATION LOGIC ---
+const logoElements = [
+  document.getElementById("navbar-logo-text"),
+  document.getElementById("mobile-logo-text")
+].filter(el => el !== null);
+
+if (logoElements.length > 0) {
+  console.log("Logo animation initialized for", logoElements.length, "elements");
+  const logoClasses = [
+    "logo-style-1",
+    "logo-style-2",
+    "logo-style-3",
+    "logo-style-4",
+    "logo-style-5",
+  ];
+
+  setInterval(() => {
+    // Get random class index
+    const randomIndex = Math.floor(Math.random() * logoClasses.length);
+    const newClass = logoClasses[randomIndex];
+    
+    // Apply to all logo elements
+    logoElements.forEach(logoText => {
+        // Remove all existing style classes
+        logoText.classList.remove(...logoClasses);
+        // Add new class
+        logoText.classList.add(newClass);
+    });
+  }, 2000); // Change every 2 seconds
+} else {
+    console.error("No logo elements found!");
+}
