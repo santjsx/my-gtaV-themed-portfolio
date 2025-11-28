@@ -243,7 +243,14 @@ function refreshPageAnimations(pageId) {
 window.addEventListener("popstate", handleRouting);
 
 // Initial Load Logic - MODIFIED for "Click to Start"
+// Initial Load Logic - MODIFIED for "Click to Start"
 window.addEventListener("load", () => {
+  // Force scroll to top on reload
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   // 1. Prepare the view based on hash, but keep overlay up
   const hash = window.location.hash.substring(1) || "home";
   const targetPage = document.getElementById(`page-${hash}`);
@@ -663,18 +670,83 @@ if (logoElements.length > 0) {
   ];
 
   setInterval(() => {
-    // Get random class index
-    const randomIndex = Math.floor(Math.random() * logoClasses.length);
-    const newClass = logoClasses[randomIndex];
-    
-    // Apply to all logo elements
-    logoElements.forEach(logoText => {
-        // Remove all existing style classes
-        logoText.classList.remove(...logoClasses);
-        // Add new class
-        logoText.classList.add(newClass);
-    });
-  }, 2000); // Change every 2 seconds
+    // Fade out
+    logoElements.forEach(el => el.style.opacity = '0');
+
+    setTimeout(() => {
+        // Get random class index
+        const randomIndex = Math.floor(Math.random() * logoClasses.length);
+        const newClass = logoClasses[randomIndex];
+        
+        // Apply to all logo elements
+        logoElements.forEach(logoText => {
+            // Remove all existing style classes
+            logoText.classList.remove(...logoClasses);
+            // Add new class
+            logoText.classList.add(newClass);
+            // Fade in
+            logoText.style.opacity = '1';
+        });
+    }, 300); // Wait for fade out (matches CSS transition duration)
+  }, 4000); // Change every 4 seconds
 } else {
     console.error("No logo elements found!");
+}
+
+/* =========================================
+   RAP SHEET LOGIC
+   ========================================= */
+const rapSheetOverlay = document.getElementById("rap-sheet-overlay");
+const rapSheetLoading = document.getElementById("rap-sheet-loading");
+
+function openRapSheet() {
+  if (rapSheetOverlay) {
+    rapSheetOverlay.classList.remove("hidden");
+    
+    // Show loading state first
+    if (rapSheetLoading) {
+        rapSheetLoading.classList.remove("hidden");
+    }
+
+    // Small delay to allow display:flex to apply before opacity transition
+    setTimeout(() => {
+      rapSheetOverlay.classList.add("visible");
+      SoundManager.playClick();
+      
+      // Simulate database search
+      setTimeout(() => {
+          if (rapSheetLoading) {
+              rapSheetLoading.classList.add("hidden");
+              SoundManager.playTone(1000, "sine", 0.1); // Success beep
+          }
+      }, 1500);
+      
+    }, 10);
+  }
+}
+
+function closeRapSheet() {
+  if (rapSheetOverlay) {
+    rapSheetOverlay.classList.remove("visible");
+    SoundManager.playClick();
+    setTimeout(() => {
+      rapSheetOverlay.classList.add("hidden");
+    }, 300);
+  }
+}
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && rapSheetOverlay && rapSheetOverlay.classList.contains("visible")) {
+    closeRapSheet();
+  }
+});
+
+// Close on clicking outside container
+if (rapSheetOverlay) {
+    rapSheetOverlay.addEventListener("click", (e) => {
+        if (e.target === rapSheetOverlay) {
+            closeRapSheet();
+        }
+    });
 }

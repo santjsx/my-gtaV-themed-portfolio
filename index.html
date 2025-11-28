@@ -198,20 +198,61 @@
           >Hyderabad Vault [Online]</span
         >
       </div>
-      <div class="flex items-center h-full pt-4">
-        <a href="#home" class="nav-desktop-item active" data-page="home"
-          >Brief</a
-        >
-        <a href="#about" class="nav-desktop-item" data-page="about">Stats</a>
-        <a href="#skills" class="nav-desktop-item" data-page="skills"
-          >Loadout</a
-        >
-        <a href="#projects" class="nav-desktop-item" data-page="projects"
-          >Heists</a
-        >
-        <a href="#contact" class="nav-desktop-item" data-page="contact"
-          >Contact</a
-        >
+      <div class="flex items-center justify-center h-full pt-4 flex-1">
+        <a href="#home" class="nav-desktop-item active" data-page="home">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="crosshair" class="w-4 h-4"></i>
+                    <span>Brief</span>
+                </div>
+            </div>
+        </a>
+        <a href="#about" class="nav-desktop-item" data-page="about">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                    <span>Stats</span>
+                </div>
+            </div>
+        </a>
+        <a href="#skills" class="nav-desktop-item" data-page="skills">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                    <span>Loadout</span>
+                </div>
+            </div>
+        </a>
+        <a href="#projects" class="nav-desktop-item" data-page="projects">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="briefcase" class="w-4 h-4"></i>
+                    <span>Heists</span>
+                </div>
+            </div>
+        </a>
+        <a href="#contact" class="nav-desktop-item" data-page="contact">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="radio" class="w-4 h-4"></i>
+                    <span>Contact</span>
+                </div>
+            </div>
+        </a>
+        <button onclick="openRapSheet()" class="nav-desktop-item operative-file">
+            <div class="nav-hud-item">
+                <div class="nav-hud-bg"></div>
+                <div class="nav-hud-content">
+                    <i data-lucide="file-warning" class="w-4 h-4"></i>
+                    <span>Operative File</span>
+                </div>
+            </div>
+        </button>
       </div>
       <div class="text-right flex flex-col items-end">
         <div class="flex items-center gap-4 mb-1">
@@ -367,6 +408,15 @@
           </div>
           <div
             class="flex flex-col items-center gap-1"
+            onclick="openRapSheet()"
+          >
+            <div class="app-icon bg-blue-900">
+              <i data-lucide="file-warning" class="w-8 h-8"></i>
+            </div>
+            <span class="app-label">Operative File</span>
+          </div>
+          <div
+            class="flex flex-col items-center gap-1"
             onclick="toggleIfruit()"
           >
             <div class="app-icon bg-red-600">
@@ -392,7 +442,7 @@
         ></div>
 
         <div
-          class="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12 pt-20 md:pt-0"
+          class="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 pt-20 md:pt-0"
         >
           <div class="text-left md:w-3/5">
             <!-- Mission Objective Badge -->
@@ -408,7 +458,7 @@
 
             <!-- GTA V STYLED SUBTITLE -->
             <h2
-              class="gta-v-text text-3xl md:text-4xl font-bold uppercase tracking-widest mb-8"
+              class="gta-v-text text-3xl md:text-3xl font-bold uppercase tracking-widest mb-6"
             >
               MERN Stack Recruit
             </h2>
@@ -426,6 +476,12 @@
               >
                 Recruit Me
               </button>
+              <button
+                onclick="openRapSheet()"
+                class="btn-gta btn-gta-danger"
+              >
+                OPERATIVE FILE
+              </button>
             </div>
           </div>
 
@@ -439,9 +495,9 @@
                   Character Stats
                 </h3>
                 <div
-                  class="w-10 h-10 bg-black border border-white/20 flex items-center justify-center rounded-full"
+                  class="w-16 h-16 bg-black border-2 border-white/20 flex items-center justify-center rounded-full overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                 >
-                  <span class="font-display text-gta-cyan">SR</span>
+                  <img src="https://i.pinimg.com/736x/08/3a/b0/083ab058596f9d0c925e9f9209a0d28e.jpg" alt="Character Mugshot" class="w-full h-full object-cover grayscale contrast-125">
                 </div>
               </div>
 
@@ -1453,6 +1509,153 @@
       </div>
     </footer>
 
+    <!-- ===== OPERATIVE FILE OVERLAY ===== -->
+    <div id="rap-sheet-overlay" class="hidden">
+      <div class="rap-sheet-container">
+        <!-- Loading State -->
+        <div id="rap-sheet-loading" class="rap-sheet-loading hidden">
+            <div class="loading-spinner"></div>
+            <p class="font-hud text-gta-cyan tracking-widest animate-pulse">ACCESSING IAA SECURE ARCHIVES...</p>
+        </div>
+        
+        <!-- Watermark -->
+        <div class="rap-sheet-watermark">CLASSIFIED</div>
+
+        <div class="rap-sheet-header">
+          <div class="flex items-center gap-4">
+            <div class="lspd-badge">
+              <svg viewBox="0 0 100 100" class="w-16 h-16">
+                <path d="M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z" fill="none" stroke="white" stroke-width="2"/>
+                <text x="50" y="50" text-anchor="middle" fill="white" font-size="12" font-family="Arial">IAA</text>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-4xl font-display text-white tracking-tighter">OPERATIVE FILE</h2>
+              <p class="text-gta-red font-hud tracking-widest uppercase text-sm">Classified // Personnel Division</p>
+            </div>
+          </div>
+          <button onclick="closeRapSheet()" class="text-white hover:text-gta-red transition-colors">
+            <i data-lucide="x" class="w-8 h-8"></i>
+          </button>
+        </div>
+
+        <div class="rap-sheet-body">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Mugshot Section -->
+            <div class="col-span-1">
+              <div class="mugshot-box">
+                <img src="https://i.pinimg.com/736x/08/3a/b0/083ab058596f9d0c925e9f9209a0d28e.jpg" alt="Suspect" class="w-full h-auto grayscale contrast-125">
+                <div class="mugshot-overlay">
+                  <span>IAA</span>
+                  <span>49201</span>
+                  <span>2025</span>
+                </div>
+              </div>
+              <div class="mt-4 space-y-2 font-hud text-sm uppercase">
+                <div class="flex justify-between border-b border-white/10 pb-1">
+                  <span class="text-gray-400">Name</span>
+                  <span class="text-white">Santhosh Reddy</span>
+                </div>
+                <div class="flex justify-between border-b border-white/10 pb-1">
+                  <span class="text-gray-400">Alias</span>
+                  <span class="text-gta-red">"The Architect"</span>
+                </div>
+
+                <div class="flex justify-between border-b border-white/10 pb-1">
+                  <span class="text-gray-400">Status</span>
+                  <span class="text-gta-red animate-pulse">WANTED</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Record Details -->
+            <div class="col-span-2 space-y-6">
+              <!-- Prior Convictions (Experience) -->
+              <div class="record-section">
+                <h3 class="record-title">
+                  <i data-lucide="siren" class="w-5 h-5"></i>
+                  PRIOR CONVICTIONS (EXPERIENCE)
+                </h3>
+                <div class="space-y-4">
+                  <div class="crime-entry">
+                    <div class="flex justify-between items-start mb-1">
+                      <span class="text-gta-cyan font-bold uppercase">Fresh Recruit (2025 Batch)</span>
+                      <span class="text-gray-400 text-xs">2025</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                      <span class="text-gta-red font-bold">[ STATUS ]</span> Ready for Deployment.
+                      <br>
+                      <span class="text-gta-red font-bold">[ OBJECTIVE ]</span> Seeking first major assignment in Full Stack Development.
+                    </p>
+                  </div>
+                  
+                  <div class="crime-entry">
+                    <div class="flex justify-between items-start mb-1">
+                      <span class="text-gta-cyan font-bold uppercase">Independent Operations</span>
+                      <span class="text-gray-400 text-xs">2024 - Present</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                      <span class="text-gta-red font-bold">[ ACTIVITY ]</span> Building High-Level Web Applications.
+                      <br>
+                      <span class="text-gta-red font-bold">[ EVIDENCE ]</span> Developed complex portfolios and full-stack projects using modern tech stacks.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Known Associates (Education) -->
+              <div class="record-section">
+                <h3 class="record-title">
+                  <i data-lucide="school" class="w-5 h-5"></i>
+                  INSTITUTIONAL RECORD (EDUCATION)
+                </h3>
+                <div class="crime-entry">
+                  <div class="flex justify-between items-start mb-1">
+                    <span class="text-gta-cyan font-bold uppercase">Bachelor of Technology</span>
+                    <span class="text-gray-400 text-xs">2021 - 2025</span>
+                  </div>
+                  <p class="text-gray-300 text-sm">
+                    Electronics & Communication Engineering
+                    <br>
+                    <span class="text-gray-500 text-xs">Graduated 2025. Re-purposed hardware logic for software dominance.</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Modus Operandi (Skills) -->
+              <div class="record-section">
+                <h3 class="record-title">
+                  <i data-lucide="crosshair" class="w-5 h-5"></i>
+                  MODUS OPERANDI (SKILLS)
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                  <span class="skill-tag">JavaScript (ES6+)</span>
+                  <span class="skill-tag">React.js</span>
+                  <span class="skill-tag">Node.js</span>
+                  <span class="skill-tag">MongoDB</span>
+                  <span class="skill-tag">Tailwind CSS</span>
+                  <span class="skill-tag">Python</span>
+                  <span class="skill-tag">Git</span>
+                  <span class="skill-tag">REST APIs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rap-sheet-footer">
+          <button onclick="window.print()" class="btn-gta btn-gta-primary text-sm py-2 px-4">
+            <i data-lucide="printer" class="w-4 h-4 inline mr-2"></i> PRINT RECORD
+          </button>
+          <div class="text-right">
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest">IAA DATABASE V.4.0.2</p>
+            <p class="text-[10px] text-gta-red uppercase tracking-widest">EYES ONLY // TOP SECRET</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="script.js"></script>
+  </body>
+</html>
   </body>
 </html>
