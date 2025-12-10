@@ -312,7 +312,12 @@
       </div>
     </nav>
 
-    <!-- Mobile: Header -->
+    <!-- Mobile: Help Message (GTA V Style) -->
+    <div id="gta-mobile-hint" class="gta-help-box hidden md:hidden">
+        <span class="help-icon">i</span>
+        <span class="help-text">Tap the <strong>PHONE</strong> to access menu</span>
+    </div>
+
     <nav
       class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md h-16 flex md:hidden items-center justify-between px-4 border-b border-white/10"
     >
@@ -340,8 +345,9 @@
         </button>
         <button
           id="ifruit-trigger"
-          class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600 active:scale-90 transition-transform"
+          class="relative w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center border border-gray-600 active:scale-90 transition-transform"
         >
+          <div id="phone-notification-badge" class="hidden absolute -top-1 -right-1 w-3 h-3 bg-gta-green rounded-full border border-black animate-pulse"></div>
           <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
         </button>
       </div>

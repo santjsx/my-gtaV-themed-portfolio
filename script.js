@@ -750,3 +750,60 @@ if (rapSheetOverlay) {
         }
     });
 }
+
+/* =========================================
+   MOBILE HINT LOGIC
+   ========================================= */
+const mobileHint = document.getElementById("gta-mobile-hint");
+const phoneBadge = document.getElementById("phone-notification-badge");
+
+function showMobileHint() {
+    // Only show on mobile
+    if (window.innerWidth >= 768) return;
+
+    // Check if we've already shown it this session (optional, but good for UX)
+    if (sessionStorage.getItem("mobileHintShown")) return;
+
+    setTimeout(() => {
+        if (mobileHint && phoneBadge) {
+            mobileHint.classList.remove("hidden");
+            // Small delay to allow display:block to apply
+            setTimeout(() => mobileHint.classList.add("visible"), 10);
+            
+            phoneBadge.classList.remove("hidden");
+            
+            // Play a subtle notification sound
+            // 2 beeps like a pager/phone message
+            if (SoundManager && !SoundManager.isMuted) {
+                if(SoundManager.ctx && SoundManager.ctx.state === 'running') {
+                     const now = SoundManager.ctx.currentTime;
+                     SoundManager.playTone(800, "sine", 0.1, 0.05);
+                     setTimeout(() => SoundManager.playTone(800, "sine", 0.1, 0.05), 150);
+                }
+            }
+        }
+    }, 3000); // Show 3 seconds after load
+}
+
+// Hook into existing toggleIfruit to clear hints
+// We can just add an event listener to the trigger since we already have one
+const phoneTrigger = document.getElementById("ifruit-trigger");
+if (phoneTrigger) {
+    phoneTrigger.addEventListener("click", () => {
+        if (mobileHint) {
+            mobileHint.classList.remove("visible");
+            setTimeout(() => mobileHint.classList.add("hidden"), 500);
+        }
+        if (phoneBadge) {
+            phoneBadge.classList.add("hidden");
+        }
+        sessionStorage.setItem("mobileHintShown", "true");
+    });
+}
+
+// Trigger on load (or start experience)
+window.addEventListener("load", () => {
+    // If we wait for "startExperience", it might be better, but "load" is fine for the timeout
+    // We'll trust the 3s timeout covers the loading screen duration
+    showMobileHint();
+});
