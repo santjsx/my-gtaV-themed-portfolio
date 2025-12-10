@@ -668,6 +668,47 @@
             text-align: center;
         }
 
+        /* Mobile Loading Screen Adjustments */
+        @media (max-width: 768px) {
+            .sr-badge {
+                width: 80px;
+                height: 80px;
+                border-radius: 16px;
+            }
+            .badg-initial {
+                font-size: 50px;
+                margin-top: 5px;
+            }
+            .badge-star-box {
+                margin-top: 12px;
+            }
+            .badge-star {
+                width: 14px;
+                height: 14px;
+                margin-bottom: -3px;
+            }
+            .badge-r {
+                font-size: 24px;
+            }
+            
+            .loading-footer {
+                bottom: 20px;
+                right: 20px;
+                flex-direction: column; 
+                align-items: flex-end;
+                gap: 5px;
+            }
+            
+            #loading-text {
+                font-size: 1rem; /* Smaller text */
+                margin-left: 0;
+            }
+
+            .center-prompt {
+                bottom: 25%; /* Move up slightly to avoid footer clash */
+            }
+        }
+
         /* Stars */
         .star-filled { fill: white; stroke: white; }
         .star-empty { fill: transparent; stroke: #555; }
