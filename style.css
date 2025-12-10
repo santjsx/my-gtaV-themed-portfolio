@@ -540,10 +540,10 @@
         }
 
         /* Loading Overlay */
+        /* Loading Overlay */
         #transition-overlay {
             position: fixed;
             inset: 0;
-            background: black;
             z-index: 99999;
             display: flex;
             align-items: center;
@@ -551,6 +551,13 @@
             pointer-events: all;
             opacity: 1;
             transition: opacity 0.5s ease-out;
+            
+            /* Background Image */
+            background-color: #000;
+            background-image: url('images/loading_screen.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .loader-hidden {
@@ -558,22 +565,107 @@
             pointer-events: none !important;
         }
 
-        .sr-logo-box {
-            width: 80px;
-            height: 80px;
-            border: 4px solid var(--neon-magenta);
+        /* =========================================
+           NEW LOADING SCREEN (ROCKSTAR INTRO)
+           ========================================= */
+        /* (Consolidated above) */
+
+        .overlay-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1rem;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-            animation: pulse-gold 2s infinite;
+            background: rgba(0, 0, 0, 0.4); /* Darken image slightly */
+            backdrop-filter: blur(2px); /* Slight blur for focus */
         }
 
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
-            100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        /* Rockstar Badge Replica (SR) */
+        .sr-badge-container {
+            position: relative;
+            animation: intro-slam 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(2);
+        }
+
+        .sr-badge {
+            background: #F39C12; /* Rockstar Gold */
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 50px rgba(243, 156, 18, 0.3);
+            border: 2px solid #000; /* Subtle outline */
+        }
+
+        .badg-initial {
+            font-family: sans-serif; /* close to rockstar font */
+            font-weight: 900;
+            font-size: 80px;
+            color: black;
+            line-height: 1;
+            margin-right: -10px; /* Tighten kerning */
+            margin-top: 10px;
+        }
+
+        .badge-star-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .badge-star {
+            width: 20px;
+            height: 20px;
+            color: black;
+            margin-bottom: -5px;
+        }
+
+        .badge-r {
+            font-family: sans-serif;
+            font-weight: 900;
+            font-size: 35px;
+            color: black;
+        }
+
+        @keyframes intro-slam {
+            0% { opacity: 0; transform: scale(3); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Loading Footer (Bottom Right) */
+        .loading-footer {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .gta-spinner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .center-prompt {
+            position: absolute;
+            bottom: 15%;
+            width: 100%;
+            text-align: center;
         }
 
         /* Stars */

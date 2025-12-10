@@ -134,15 +134,16 @@ const loadingBar = document.getElementById("loading-bar");
 // Global state to track if we have passed the initial load
 window.hasStarted = false;
 
-// GTA Loading Phrases
+// GTA Story Mode Loading Phrases
 const loadingPhrases = [
   "Loading Story Mode...",
-  "Compiling Shaders...",
-  "Connecting to Los Santos Cloud...",
-  "Evading 5 Stars...",
-  "Heist Prep in Progress...",
-  "Contacting Lester...",
-  "Initializing Social Club...",
+  "entering north yankton...",
+  "waiting for lester's call...",
+  "escaping the vault...",
+  "losing the cops...",
+  "connecting to bawsaq...",
+  "initializing social club...",
+  "loading los santos...",
 ];
 
 function handleRouting() {
@@ -160,25 +161,11 @@ function navigateTo(pageId, pushState = true) {
 
   ifruitMenu.classList.remove("open");
 
-  // On subsequent navigations (not the first load), show the loader briefly
+  // On subsequent navigations, just switch pages instantly (NO LOADING SCREEN)
   if (window.hasStarted) {
-    if (loadingText) {
-      loadingText.textContent =
-        loadingPhrases[Math.floor(Math.random() * loadingPhrases.length)];
-    }
-    if (startPrompt) startPrompt.classList.add("hidden"); // Ensure prompt is hidden for nav
-    if (loadingBar) loadingBar.parentElement.classList.remove("opacity-0"); // Show bar for nav
-
-    overlay.classList.remove("loader-hidden");
-
-    setTimeout(() => {
-      performNavigation(targetPage, pageId);
-      setTimeout(() => {
-        overlay.classList.add("loader-hidden");
-      }, 400);
-    }, 300);
+    performNavigation(targetPage, pageId);
   } else {
-    // Ideally we perform navigation setup behind the scenes during initial load too
+    // Initial load setup (loading screen is already visible via CSS/HTML)
     performNavigation(targetPage, pageId);
   }
 }

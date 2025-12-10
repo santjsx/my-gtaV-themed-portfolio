@@ -117,43 +117,39 @@
       </div>
     </div>
 
-    <!-- Transition Overlay -->
+    <!-- Transition Overlay (Rockstar Style) -->
     <div id="transition-overlay">
-      <div class="text-center flex flex-col items-center">
-        <div class="sr-logo-box">
-          <span class="font-display text-4xl text-gta-magenta">SR</span>
-        </div>
-        <div class="w-64 h-1 bg-gray-800 mx-auto mb-2 overflow-hidden">
-          <div
-            class="h-full bg-white animate-[shimmer_1s_infinite] w-full transform -translate-x-full"
-            id="loading-bar"
-          ></div>
-        </div>
-        <p
-          class="text-xs text-white font-hud tracking-widest uppercase"
-          id="loading-text"
-        >
-          Initializing...
-        </p>
-        <p
-          class="text-sm text-gta-green font-hud tracking-widest uppercase mt-4 hidden animate-pulse"
-          id="start-prompt"
-        >
-          [ CLICK TO START ]
-        </p>
-        <style>
-          @keyframes shimmer {
-            0% {
-              transform: translateX(-100%);
-            }
-            100% {
-              transform: translateX(100%);
-            }
-          }
-          #loading-bar {
-            animation: shimmer 1.5s infinite linear;
-          }
-        </style>
+      <div class="overlay-content">
+          <!-- Central 'Rockstar' Badge (SR Personal Brand) -->
+          <div class="sr-badge-container">
+            <div class="sr-badge">
+               <span class="badg-initial">S</span>
+               <div class="badge-star-box">
+                   <svg viewBox="0 0 24 24" class="badge-star"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+                   <span class="badge-r">R</span>
+               </div>
+            </div>
+            <div class="badge-shadow"></div>
+          </div>
+
+          <!-- Bottom Right Loading Indicator -->
+          <div class="loading-footer">
+              <div class="gta-spinner"></div>
+              <p
+                class="text-xl text-white font-price tracking-wider uppercase ml-4"
+                id="loading-text"
+              >
+                Loading Story Mode...
+              </p>
+          </div>
+          
+          <!-- Start Prompt (Center Bottom) -->
+          <p
+            class="text-lg text-white font-hud tracking-widest uppercase center-prompt hidden animate-pulse"
+            id="start-prompt"
+          >
+            [ Click to Start ]
+          </p>
       </div>
     </div>
 
