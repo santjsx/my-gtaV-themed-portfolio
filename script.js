@@ -47,9 +47,8 @@ const SoundManager = {
     // Mobile
     const mBtn = document.getElementById("mute-btn-mobile");
     if (mBtn) {
-      mBtn.innerHTML = `<i data-lucide="${iconName}" id="mute-icon-mobile" class="w-5 h-5 ${
-        this.isMuted ? "text-red-500" : "text-white"
-      }"></i>`;
+      mBtn.innerHTML = `<i data-lucide="${iconName}" id="mute-icon-mobile" class="w-5 h-5 ${this.isMuted ? "text-red-500" : "text-white"
+        }"></i>`;
       lucide.createIcons();
     }
   },
@@ -229,8 +228,7 @@ function refreshPageAnimations(pageId) {
 
 window.addEventListener("popstate", handleRouting);
 
-// Initial Load Logic - MODIFIED for "Click to Start"
-// Initial Load Logic - MODIFIED for "Click to Start"
+// Initial Load Logic - Loading screen removed
 window.addEventListener("load", () => {
   // Force scroll to top on reload
   if ('scrollRestoration' in history) {
@@ -238,36 +236,32 @@ window.addEventListener("load", () => {
   }
   window.scrollTo(0, 0);
 
-  // 1. Prepare the view based on hash, but keep overlay up
+  // Navigate to the correct page based on hash
   const hash = window.location.hash.substring(1) || "home";
   const targetPage = document.getElementById(`page-${hash}`);
   if (targetPage) performNavigation(targetPage, hash);
 
-  // 2. Show "Click to Start" after a brief fake load
-  setTimeout(() => {
-    if (loadingText) loadingText.textContent = "Assets Loaded";
-    if (loadingBar) loadingBar.parentElement.classList.add("opacity-0"); // Hide bar
-    if (startPrompt) startPrompt.classList.remove("hidden"); // Show click prompt
+  // Mark as started immediately (no loading screen)
+  window.hasStarted = true;
 
-    // Add global click listener for the first interaction
-    document.addEventListener("click", startExperience, { once: true });
-  }, 1500);
+  // Initialize audio on first user interaction (required by browsers)
+  document.addEventListener("click", initAudioOnce, { once: true });
+
+  // Attach sounds to interactive elements
+  attachSounds();
 });
 
+function initAudioOnce() {
+  SoundManager.init();
+  SoundManager.resume();
+}
+
+// Keep startExperience for compatibility but it's no longer used
 function startExperience() {
   if (window.hasStarted) return;
   window.hasStarted = true;
-
-  // 1. Initialize Audio Context IMMEDIATELY on interaction
   SoundManager.init();
-
-  // 2. Resume and Play as fast as possible
   SoundManager.resume();
-
-  // 3. Hide Overlay with slight delay to sync with sound start
-  // Removing the slight delay might feel snappier visually, but we want sound to hit first.
-  // Let's hide immediately.
-  overlay.classList.add("loader-hidden");
 }
 
 document
@@ -438,21 +432,17 @@ function initWeaponWheel() {
     // Lock Overlay Icon
     let overlayHTML = "";
     if (skill.locked) {
-      overlayHTML = `<foreignObject x="${iconX - 12}" y="${
-        iconY - 12
-      }" width="24" height="24" class="lock-overlay"><div xmlns="http://www.w3.org/1999/xhtml"><i data-lucide="lock" style="color: #888;"></i></div></foreignObject>`;
+      overlayHTML = `<foreignObject x="${iconX - 12}" y="${iconY - 12
+        }" width="24" height="24" class="lock-overlay"><div xmlns="http://www.w3.org/1999/xhtml"><i data-lucide="lock" style="color: #888;"></i></div></foreignObject>`;
     }
 
     iconGroup.innerHTML = `
-                    <foreignObject x="${iconX - 20}" y="${
-      iconY - 20
-    }" width="40" height="40" class="wheel-icon">
+                    <foreignObject x="${iconX - 20}" y="${iconY - 20
+      }" width="40" height="40" class="wheel-icon">
                         <div xmlns="http://www.w3.org/1999/xhtml" class="flex items-center justify-center w-full h-full">
-                            <img src="${
-                              skill.icon
-                            }" class="w-10 h-10 object-contain" style="${imgStyle}" alt="${
-      skill.category
-    }" />
+                            <img src="${skill.icon
+      }" class="w-10 h-10 object-contain" style="${imgStyle}" alt="${skill.category
+      }" />
                         </div>
                     </foreignObject>
                     ${overlayHTML}
@@ -567,9 +557,8 @@ function activateSlice(index) {
   document.getElementById("skill-category").textContent = data.category;
   const countNum = index + 1;
   const totalNum = skillsData.length;
-  document.getElementById("skill-count").textContent = `${
-    countNum < 10 ? "0" + countNum : countNum
-  } / ${totalNum < 10 ? "0" + totalNum : totalNum}`;
+  document.getElementById("skill-count").textContent = `${countNum < 10 ? "0" + countNum : countNum
+    } / ${totalNum < 10 ? "0" + totalNum : totalNum}`;
 
   document.getElementById("stat-bar-1").style.width = data.stats[0] + "%";
   document.getElementById("stat-bar-2").style.width = data.stats[1] + "%";
@@ -590,9 +579,8 @@ function activateSlice(index) {
   const mobileCategory = document.getElementById("mobile-skill-category");
   if (mobileCategory) {
     mobileCategory.textContent = data.category;
-    document.getElementById("mobile-skill-count").textContent = `${
-      countNum < 10 ? "0" + countNum : countNum
-    } / ${totalNum < 10 ? "0" + totalNum : totalNum}`;
+    document.getElementById("mobile-skill-count").textContent = `${countNum < 10 ? "0" + countNum : countNum
+      } / ${totalNum < 10 ? "0" + totalNum : totalNum}`;
     document.getElementById("mobile-stat-bar-1").style.width =
       data.stats[0] + "%";
     document.getElementById("mobile-stat-bar-2").style.width =
@@ -661,23 +649,23 @@ if (logoElements.length > 0) {
     logoElements.forEach(el => el.style.opacity = '0');
 
     setTimeout(() => {
-        // Get random class index
-        const randomIndex = Math.floor(Math.random() * logoClasses.length);
-        const newClass = logoClasses[randomIndex];
-        
-        // Apply to all logo elements
-        logoElements.forEach(logoText => {
-            // Remove all existing style classes
-            logoText.classList.remove(...logoClasses);
-            // Add new class
-            logoText.classList.add(newClass);
-            // Fade in
-            logoText.style.opacity = '1';
-        });
+      // Get random class index
+      const randomIndex = Math.floor(Math.random() * logoClasses.length);
+      const newClass = logoClasses[randomIndex];
+
+      // Apply to all logo elements
+      logoElements.forEach(logoText => {
+        // Remove all existing style classes
+        logoText.classList.remove(...logoClasses);
+        // Add new class
+        logoText.classList.add(newClass);
+        // Fade in
+        logoText.style.opacity = '1';
+      });
     }, 300); // Wait for fade out (matches CSS transition duration)
   }, 4000); // Change every 4 seconds
 } else {
-    console.error("No logo elements found!");
+  console.error("No logo elements found!");
 }
 
 /* =========================================
@@ -689,25 +677,25 @@ const rapSheetLoading = document.getElementById("rap-sheet-loading");
 function openRapSheet() {
   if (rapSheetOverlay) {
     rapSheetOverlay.classList.remove("hidden");
-    
+
     // Show loading state first
     if (rapSheetLoading) {
-        rapSheetLoading.classList.remove("hidden");
+      rapSheetLoading.classList.remove("hidden");
     }
 
     // Small delay to allow display:flex to apply before opacity transition
     setTimeout(() => {
       rapSheetOverlay.classList.add("visible");
       SoundManager.playClick();
-      
+
       // Simulate database search
       setTimeout(() => {
-          if (rapSheetLoading) {
-              rapSheetLoading.classList.add("hidden");
-              SoundManager.playTone(1000, "sine", 0.1); // Success beep
-          }
+        if (rapSheetLoading) {
+          rapSheetLoading.classList.add("hidden");
+          SoundManager.playTone(1000, "sine", 0.1); // Success beep
+        }
       }, 1500);
-      
+
     }, 10);
   }
 }
@@ -731,11 +719,11 @@ document.addEventListener("keydown", (e) => {
 
 // Close on clicking outside container
 if (rapSheetOverlay) {
-    rapSheetOverlay.addEventListener("click", (e) => {
-        if (e.target === rapSheetOverlay) {
-            closeRapSheet();
-        }
-    });
+  rapSheetOverlay.addEventListener("click", (e) => {
+    if (e.target === rapSheetOverlay) {
+      closeRapSheet();
+    }
+  });
 }
 
 /* =========================================
@@ -745,52 +733,52 @@ const mobileHint = document.getElementById("gta-mobile-hint");
 const phoneBadge = document.getElementById("phone-notification-badge");
 
 function showMobileHint() {
-    // Only show on mobile
-    if (window.innerWidth >= 768) return;
+  // Only show on mobile
+  if (window.innerWidth >= 768) return;
 
-    // Check if we've already shown it this session (optional, but good for UX)
-    if (sessionStorage.getItem("mobileHintShown")) return;
+  // Check if we've already shown it this session (optional, but good for UX)
+  if (sessionStorage.getItem("mobileHintShown")) return;
 
-    setTimeout(() => {
-        if (mobileHint && phoneBadge) {
-            mobileHint.classList.remove("hidden");
-            // Small delay to allow display:block to apply
-            setTimeout(() => mobileHint.classList.add("visible"), 10);
-            
-            phoneBadge.classList.remove("hidden");
-            
-            // Play a subtle notification sound
-            // 2 beeps like a pager/phone message
-            if (SoundManager && !SoundManager.isMuted) {
-                if(SoundManager.ctx && SoundManager.ctx.state === 'running') {
-                     const now = SoundManager.ctx.currentTime;
-                     SoundManager.playTone(800, "sine", 0.1, 0.05);
-                     setTimeout(() => SoundManager.playTone(800, "sine", 0.1, 0.05), 150);
-                }
-            }
+  setTimeout(() => {
+    if (mobileHint && phoneBadge) {
+      mobileHint.classList.remove("hidden");
+      // Small delay to allow display:block to apply
+      setTimeout(() => mobileHint.classList.add("visible"), 10);
+
+      phoneBadge.classList.remove("hidden");
+
+      // Play a subtle notification sound
+      // 2 beeps like a pager/phone message
+      if (SoundManager && !SoundManager.isMuted) {
+        if (SoundManager.ctx && SoundManager.ctx.state === 'running') {
+          const now = SoundManager.ctx.currentTime;
+          SoundManager.playTone(800, "sine", 0.1, 0.05);
+          setTimeout(() => SoundManager.playTone(800, "sine", 0.1, 0.05), 150);
         }
-    }, 3000); // Show 3 seconds after load
+      }
+    }
+  }, 3000); // Show 3 seconds after load
 }
 
 // Hook into existing toggleIfruit to clear hints
 // We can just add an event listener to the trigger since we already have one
 const phoneTrigger = document.getElementById("ifruit-trigger");
 if (phoneTrigger) {
-    phoneTrigger.addEventListener("click", () => {
-        if (mobileHint) {
-            mobileHint.classList.remove("visible");
-            setTimeout(() => mobileHint.classList.add("hidden"), 500);
-        }
-        if (phoneBadge) {
-            phoneBadge.classList.add("hidden");
-        }
-        sessionStorage.setItem("mobileHintShown", "true");
-    });
+  phoneTrigger.addEventListener("click", () => {
+    if (mobileHint) {
+      mobileHint.classList.remove("visible");
+      setTimeout(() => mobileHint.classList.add("hidden"), 500);
+    }
+    if (phoneBadge) {
+      phoneBadge.classList.add("hidden");
+    }
+    sessionStorage.setItem("mobileHintShown", "true");
+  });
 }
 
 // Trigger on load (or start experience)
 window.addEventListener("load", () => {
-    // If we wait for "startExperience", it might be better, but "load" is fine for the timeout
-    // We'll trust the 3s timeout covers the loading screen duration
-    showMobileHint();
+  // If we wait for "startExperience", it might be better, but "load" is fine for the timeout
+  // We'll trust the 3s timeout covers the loading screen duration
+  showMobileHint();
 });
