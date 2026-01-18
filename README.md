@@ -1,6 +1,7 @@
 # Santhosh Reddy - Full Stack Developer Portfolio
 
 ![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.5-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
 A Grand Theft Auto V-themed personal portfolio website engineered as a single-page application. This project demonstrates advanced front-end development skills through an immersive, interactive user interface inspired by the game's HUD and menu systems.
