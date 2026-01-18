@@ -2103,3 +2103,158 @@
                 box-shadow: 0 0 15px var(--neon-green);
                 transform: scale(1.2);
             }
+        }
+
+        /* =========================================
+           MOBILE RAP SHEET OPTIMIZATIONS
+           ========================================= */
+        @media (max-width: 768px) {
+
+            /* 1. Maximize Screen Usage */
+            #rap-sheet-overlay {
+                padding: 0 !important;
+                align-items: flex-end !important;
+                /* Slide up effect feeling */
+            }
+
+            .rap-sheet-container {
+                height: 100% !important;
+                max-height: 100% !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+                display: flex;
+                flex-direction: column;
+                background: #0f172a !important;
+            }
+
+            /* 2. Compact Header */
+            .rap-sheet-header {
+                padding: 0.75rem 1rem !important;
+                flex-shrink: 0;
+                background: #111827 !important;
+                /* darker header */
+            }
+
+            .rap-sheet-header h2 {
+                font-size: 1.5rem !important;
+                /* Smaller Title */
+            }
+
+            .rap-sheet-header p {
+                font-size: 0.6rem !important;
+            }
+
+            .lspd-badge svg {
+                width: 2.5rem !important;
+                /* Smaller Badge */
+                height: 2.5rem !important;
+            }
+
+            .rap-sheet-header button svg {
+                width: 1.5rem !important;
+                /* Smaller Close Icon */
+                height: 1.5rem !important;
+            }
+
+            /* 3. Compact Body Layout */
+            .rap-sheet-body {
+                padding: 1rem !important;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Refactor Mugshot Section to Horizontal Layout */
+            .rap-sheet-body .col-span-1 {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+                width: 100% !important;
+            }
+
+            .mugshot-box {
+                width: 90px !important;
+                /* Smaller, fixed width */
+                flex-shrink: 0;
+                border-width: 2px !important;
+            }
+
+            .mugshot-overlay {
+                font-size: 8px !important;
+                /* Significantly reduce font size */
+                padding: 2px 4px !important;
+                /* Reduce padding */
+                flex-wrap: nowrap !important;
+                /* Prevent wrapping */
+                overflow: hidden;
+            }
+
+            .mugshot-overlay span {
+                white-space: nowrap;
+                /* Ensure text doesn't wrap unnecessarily */
+            }
+
+            .col-span-1 .mt-4 {
+                margin-top: 0 !important;
+                width: 100%;
+                font-size: 0.8rem;
+            }
+
+            /* Adjust text sizes in mugshot details */
+            .col-span-1 .mt-4 .flex {
+                margin-bottom: 0.4rem;
+            }
+
+            /* 4. Compact Entries */
+            .record-section {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .record-title {
+                font-size: 1rem !important;
+                margin-bottom: 0.75rem !important;
+                color: var(--neon-cyan) !important;
+                /* Highlight titles */
+            }
+
+            .crime-entry {
+                padding: 0.75rem !important;
+                background: rgba(255, 255, 255, 0.03) !important;
+            }
+
+            .crime-entry p {
+                font-size: 0.8rem !important;
+            }
+
+            .rap-sheet-watermark {
+                font-size: 3rem !important;
+                opacity: 0.03;
+                top: 30%;
+            }
+
+            /* 5. Footer Adjustments */
+            .rap-sheet-footer {
+                padding: 0.75rem 1rem !important;
+                flex-shrink: 0;
+                background: #111827 !important;
+            }
+
+            .rap-sheet-footer .btn-gta {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.7rem !important;
+            }
+
+            .rap-sheet-footer .text-right p {
+                font-size: 0.5rem !important;
+                line-height: 1.2;
+            }
+
+            /* Hide print button text on very small screens if needed */
+            .rap-sheet-footer .btn-gta i {
+                margin-right: 0.25rem;
+            }
+        }
