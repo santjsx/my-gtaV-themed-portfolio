@@ -115,6 +115,9 @@ Make this portfolio yours by modifying these key files:
 
 This project is licensed under the MIT License.
 
-## Disclaimer
+## 🎖️ Final Mission Report
 
-This portfolio is a fan tribute and is not affiliated with, endorsed by, or sponsored by Rockstar Games or Take-Two Interactive. All trademarks belong to their respective owners.
+This portfolio is a culmination of front-end mastery and creative design. Thank you for checking out this project!
+
+---
+*Made with ❤️ and a bit of chaos by Santhosh Reddy.*
