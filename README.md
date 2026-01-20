@@ -79,6 +79,15 @@ This project is a static web application and requires no backend setup.
 3.  **Run the application**
     Open `index.html` in any modern web browser.
 
+## 🛠️ Customization
+
+Make this portfolio yours by modifying these key files:
+
+- **Personal Info**: Update names and roles in `index.html`.
+- **Styles & Themes**: Modify color variables in `style.css` to change the HUD color.
+- **Project Data**: Add your own "Heists" in the projects section of `index.html`.
+- **Media**: Replace images in the `images/` directory.
+
 ## Project Structure
 
 - `index.html`: Main entry point containing the document structure.
