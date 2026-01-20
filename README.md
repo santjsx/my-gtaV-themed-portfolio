@@ -11,6 +11,8 @@ A Grand Theft Auto V-themed personal portfolio website engineered as a single-pa
 
 This portfolio is designed to present skills, projects, and professional identity in a unique and engaging format. It leverages modern web technologies to recreate the aesthetic and functionality of the GTA V interface, including sound effects, animations, and responsive design patterns.
 
+> **Mission Objective**: To deliver high-quality, immersive web experiences that break the boundaries of conventional design while maintaining robust performance and accessibility.
+
 ## Technology Stack
 
 | Technology | Badge | Description |
