@@ -45,6 +45,13 @@ This portfolio is designed to present skills, projects, and professional identit
 | **Project Heists** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Project showcase presented as mission planning boards. |
 | **Contact Terminal** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Secure communications interface with real-time validation. |
 
+## 📸 Visual Mission Highlights
+
+| Pause Menu (Desktop) | iFruit Phone (Mobile) |
+| :---: | :---: |
+| ![Desktop Placeholder](https://via.placeholder.com/400x225?text=GTA+V+Pause+Menu+Desktop) | ![Mobile Placeholder](https://via.placeholder.com/200x400?text=iFruit+Phone+Mobile) |
+| *Immersive Desktop Experience* | *Native-feel Mobile Interface* |
+
 ## ⚡ Quick Start
 
 Get the portfolio running locally in seconds:
