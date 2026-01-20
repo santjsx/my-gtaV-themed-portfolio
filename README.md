@@ -36,6 +36,16 @@ This portfolio is designed to present skills, projects, and professional identit
 | **Project Heists** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Project showcase presented as mission planning boards. |
 | **Contact Terminal** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Secure communications interface with real-time validation. |
 
+## ⚡ Quick Start
+
+Get the portfolio running locally in seconds:
+
+```bash
+git clone https://github.com/santjsx/my-gtaV-themed-portfolio.git
+cd my-gtaV-themed-portfolio
+# Open index.html in your browser
+```
+
 ## Installation and Usage
 
 This project is a static web application and requires no backend setup.
