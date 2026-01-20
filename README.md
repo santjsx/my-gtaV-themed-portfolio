@@ -1,4 +1,4 @@
-# 🌟 Mission: Portfolio 2026 - Santhosh Reddy
+# Mission: Portfolio 2026 - Santhosh Reddy
 ### *Leveling up the web, one byte at a time.*
 
 ![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
@@ -45,14 +45,14 @@ This portfolio is designed to present skills, projects, and professional identit
 | **Project Heists** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Project showcase presented as mission planning boards. |
 | **Contact Terminal** | ![Active](https://img.shields.io/badge/Active-brightgreen?style=flat-square) | Secure communications interface with real-time validation. |
 
-## 📸 Visual Mission Highlights
+## Visual Mission Highlights
 
 | Pause Menu (Desktop) | iFruit Phone (Mobile) |
 | :---: | :---: |
-| ![Desktop Placeholder](https://via.placeholder.com/400x225?text=GTA+V+Pause+Menu+Desktop) | ![Mobile Placeholder](https://via.placeholder.com/200x400?text=iFruit+Phone+Mobile) |
+| ![Desktop View](./images/desktop_view.png) | ![Mobile View](./images/mobile_view.png) |
 | *Immersive Desktop Experience* | *Native-feel Mobile Interface* |
 
-## ⚡ Quick Start
+## Quick Start
 
 Get the portfolio running locally in seconds:
 
@@ -79,7 +79,7 @@ This project is a static web application and requires no backend setup.
 3.  **Run the application**
     Open `index.html` in any modern web browser.
 
-## 🛠️ Customization
+## Customization
 
 Make this portfolio yours by modifying these key files:
 
@@ -90,15 +90,13 @@ Make this portfolio yours by modifying these key files:
 
 ## Project Structure
 
-## Project Structure
-
 - `index.html`: The central mission hub. Contains the semantic structure, HUD elements, and modal windows.
 - `style.css`: The visual engine. Houses the GTA V typography, glassmorphism effects, and CSS-based animations.
 - `script.js`: The mission logic. Handles state management, audio triggers, GSAP timelines, and navigation.
 - `images/`: The asset vault. Stores character art, background textures, and project mission boards.
 - `favicon_io/`: Identity assets for browser tab branding.
 
-## 🗺️ Roadmap: Future Missions
+## Roadmap: Future Missions
 
 - [ ] **Mission 1**: Integrate a backend for a dynamic guestbook (Contact Terminal expansion).
 - [ ] **Mission 2**: Add more interactive character selection screens for different resume versions.
@@ -115,9 +113,9 @@ Make this portfolio yours by modifying these key files:
 
 This project is licensed under the MIT License.
 
-## 🎖️ Final Mission Report
+## Final Mission Report
 
 This portfolio is a culmination of front-end mastery and creative design. Thank you for checking out this project!
 
 ---
-*Made with ❤️ and a bit of chaos by Santhosh Reddy.*
+*Made with dedication and a bit of chaos by Santhosh Reddy.*
