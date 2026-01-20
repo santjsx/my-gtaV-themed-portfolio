@@ -39,7 +39,7 @@ This project is a static web application and requires no backend setup.
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/yourusername/gta-themed-portfolio.git
+    git clone https://github.com/santjsx/my-gtaV-themed-portfolio.git
     ```
 
 2.  **Navigate to the project directory**
