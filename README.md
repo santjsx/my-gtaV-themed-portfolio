@@ -90,11 +90,13 @@ Make this portfolio yours by modifying these key files:
 
 ## Project Structure
 
-- `index.html`: Main entry point containing the document structure.
-- `style.css`: Custom styles, animations, and overrides.
-- `script.js`: Application logic, including routing, audio management, and interaction handlers.
-- `images/`: Directory for static image assets.
-- `favicon_io/`: Favicon assets.
+## Project Structure
+
+- `index.html`: The central mission hub. Contains the semantic structure, HUD elements, and modal windows.
+- `style.css`: The visual engine. Houses the GTA V typography, glassmorphism effects, and CSS-based animations.
+- `script.js`: The mission logic. Handles state management, audio triggers, GSAP timelines, and navigation.
+- `images/`: The asset vault. Stores character art, background textures, and project mission boards.
+- `favicon_io/`: Identity assets for browser tab branding.
 
 ## Credits
 
