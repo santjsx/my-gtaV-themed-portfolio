@@ -98,6 +98,13 @@ Make this portfolio yours by modifying these key files:
 - `images/`: The asset vault. Stores character art, background textures, and project mission boards.
 - `favicon_io/`: Identity assets for browser tab branding.
 
+## 🗺️ Roadmap: Future Missions
+
+- [ ] **Mission 1**: Integrate a backend for a dynamic guestbook (Contact Terminal expansion).
+- [ ] **Mission 2**: Add more interactive character selection screens for different resume versions.
+- [ ] **Mission 3**: Implement a "Wasted" screen animation for 404 error pages.
+- [ ] **Mission 4**: Expand the "Weapon Wheel" with more categories and skill levels.
+
 ## Credits
 
 - **Design Inspiration**: Rockstar Games (Grand Theft Auto V)
