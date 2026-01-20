@@ -1,4 +1,5 @@
-# Santhosh Reddy - Full Stack Developer Portfolio
+# 🌟 Mission: Portfolio 2026 - Santhosh Reddy
+### *Leveling up the web, one byte at a time.*
 
 ![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
 ![Version](https://img.shields.io/badge/Version-1.5-blue?style=flat-square)
