@@ -289,16 +289,25 @@
   <!-- Mobile: iFruit Overlay -->
   <div id="ifruit-menu" class="ifruit-phone md:hidden">
     <div class="ifruit-screen">
-      <div class="ifruit-notch"></div>
+      <!-- Notch with Camera & IR Sensor -->
+      <div class="ifruit-notch">
+        <div class="notch-sensors">
+          <!-- IR Sensor with blinking red light -->
+          <div class="ir-sensor">
+            <div class="ir-dot"></div>
+          </div>
+          <!-- Front Camera Lens -->
+          <div class="camera-lens">
+            <div class="camera-lens-inner">
+              <div class="camera-lens-core"></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Realistic Status Bar -->
       <div class="flex justify-between items-center text-white text-[10px] mb-6 px-3 font-sans">
         <!-- Left: Time -->
         <span id="ifruit-time" class="font-semibold tracking-wide">--:--</span>
-
-        <!-- Center: Dynamic Island Style (Blank/Camera) -->
-        <div class="flex items-center gap-1 bg-black/30 w-16 h-4 rounded-full justify-center">
-          <div class="w-1.5 h-1.5 bg-[#1a1a1a] rounded-full border border-white/10"></div>
-        </div>
 
         <!-- Right: Signal, Network, Wifi, Battery -->
         <div class="flex items-center gap-1.5">
