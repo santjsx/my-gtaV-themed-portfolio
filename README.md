@@ -49,7 +49,7 @@ This portfolio is designed to present skills, projects, and professional identit
 
 | Pause Menu (Desktop) | iFruit Phone (Mobile) |
 | :---: | :---: |
-| ![Desktop View](./images/desktop_view.png) | ![Mobile View](./images/mobile_view.png) |
+| ![Desktop View](images/desktop_view.png) | ![Mobile View](images/mobile_view.png) |
 | *Immersive Desktop Experience* | *Native-feel Mobile Interface* |
 
 ## Quick Start

@@ -2,6 +2,115 @@
 lucide.createIcons();
 gsap.registerPlugin(ScrollTrigger);
 
+// --- LENIS SCROLL ENGINE ---
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  direction: "vertical",
+  gestureDirection: "vertical",
+  smooth: true,
+  mouseMultiplier: 1,
+  smoothTouch: true,
+  touchMultiplier: 2,
+});
+
+// Sync Lenis with GSAP Ticker for performance
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+// --- ANIMATION CONTROLLER (Orchestrator) ---
+const AnimationController = {
+  // Config
+  reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+
+  // Methods
+  scrollToTop: function (immediate = false) {
+    lenis.scrollTo(0, { immediate: immediate });
+  },
+
+  pageExit: function (element) {
+    if (!element || this.reducedMotion) return Promise.resolve();
+
+    return new Promise((resolve) => {
+      const tl = gsap.timeline({
+        onComplete: resolve,
+        defaults: { ease: "power2.in", duration: 0.4 }
+      });
+
+      tl.to(element, {
+        opacity: 0,
+        scale: 0.98,
+        filter: "blur(4px)",
+        y: -20
+      });
+    });
+  },
+
+  pageEnter: function (element) {
+    if (!element) return;
+
+    // Reset state first
+    gsap.set(element, {
+      opacity: 0,
+      scale: 1.02,
+      filter: "blur(8px)",
+      y: 20
+    });
+
+    if (this.reducedMotion) {
+      gsap.to(element, { opacity: 1, scale: 1, filter: "none", y: 0, duration: 0.1 });
+      return;
+    }
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power2.out", duration: 0.6 }
+    });
+
+    tl.to(element, {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      y: 0,
+      clearProps: "scale,filter,transform" // clean up for interactions
+    });
+  },
+
+  // Micro-Interaction: Scramble Text
+  scrambleText: function (element) {
+    if (this.reducedMotion || element.dataset.scrambleActive === "true") return;
+
+    const originalText = element.dataset.originalText || element.innerText;
+    if (!element.dataset.originalText) element.dataset.originalText = originalText;
+
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;:,.<>?";
+    let iterations = 0;
+    element.dataset.scrambleActive = "true";
+
+    const interval = setInterval(() => {
+      element.innerText = originalText
+        .split("")
+        .map((letter, index) => {
+          if (index < iterations) return originalText[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join("");
+
+      if (iterations >= originalText.length) {
+        clearInterval(interval);
+        element.dataset.scrambleActive = "false";
+        element.innerText = originalText; // Ensure final state is clean
+      }
+
+      iterations += 1 / 2; // Speed control
+    }, 20);
+  }
+};
+
 // --- AUDIO SYSTEM (Web Audio API) ---
 const SoundManager = {
   ctx: null,
@@ -119,6 +228,13 @@ function attachSounds() {
     el.addEventListener("click", () => SoundManager.playClick());
     el.dataset.soundAttached = "true";
   });
+
+  // Attach Scramble Effect to Nav Items
+  document.querySelectorAll('.nav-desktop-item .nav-hud-content span').forEach(span => {
+    span.parentElement.parentElement.addEventListener('mouseenter', () => {
+      AnimationController.scrambleText(span);
+    });
+  });
 }
 
 // --- NAVIGATION LOGIC ---
@@ -150,9 +266,13 @@ function handleRouting() {
   navigateTo(hash, false);
 }
 
-function navigateTo(pageId, pushState = true) {
+async function navigateTo(pageId, pushState = true) {
   const targetPage = document.getElementById(`page-${pageId}`);
   if (!targetPage) return;
+
+  // Don't navigate if already there
+  const currentPage = document.querySelector(".app-page.active");
+  if (currentPage && currentPage.id === `page-${pageId}`) return;
 
   if (pushState) {
     history.pushState(null, null, `#${pageId}`);
@@ -160,12 +280,21 @@ function navigateTo(pageId, pushState = true) {
 
   ifruitMenu.classList.remove("open");
 
-  // On subsequent navigations, just switch pages instantly (NO LOADING SCREEN)
-  if (window.hasStarted) {
+  // On subsequent navigations, use cinematic transitions
+  if (window.hasStarted && currentPage) {
+    // 1. Play Exit Animation
+    await AnimationController.pageExit(currentPage);
+
+    // 2. Switch DOM State
     performNavigation(targetPage, pageId);
+
+    // 3. Play Enter Animation
+    AnimationController.pageEnter(targetPage);
   } else {
-    // Initial load setup (loading screen is already visible via CSS/HTML)
+    // Initial load setup
     performNavigation(targetPage, pageId);
+    // Optional: Animate in on first load if we want to smooth the loading screen exit
+    if (window.hasStarted) AnimationController.pageEnter(targetPage);
   }
 }
 
@@ -177,10 +306,15 @@ function performNavigation(targetPage, pageId) {
   });
 
   targetPage.classList.add("active");
-  window.scrollTo(0, 0);
+  // Use Lenis for scrolling instead of window.scrollTo
+  AnimationController.scrollToTop(true);
 
   if (pageId === "skills") initWeaponWheel();
-  refreshPageAnimations(pageId);
+  // refreshPageAnimations(pageId); // Deprecated in favor of AnimationController
+
+  // We can kill old ScrollTriggers here to be safe
+  const triggers = ScrollTrigger.getAll();
+  triggers.forEach(t => t.kill());
 
   // Re-attach sounds
   setTimeout(attachSounds, 100);
@@ -193,8 +327,42 @@ function navigateToMobile(pageId) {
   }, 300);
 }
 
+// iFruit Status Update Logic
+function updatePhoneStatus() {
+  const timeEl = document.getElementById("ifruit-time");
+  const batteryTextEl = document.getElementById("ifruit-battery-text");
+  const batteryFillEl = document.getElementById("ifruit-battery-fill");
+
+  if (timeEl) {
+    const now = new Date();
+    timeEl.innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  if (batteryTextEl && batteryFillEl) {
+    // Generate random realistic percentage between 40% and 98%
+    // Only generate once per session or just reuse
+    if (!window.phoneBatteryLevel) {
+      window.phoneBatteryLevel = Math.floor(Math.random() * (98 - 40 + 1) + 40);
+    }
+
+    batteryTextEl.innerText = `${window.phoneBatteryLevel}%`;
+    batteryFillEl.style.width = `${window.phoneBatteryLevel}%`;
+
+    // Color logic
+    if (window.phoneBatteryLevel < 20) {
+      batteryFillEl.classList.remove("bg-green-400", "bg-white");
+      batteryFillEl.classList.add("bg-red-500");
+    } else {
+      batteryFillEl.classList.add("bg-green-400");
+    }
+  }
+}
+
 function toggleIfruit() {
   ifruitMenu.classList.toggle("open");
+  if (ifruitMenu.classList.contains("open")) {
+    updatePhoneStatus(); // Update every time we open
+  }
   SoundManager.playClick();
 }
 
@@ -234,7 +402,11 @@ window.addEventListener("load", () => {
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
+  // Force scroll to top on reload using Lenis
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  AnimationController.scrollToTop(true);
 
   // Navigate to the correct page based on hash
   const hash = window.location.hash.substring(1) || "home";
@@ -284,6 +456,15 @@ desktopNavItems.forEach((link) => {
   });
 });
 
+// Mobile Nav Event Listeners
+document.querySelectorAll('[data-mobile-target]').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault(); // Good practice although div doesn't default
+    const target = item.getAttribute('data-mobile-target');
+    navigateToMobile(target);
+  });
+});
+
 /* --- WEAPON WHEEL LOGIC (Devicon URLs) --- */
 let wheelInitialized = false;
 let currentWheelIndex = 0;
@@ -293,7 +474,7 @@ const skillsData = [
   {
     id: 1,
     category: "HTML5",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
     skills: "Semantic Structure, Accessibility, SEO",
     stats: [100, 95, 100],
     attachments: ["Canvas API", "WebSockets", "Storage"],
@@ -375,7 +556,8 @@ function initWeaponWheel() {
   const wheelIconsContainer = document.getElementById("wheel-icons");
   const centerX = 300;
   const centerY = 300;
-  const outerRadius = 290;
+  // Tuned Radius: 280px (Max safe) | 130px (Clear of center overlay)
+  const outerRadius = 280;
   const innerRadius = 130;
   const gap = 0.04;
 
@@ -547,10 +729,34 @@ function initWeaponWheel() {
 }
 
 function activateSlice(index) {
+  // Calculate shortest path for rotation to avoid spinning wildy
+  // We want the active slice to be at -90deg (top) or specific angle?
+  // Current implementation doesn't rotate the wheel container, it just highlights slices.
+  // Let's ADD container rotation for that "physical" feel.
+
+  const container = document.getElementById("wheel-slices");
+  const iconsContainer = document.getElementById("wheel-icons");
+
+  if (container && iconsContainer) {
+    const anglePerSlice = 360 / skillsData.length;
+    // We want the selected index to be at the top (270deg or -90deg)
+    // By default index 0 is at -90deg based on draw logic.
+    // So if we rotate by -index * anglePerSlice, we keep it static?
+    // Actually, GTA V wheel behaves differently (cursor moves, wheel stays).
+    // BUT the user wants "Movement".
+    // Let's do a subtle "Kick" rotation on change to feel the weight.
+
+    // Shake removed based on user feedback
+  }
+
   currentWheelIndex = index;
   document.querySelectorAll(".wheel-slice").forEach((slice, i) => {
-    if (i === index) slice.classList.add("active");
-    else slice.classList.remove("active");
+    if (i === index) {
+      slice.classList.add("active");
+      // Scale animation removed - was causing overflow
+    } else {
+      slice.classList.remove("active");
+    }
   });
 
   const data = skillsData[index];
@@ -611,23 +817,57 @@ if (contactForm) {
   contactForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Play Sound
-    SoundManager.playMissionSuccess();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<span class="animate-pulse">TRANSMITTING...</span>`;
+    btn.disabled = true;
 
-    // Show Overlay
-    missionPassedOverlay.classList.add("visible");
+    // COMPATIBILITY PATCH: Ensure both 'email' and 'from_email' are sent
+    // This fixes the "empty recipient" error regardless of dashboard config
+    const emailInput = contactForm.querySelector('[name="from_email"]');
+    let hiddenEmail = contactForm.querySelector('[name="email"]');
+    if (!hiddenEmail && emailInput) {
+      hiddenEmail = document.createElement('input');
+      hiddenEmail.type = 'hidden';
+      hiddenEmail.name = 'email';
+      contactForm.appendChild(hiddenEmail);
+    }
+    if (hiddenEmail && emailInput) hiddenEmail.value = emailInput.value;
 
-    // Optional: Reset form
-    contactForm.reset();
+    // OPTIMISTIC UI: Trigger success after 1.5s "fake uplink" time
+    // This makes it feel arcade-fast while the actual email sends in background
+    const UPLINK_TIME = 1500;
 
-    // Hide after delay
-    setTimeout(() => {
-      missionPassedOverlay.classList.remove("visible");
-    }, 4000);
+    // 1. Start the visual timer
+    const visualPromise = new Promise(resolve => setTimeout(resolve, UPLINK_TIME));
+
+    // 2. Start the actual network request (Fire & Forget style)
+    const emailPromise = emailjs.sendForm('service_p4u5fvw', 'template_p4ov2n5', contactForm)
+      .then(() => {
+        // Background: Send Auto-Reply
+        return emailjs.sendForm('service_p4u5fvw', 'template_1c58azf', contactForm);
+      })
+      .catch(err => {
+        // Silent background error log (don't break the game immersion unless critical)
+        console.warn('Background transmission issue:', err);
+      });
+
+    // 3. Update UI when visual timer ends (User feels instant gratification)
+    visualPromise.then(() => {
+      SoundManager.playMissionSuccess();
+      missionPassedOverlay.classList.add("visible");
+      contactForm.reset();
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+
+      setTimeout(() => {
+        missionPassedOverlay.classList.remove("visible");
+      }, 4000);
+    });
   });
 }
 
-// --- LOGO ANIMATION LOGIC ---
 // --- LOGO ANIMATION LOGIC ---
 const logoElements = [
   document.getElementById("navbar-logo-text"),
@@ -677,6 +917,9 @@ const rapSheetLoading = document.getElementById("rap-sheet-loading");
 function openRapSheet() {
   if (rapSheetOverlay) {
     rapSheetOverlay.classList.remove("hidden");
+    // Stop Lenis to allow native scroll in overlay
+    lenis.stop();
+    document.body.style.overflow = 'hidden'; // Ensure body doesn't scroll
 
     // Show loading state first
     if (rapSheetLoading) {
@@ -706,6 +949,9 @@ function closeRapSheet() {
     SoundManager.playClick();
     setTimeout(() => {
       rapSheetOverlay.classList.add("hidden");
+      // Resume Lenis
+      lenis.start();
+      document.body.style.overflow = '';
     }, 300);
   }
 }
@@ -767,18 +1013,15 @@ if (phoneTrigger) {
   phoneTrigger.addEventListener("click", () => {
     if (mobileHint) {
       mobileHint.classList.remove("visible");
-      setTimeout(() => mobileHint.classList.add("hidden"), 500);
+      setTimeout(() => mobileHint.classList.add("hidden"), 300);
     }
     if (phoneBadge) {
       phoneBadge.classList.add("hidden");
     }
+    // Set flag
     sessionStorage.setItem("mobileHintShown", "true");
   });
 }
 
-// Trigger on load (or start experience)
-window.addEventListener("load", () => {
-  // If we wait for "startExperience", it might be better, but "load" is fine for the timeout
-  // We'll trust the 3s timeout covers the loading screen duration
-  showMobileHint();
-});
+// Initialize Mobile Hint
+window.addEventListener("load", showMobileHint);
