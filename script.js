@@ -84,13 +84,15 @@ const navToggle = document.getElementById("nav-toggle");
 const mobileOverlay = document.getElementById("mobile-nav-overlay");
 const mobileLinks = document.querySelectorAll(".mobile-link span");
 const mobileStatusSection = document.querySelector(".mobile-status-section");
+const mobileNavFooter = document.querySelector(".mobile-nav-footer");
 let isMenuOpen = false;
 
 const menuTl = gsap.timeline({ paused: true });
 menuTl
   .to(mobileOverlay, { autoAlpha: 1, duration: 0.5, ease: "power4.inOut" })
   .fromTo(mobileLinks, { y: 100 }, { y: 0, duration: 0.8, stagger: 0.1, ease: "power4.out" }, "-=0.3")
-  .fromTo(mobileStatusSection, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.4");
+  .fromTo(mobileStatusSection, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
+  .fromTo(mobileNavFooter, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.5");
 
 function toggleMobileMenu() {
   if (isMenuOpen) {
@@ -156,7 +158,7 @@ async function updateDiscordStatus() {
   const footerStack = document.getElementById("discord-activity-stack");
   const mobileStack = document.getElementById("mobile-activity-stack");
   try {
-    const response = await fetch(`https://api.lanyard.rest/v1/users/778891636149026817`);
+    const response = await fetch(`https://api.lanyard.rest/v1/users/1284925883240550552`);
     const data = await response.json();
     if (!data.success) return;
     const activities = data.data.activities.filter(a => a.type !== 4);
