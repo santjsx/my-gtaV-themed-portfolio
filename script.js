@@ -237,12 +237,12 @@ function initContactAnimations() {
   const footerBar = document.querySelector(".minimal-footer-bar");
   if (footerBar) {
     gsap.fromTo(footerBar,
-      { y: 40, opacity: 0 },
+      { y: 20, opacity: 0 },
       {
-        y: 0, opacity: 1, duration: 1, ease: "power3.out",
+        y: 0, opacity: 1, duration: 1, ease: "power3.out", force3D: true,
         scrollTrigger: {
-          trigger: ".contact-dashboard",
-          start: "top 90%",
+          trigger: ".contact-section",
+          start: "top 70%",
           toggleActions: "play none none none"
         }
       }
@@ -274,10 +274,10 @@ function initContactAnimations() {
     gsap.fromTo(copyright,
       { opacity: 0 },
       {
-        opacity: 0.5, duration: 1, ease: "power2.out",
+        opacity: 0.5, duration: 1, ease: "power2.out", force3D: true,
         scrollTrigger: {
-          trigger: copyright,
-          start: "top 95%",
+          trigger: ".contact-section",
+          start: "top 70%",
           toggleActions: "play none none none"
         }
       }
