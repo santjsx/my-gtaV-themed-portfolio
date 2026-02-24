@@ -2,19 +2,17 @@
 
 /* Smooth Scroll */
 const lenis = new Lenis({
-  duration: 1.4,
+  duration: 1.6,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  direction: "vertical",
-  gestureDirection: "vertical",
-  smooth: true,
-  mouseMultiplier: 1,
-  smoothTouch: false,
-  touchMultiplier: 2,
+  smoothTouch: true,
+  touchMultiplier: 1.5,
+  touchInertiaMultiplier: 25,
 });
 
 // Sync Lenis with GSAP for butter-smooth performance
 lenis.on("scroll", ScrollTrigger.update);
 
+gsap.ticker.fps(120); // Unlock 120fps for high refresh rate monitors
 gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
 });
@@ -128,7 +126,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 function initScrollAnimations() {
   gsap.utils.toArray(".anim-fade-up").forEach((el, i) => {
     gsap.to(el, {
-      opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
+      opacity: 1, y: 0, duration: 0.9, ease: "power3.out", force3D: true,
       scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" },
       delay: el.closest(".hero") ? i * 0.12 : 0.05
     });
@@ -157,15 +155,15 @@ function initScrollAnimations() {
   const heroLetters = document.querySelectorAll(".hero-letter");
   if (heroLetters.length > 0) {
     gsap.to(heroLetters, {
-      opacity: 1, y: 0, rotate: 0,
+      opacity: 1, y: 0, rotate: 0, force3D: true,
       duration: 0.8, stagger: 0.04,
       ease: "power4.out", delay: 0.3
     });
   }
 
   // --- Accent Lines Draw-In ---
-  gsap.to(".hero-line-h", { scaleX: 1, duration: 1.2, ease: "power4.inOut", delay: 0.6 });
-  gsap.to(".hero-line-v", { scaleY: 1, duration: 1.2, ease: "power4.inOut", delay: 0.8 });
+  gsap.to(".hero-line-h", { scaleX: 1, duration: 1.2, ease: "power4.inOut", force3D: true, delay: 0.6 });
+  gsap.to(".hero-line-v", { scaleY: 1, duration: 1.2, ease: "power4.inOut", force3D: true, delay: 0.8 });
 
   // Technical Scanner Animation
   const scannerWrap = document.querySelector(".about-image-wrapper");
@@ -197,22 +195,22 @@ function initHeroParallax() {
       const rect = hero.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(title, { x: x * 15, y: y * 10, duration: 0.8, ease: "power2.out" });
-      if (ambient) gsap.to(ambient, { x: x * -30, y: y * -20, duration: 1.2, ease: "power2.out" });
+      gsap.to(title, { x: x * 15, y: y * 10, duration: 0.8, ease: "power2.out", force3D: true });
+      if (ambient) gsap.to(ambient, { x: x * -30, y: y * -20, duration: 1.2, ease: "power2.out", force3D: true });
       ticking = false;
     });
-  });
+  }, { passive: true });
 
   hero.addEventListener("mouseleave", () => {
-    gsap.to(title, { x: 0, y: 0, duration: 0.6, ease: "power2.out" });
-    if (ambient) gsap.to(ambient, { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
+    gsap.to(title, { x: 0, y: 0, duration: 0.6, ease: "power2.out", force3D: true });
+    if (ambient) gsap.to(ambient, { x: 0, y: 0, duration: 0.8, ease: "power2.out", force3D: true });
   });
 }
 
 function initParallax() {
   document.querySelectorAll("[data-parallax]").forEach((el) => {
     const speed = parseFloat(el.getAttribute("data-parallax"));
-    gsap.to(el, { y: 100 * speed, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
+    gsap.to(el, { y: 100 * speed, ease: "none", force3D: true, scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
   });
 }
 
@@ -261,12 +259,12 @@ function initContactAnimations() {
       const y = (e.clientY - rect.top) / rect.height - 0.5;
       gsap.to(contactAmbient, {
         x: x * 60, y: y * 40,
-        duration: 1.5, ease: "power2.out"
+        duration: 1.5, ease: "power2.out", force3D: true
       });
-    });
+    }, { passive: true });
 
     contactSection.addEventListener("mouseleave", () => {
-      gsap.to(contactAmbient, { x: 0, y: 0, duration: 1, ease: "power2.out" });
+      gsap.to(contactAmbient, { x: 0, y: 0, duration: 1, ease: "power2.out", force3D: true });
     });
   }
 
