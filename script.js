@@ -216,6 +216,77 @@ function initParallax() {
   });
 }
 
+/* Contact Section Animations */
+function initContactAnimations() {
+  // Split text reveal for contact headlines
+  document.querySelectorAll("[data-contact-split]").forEach(headline => {
+    const inner = headline.querySelector("span");
+    if (!inner) return;
+    gsap.fromTo(inner,
+      { y: "100%", opacity: 0 },
+      {
+        y: "0%", opacity: 1, duration: 1.2, ease: "power4.out",
+        scrollTrigger: {
+          trigger: headline,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  });
+
+  // Minimal footer bar reveal
+  const footerBar = document.querySelector(".minimal-footer-bar");
+  if (footerBar) {
+    gsap.fromTo(footerBar,
+      { y: 40, opacity: 0 },
+      {
+        y: 0, opacity: 1, duration: 1, ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".contact-dashboard",
+          start: "top 90%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  }
+
+  // Contact ambient glow mouse parallax
+  const contactSection = document.querySelector(".contact-section");
+  const contactAmbient = document.getElementById("contact-ambient");
+  if (contactSection && contactAmbient && !("ontouchstart" in window)) {
+    contactSection.addEventListener("mousemove", (e) => {
+      const rect = contactSection.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(contactAmbient, {
+        x: x * 60, y: y * 40,
+        duration: 1.5, ease: "power2.out"
+      });
+    });
+
+    contactSection.addEventListener("mouseleave", () => {
+      gsap.to(contactAmbient, { x: 0, y: 0, duration: 1, ease: "power2.out" });
+    });
+  }
+
+  // Copyright line reveal
+  const copyright = document.querySelector(".contact-copyright");
+  if (copyright) {
+    gsap.fromTo(copyright,
+      { opacity: 0 },
+      {
+        opacity: 0.5, duration: 1, ease: "power2.out",
+        scrollTrigger: {
+          trigger: copyright,
+          start: "top 95%",
+          toggleActions: "play none none none"
+        }
+      }
+    );
+  }
+}
+
 function getIdleContext() {
   const hour = new Date().getHours();
   if (hour >= 0 && hour < 6) return { label: "DEEP SLEEP", desc: "System hibernating — back by morning" };
@@ -256,62 +327,53 @@ async function updateDiscordStatus() {
       return;
     }
 
-    let footerHTML = '';
-    let mobileHTML = '';
-    let primarySet = false;
-
-    // Prioritize Spotify for mobile, show all in footer
+    // Prioritize Spotify for mobile, show only ONE activity in footer for minimalism
     const sorted = [...activities].sort((a, b) => (a.name === 'Spotify' ? -1 : 1));
 
-    sorted.forEach(activity => {
-      let cardHTML = '';
-      if (activity.name === 'Spotify') {
-        const albumArt = activity.album_art_url
-          || (activity.assets?.large_image?.replace('spotify:', 'https://i.scdn.co/image/'))
-          || '';
-        cardHTML = `
-          <div class="spotify-pill">
-            <div class="spotify-vinyl">
-              <img src="${albumArt}" alt="Album Art" class="vinyl-img">
-            </div>
-            <div class="spotify-pill-info">
-              <span class="spotify-pill-track">${activity.details || 'Unknown Track'}</span>
-              <div class="spotify-pill-bottom">
-                <span class="spotify-pill-artist">${activity.state || 'Unknown Artist'}</span>
-              </div>
-            </div>
-          </div>`;
-      } else {
-        let imageUrl = null;
-        if (activity.assets?.large_image) {
-          if (activity.assets.large_image.startsWith('mp:external')) {
-            const extPath = activity.assets.large_image.split('mp:external/')[1];
-            imageUrl = extPath ? `https://media.discordapp.net/external/${extPath}` : null;
-          } else {
-            imageUrl = `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`;
-          }
-        }
-        const details = activity.details || activity.state || '';
-        cardHTML = `
-          <div class="generic-activity-pill">
-            ${imageUrl ? `<div class="generic-activity-icon"><img src="${imageUrl}" alt="${activity.name}"></div>` : ''}
-            <div class="spotify-pill-info">
-              <span class="spotify-pill-track">${activity.name}</span>
-              <div class="spotify-pill-bottom">
-                <span class="spotify-pill-artist">${details}</span>
-              </div>
-            </div>
-          </div>`;
-      }
+    const primaryActivity = sorted[0];
+    let cardHTML = '';
 
-      footerHTML += cardHTML;
-      if (!primarySet) {
-        mobileHTML = cardHTML;
-        primarySet = true;
+    if (primaryActivity.name === 'Spotify') {
+      const albumArt = primaryActivity.album_art_url
+        || (primaryActivity.assets?.large_image?.replace('spotify:', 'https://i.scdn.co/image/'))
+        || '';
+      cardHTML = `
+        <div class="spotify-pill">
+          <div class="spotify-vinyl">
+            <img src="${albumArt}" alt="Album Art" class="vinyl-img">
+          </div>
+          <div class="spotify-pill-info">
+            <span class="spotify-pill-track">${primaryActivity.details || 'Unknown Track'}</span>
+            <div class="spotify-pill-bottom">
+              <span class="spotify-pill-artist">${primaryActivity.state || 'Unknown Artist'}</span>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      let imageUrl = null;
+      if (primaryActivity.assets?.large_image) {
+        if (primaryActivity.assets.large_image.startsWith('mp:external')) {
+          const extPath = primaryActivity.assets.large_image.split('mp:external/')[1];
+          imageUrl = extPath ? `https://media.discordapp.net/external/${extPath}` : null;
+        } else {
+          imageUrl = `https://cdn.discordapp.com/app-assets/${primaryActivity.application_id}/${primaryActivity.assets.large_image}.png`;
+        }
       }
-    });
-    if (footerStack) footerStack.innerHTML = footerHTML;
-    if (mobileStack) mobileStack.innerHTML = mobileHTML;
+      const details = primaryActivity.details || primaryActivity.state || '';
+      cardHTML = `
+        <div class="generic-activity-pill">
+          ${imageUrl ? `<div class="generic-activity-icon"><img src="${imageUrl}" alt="${primaryActivity.name}"></div>` : ''}
+          <div class="spotify-pill-info">
+            <span class="spotify-pill-track">${primaryActivity.name}</span>
+            <div class="spotify-pill-bottom">
+              <span class="spotify-pill-artist">${details}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    if (footerStack) footerStack.innerHTML = cardHTML;
+    if (mobileStack) mobileStack.innerHTML = cardHTML;
   } catch (err) { console.warn("Lanyard fetch failed:", err); }
 }
 
@@ -333,7 +395,7 @@ updateLocalTime();
 window.addEventListener("load", () => {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
-  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); ScrollTrigger.refresh(); });
+  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); initContactAnimations(); ScrollTrigger.refresh(); });
 });
 
 window.addEventListener("resize", () => { ScrollTrigger.refresh(); });

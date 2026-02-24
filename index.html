@@ -383,19 +383,52 @@
   </section>
 
   <!-- Contact & Footer -->
-  <section id="contact" class="section contact-ultra-minimal">
-    <div class="contact-ultra-inner">
-      <p class="section-label anim-fade-up">Have an idea?</p>
+  <section id="contact" class="section contact-section">
 
-      <a href="mailto:heysanthoshreddy@gmail.com" class="massive-contact-link anim-fade-up">
-        <span>Let's Talk</span>
-        <i class="ri-arrow-right-up-line"></i>
-      </a>
+    <!-- Ambient Glow -->
+    <div class="contact-ambient" id="contact-ambient"></div>
 
-      <div class="minimal-footer-grid anim-fade-up">
+
+
+    <!-- Grand CTA Area -->
+    <div class="contact-grand">
+      <p class="contact-label anim-fade-up">04. Get in Touch</p>
+
+      <div class="contact-headlines">
+        <h2 class="contact-headline anim-fade-up" data-contact-split>
+          <span class="filled-text">Got a project?</span>
+        </h2>
+        <h2 class="contact-headline contact-headline-outline anim-fade-up" data-contact-split>
+          <span class="outline-text">Let's make it happen.</span>
+        </h2>
+      </div>
+
+      <div class="contact-cta-group anim-fade-up">
+        <a href="mailto:heysanthoshreddy@gmail.com" class="contact-cta-btn" id="contact-cta-btn">
+          <span class="cta-text">Send me a mail</span>
+          <span class="cta-icon"><i class="ri-arrow-right-up-line"></i></span>
+          <div class="cta-glow"></div>
+        </a>
+        <!-- Orbiting Ring -->
+        <svg class="cta-orbit-ring" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="90" stroke="var(--accent)" stroke-width="0.5" stroke-dasharray="8 6"
+            opacity="0.4" />
+          <circle cx="100" cy="10" r="3" fill="var(--accent)" opacity="0.8">
+            <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="12s"
+              repeatCount="indefinite" />
+          </circle>
+        </svg>
+      </div>
+
+      <p class="contact-sub-note anim-fade-up">or reach out via socials below</p>
+    </div>
+
+    <!-- Minimal Footer Bar -->
+    <div class="contact-dashboard">
+      <div class="minimal-footer-bar">
+
         <!-- Discord Activity Widget -->
-        <div class="footer-col activity-col">
-          <span class="footer-label">Live Status <span class="live-dot"></span></span>
+        <div class="footer-bar-item activity-item">
           <div class="activity-stack" id="discord-activity-stack">
             <a href="https://open.spotify.com/user/your_spotify_id" target="_blank" class="spotify-pill paused"
               id="spotify-widget">
@@ -420,25 +453,49 @@
           </div>
         </div>
 
-        <div class="footer-col">
+        <div class="footer-bar-divider"></div>
+
+        <!-- Local Time -->
+        <div class="footer-bar-item time-item">
           <span class="footer-label">Local Time</span>
           <p class="footer-value time-display" id="local-time">Loading...</p>
         </div>
 
-        <div class="footer-col">
-          <span class="footer-label">Socials</span>
-          <div class="footer-social-links">
-            <a href="https://github.com/santjsx" target="_blank">GitHub</a>
-            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-            <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank">X / Twitter</a>
-            <a href="https://discord.com/users/1284925883240550552" target="_blank">Discord</a>
+        <div class="footer-bar-divider"></div>
+
+        <!-- Socials -->
+        <div class="footer-bar-item socials-item">
+          <div class="social-icon-pills">
+            <a href="https://github.com/santjsx" target="_blank" class="social-icon-pill" aria-label="GitHub">
+              <i class="ri-github-fill"></i>
+              <span>GitHub</span>
+            </a>
+            <a href="https://linkedin.com" target="_blank" class="social-icon-pill" aria-label="LinkedIn">
+              <i class="ri-linkedin-fill"></i>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://x.com/Santhoshh_void?t=VnSvBxGt1TdMipcfmajRVA&s=09" target="_blank"
+              class="social-icon-pill" aria-label="X / Twitter">
+              <i class="ri-twitter-x-fill"></i>
+              <span>X</span>
+            </a>
+            <a href="https://discord.com/users/1284925883240550552" target="_blank" class="social-icon-pill"
+              aria-label="Discord">
+              <i class="ri-discord-fill"></i>
+              <span>Discord</span>
+            </a>
           </div>
         </div>
 
-        <div class="footer-col">
-          <span class="footer-label">Status</span>
-          <p class="footer-value availability"><span class="status-dot"></span> Available for freelance</p>
-        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="contact-copyright">
+        <span>© 2025 Santhosh Reddy</span>
+        <span class="copyright-sep">·</span>
+        <span>Crafted with precision</span>
+        <span class="copyright-sep">·</span>
+        <span class="availability"><span class="status-dot"></span> Available for freelance</span>
       </div>
     </div>
   </section>
