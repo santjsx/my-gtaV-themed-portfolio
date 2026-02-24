@@ -2777,6 +2777,150 @@ h4 em {
   }
 }
 
+/* --- Contact Grand Section (Send Mail Button) --- */
+.contact-grand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem var(--macro-margin) 6rem;
+  position: relative;
+  z-index: 2;
+}
+
+.contact-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+}
+
+.contact-headlines {
+  margin-bottom: 4rem;
+}
+
+.contact-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.contact-headline-outline .outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text-primary);
+  opacity: 0.6;
+}
+
+.contact-cta-group {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.contact-cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 3rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.4s ease, transform 0.4s ease;
+  z-index: 2;
+  will-change: transform;
+}
+
+.contact-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: -1;
+}
+
+.contact-cta-btn:hover {
+  border-color: var(--accent);
+  color: #050505;
+  transform: translateY(-4px);
+}
+
+.contact-cta-btn:hover::before {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+.cta-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(139, 157, 131, 0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -2;
+}
+
+.contact-cta-btn:hover .cta-glow {
+  opacity: 1;
+}
+
+.cta-orbit-ring {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  pointer-events: none;
+  animation: slowSpin 20s linear infinite;
+  opacity: 0.15;
+  transition: opacity 0.5s ease;
+}
+
+.contact-cta-group:hover .cta-orbit-ring {
+  opacity: 0.8;
+}
+
+@keyframes slowSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contact-sub-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-transform: lowercase;
+  opacity: 0.6;
+}
+
 /* --- Recovered Contact & Footer Styles --- */
 .contact-dashboard {
   position: relative;
