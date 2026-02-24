@@ -214,21 +214,111 @@ function initParallax() {
   });
 }
 
-function initBentoSpotlight() {
-  if ("ontouchstart" in window) return; // Disable complex tracking on touch devices for performance
+function initMagneticConstellation() {
+  const wrapper = document.querySelector('.constellation-wrapper');
+  const nodes = document.querySelectorAll('.skill-node');
+  if (!wrapper || nodes.length === 0) return;
 
-  const cards = document.querySelectorAll(".bento-card");
+  // Configuration for constellation physics
+  const floatRange = 30; // Max px they drift normally
+  const floatDuration = 4; // Seconds per float cycle
 
-  cards.forEach(card => {
-    card.addEventListener("mousemove", (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+  const repelRadius = 200; // Radius of mouse influence
+  const repelForce = 80;   // Max px they get pushed away
 
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
-    }, { passive: true });
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const nodeData = [];
+
+  // 1. Initial Spread & Float Animation
+  nodes.forEach((node) => {
+    // Generate random constraints within wrapper (adding padding so they don't clip off edge)
+    const nodeWidth = node.offsetWidth;
+    const nodeHeight = node.offsetHeight;
+
+    // We want them somewhat scattered but avoiding extreme edges
+    const randomX = gsap.utils.random(10, 80); // percentage 10% to 90%
+    const randomY = gsap.utils.random(10, 80);
+
+    // Set base position natively
+    node.style.left = `${randomX}%`;
+    node.style.top = `${randomY}%`;
+
+    // Scale based on data-weight attached to HTML
+    const weight = parseFloat(node.getAttribute("data-weight")) || 1;
+    gsap.set(node, { scale: weight });
+
+    // Staggered reveal
+    gsap.to(node, { opacity: parseFloat(weight) >= 1.2 ? 1 : 0.8, duration: 1, delay: gsap.utils.random(0, 0.5) });
+
+    // Continuous random drift loop (the "floating" state)
+    gsap.to(node, {
+      x: `random(-${floatRange}, ${floatRange})`,
+      y: `random(-${floatRange}, ${floatRange})`,
+      rotation: `random(-10, 10)`,
+      duration: `random(${floatDuration - 1}, ${floatDuration + 2})`,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+      repeatRefresh: true // pick new random values each loop
+    });
+
+    // Store node data for repel math
+    nodeData.push({ element: node, initialX: randomX, initialY: randomY });
   });
+
+  // 2. Mouse Interaction: Magnetic Repel Effect
+  // If on mobile (touch), skip the intensive math listener
+  if ("ontouchstart" in window) return;
+
+  wrapper.addEventListener("mousemove", (e) => {
+    const rect = wrapper.getBoundingClientRect();
+    // Mouse X/Y relative to the wrapper center
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    nodes.forEach((node) => {
+      // Get current center of node
+      const nodeRect = node.getBoundingClientRect();
+      const nodeCenterX = nodeRect.left - rect.left + nodeRect.width / 2;
+      const nodeCenterY = nodeRect.top - rect.top + nodeRect.height / 2;
+
+      // Calculate distance between mouse and node center
+      const dx = nodeCenterX - mouseX;
+      const dy = nodeCenterY - mouseY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      // If mouse is within the repel radius of the node
+      if (distance < repelRadius) {
+        // Calculate force vector
+        const force = (repelRadius - distance) / repelRadius; // 1 at center, 0 at edge
+
+        // Push node away based on angle and force
+        const pushX = (dx / distance) * (repelForce * force);
+        const pushY = (dy / distance) * (repelForce * force);
+
+        // Animate the repel
+        gsap.to(node, {
+          x: `+=${pushX}`,
+          y: `+=${pushY}`,
+          duration: 0.4,
+          ease: "power2.out",
+          overwrite: "auto" // cancel ongoing drift momentarily
+        });
+      } else {
+        // If outside radius, ensure drifting resumes smoothly.
+        // We don't necessarily need to force them back since repeatRefresh handles it, 
+        // but adding a subtle return to near-origin prevents clustering over time.
+        gsap.to(node, {
+          x: `random(-${floatRange}, ${floatRange})`,
+          y: `random(-${floatRange}, ${floatRange})`,
+          duration: `random(${floatDuration - 1}, ${floatDuration + 2})`,
+          ease: "sine.inOut",
+          overwrite: "auto",
+          delay: 0.5 // Wait before resuming drift loop
+        });
+      }
+    });
+  }, { passive: true });
 }
 
 /* Contact Section Animations */
@@ -413,7 +503,7 @@ updateLocalTime();
 window.addEventListener("load", () => {
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.scrollTo(0, 0);
-  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); initBentoSpotlight(); initContactAnimations(); ScrollTrigger.refresh(); });
+  requestAnimationFrame(() => { initScrollAnimations(); initParallax(); initHeroParallax(); initMagneticConstellation(); initContactAnimations(); ScrollTrigger.refresh(); });
 });
 
 window.addEventListener("resize", () => { ScrollTrigger.refresh(); });
