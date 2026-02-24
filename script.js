@@ -194,13 +194,20 @@ async function updateDiscordStatus() {
       return;
     }
 
-    let newHTML = '';
-    activities.forEach(activity => {
+    let footerHTML = '';
+    let mobileHTML = '';
+    let primarySet = false;
+
+    // Prioritize Spotify for mobile, show all in footer
+    const sorted = [...activities].sort((a, b) => (a.name === 'Spotify' ? -1 : 1));
+
+    sorted.forEach(activity => {
+      let cardHTML = '';
       if (activity.name === 'Spotify') {
         const albumArt = activity.album_art_url
           || (activity.assets?.large_image?.replace('spotify:', 'https://i.scdn.co/image/'))
           || '';
-        newHTML += `
+        cardHTML = `
           <div class="spotify-pill">
             <div class="spotify-vinyl">
               <img src="${albumArt}" alt="Album Art" class="vinyl-img">
@@ -223,7 +230,7 @@ async function updateDiscordStatus() {
           }
         }
         const details = activity.details || activity.state || '';
-        newHTML += `
+        cardHTML = `
           <div class="generic-activity-pill">
             ${imageUrl ? `<div class="generic-activity-icon"><img src="${imageUrl}" alt="${activity.name}"></div>` : ''}
             <div class="spotify-pill-info">
@@ -234,9 +241,15 @@ async function updateDiscordStatus() {
             </div>
           </div>`;
       }
+
+      footerHTML += cardHTML;
+      if (!primarySet) {
+        mobileHTML = cardHTML;
+        primarySet = true;
+      }
     });
-    if (footerStack) footerStack.innerHTML = newHTML;
-    if (mobileStack) mobileStack.innerHTML = newHTML;
+    if (footerStack) footerStack.innerHTML = footerHTML;
+    if (mobileStack) mobileStack.innerHTML = mobileHTML;
   } catch (err) { console.warn("Lanyard fetch failed:", err); }
 }
 
