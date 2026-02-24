@@ -338,14 +338,17 @@ async function updateDiscordStatus() {
       cardHTML = `
         <div class="spotify-pill">
           <div class="spotify-vinyl">
-            <img src="${albumArt}" alt="Album Art" class="vinyl-img">
+             <img src="${albumArt}" alt="Album Art" class="spotify-cover">
+             <div class="vinyl-hole"></div>
           </div>
           <div class="spotify-pill-info">
             <span class="spotify-pill-track">${primaryActivity.details || 'Unknown Track'}</span>
             <div class="spotify-pill-bottom">
               <span class="spotify-pill-artist">${primaryActivity.state || 'Unknown Artist'}</span>
+              <div class="spotify-equalizer"><span></span><span></span><span></span></div>
             </div>
           </div>
+          <div class="spotify-pill-brand"><i class="ri-spotify-fill"></i></div>
         </div>`;
     } else {
       let imageUrl = null;
