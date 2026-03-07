@@ -217,6 +217,6 @@
 
     .hero-feature-card {
         aspect-ratio: auto;
-        padding: var(--space-10) var(--space-4);
+        padding: var(--space-10) var(--space-4) var(--space-12) var(--space-4);
     }
 }
