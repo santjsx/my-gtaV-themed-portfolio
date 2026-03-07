@@ -11,13 +11,30 @@ export function initResumeDrawer() {
         });
     });
 
-    // Close drawer
-    closeBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    // Close drawer logic
+    const closeHandler = (e) => {
+        const btn = e.target.closest('.js-close-resume');
+        if (!btn) return;
+
+        if (btn.tagName.toLowerCase() === 'a') {
             e.preventDefault();
+        }
+
+        console.log('Closing resume drawer...');
+        document.body.classList.remove('drawer-open');
+    };
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeHandler);
+    });
+
+    // Also close if clicking the overlay specifically (redundant but safe)
+    const overlay = document.querySelector('.resume-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', () => {
             document.body.classList.remove('drawer-open');
         });
-    });
+    }
 
     // Close on Escape key
     document.addEventListener('keydown', (e) => {

@@ -2,7 +2,7 @@
 .resume-overlay {
     position: fixed;
     inset: 0;
-    z-index: 900;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -19,7 +19,7 @@
     max-width: 800px;
     height: 100vh;
     height: 100dvh;
-    z-index: 1000;
+    z-index: 1001;
     background: #080808;
     border-left: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: -20px 0 50px rgba(0, 0, 0, 0.5);
@@ -64,7 +64,7 @@ body.drawer-open .resume-drawer {
     padding: var(--space-4) var(--space-6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
-    z-index: 1;
+    z-index: 10;
 }
 
 .drawer-title {
