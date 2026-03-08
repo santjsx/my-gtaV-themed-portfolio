@@ -122,7 +122,9 @@
 .feature-ui-layer {
     position: relative;
     display: flex;
-    gap: var(--space-6);
+    width: 100%;
+    padding: 0 var(--space-8);
+    gap: var(--space-4);
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -268,6 +270,16 @@
     .hero-feature-card {
         aspect-ratio: auto;
         padding: var(--space-10) var(--space-4) var(--space-12) var(--space-4);
+    }
+
+    /* Clean up the feature pills layout on mobile */
+    .feature-ui-layer {
+        padding: 0 4vw;
+        gap: var(--space-3);
+    }
+
+    .feature-ui-layer > span {
+        display: none; /* Hide the arrow separators to allow clean pill wrapping */
     }
 
     /* Show and style the mobile resume button */
