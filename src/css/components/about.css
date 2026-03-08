@@ -32,12 +32,22 @@
     box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
 }
 
-/* About Grid Layout */
+/* About Layout - Editorial Destructured Grid */
 .about-grid {
-    display: grid;
-    grid-template-columns: 0.7fr 1.3fr;
-    gap: var(--space-4);
-    margin-bottom: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+    .about-grid {
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: var(--space-8);
+    }
 }
 
 /* Base Card Style for Bento Grid */
@@ -50,7 +60,18 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Avatar Card */
+/* The Liquid Orb Avatar */
+@keyframes liquidMorph {
+    0%   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50%  { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
 .avatar-card {
     aspect-ratio: 1/1;
     display: flex;
@@ -58,11 +79,30 @@
     justify-content: center;
     padding: 0;
     overflow: hidden;
-    /* Organic Pebble Shape */
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50% !important;
-    width: 80%;
+    width: 300px; /* Fixed massive impact size */
+    max-width: 100%;
     margin: 0 auto;
-    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.3));
+    
+    /* Liquid animation */
+    animation: liquidMorph 12s ease-in-out infinite;
+    
+    /* Glowing Border Ring */
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.avatar-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: spin 6s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
 }
 
 .avatar-card img {
@@ -100,42 +140,56 @@
     opacity: 1;
 }
 
-/* Skills/Tools Grid */
+/* Floating Data Pills (Skills) */
 .skills-wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: var(--space-4);
+    max-width: 600px;
+    padding: var(--space-8) 0;
 }
 
 .skill-card {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
     font-family: var(--font-mono);
     color: var(--text-dark-secondary);
     font-size: var(--text-xs);
-    letter-spacing: var(--tracking-normal);
-    gap: var(--space-2);
-    padding: var(--space-3);
-    transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    letter-spacing: var(--tracking-wide);
+    gap: var(--space-3);
+    padding: 14px 28px; /* Sleek Pill Shape */
+    border-radius: 999px; /* Perfect Circle Ends */
+    
+    /* Dark Glass */
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: default;
     position: relative;
+    overflow: hidden;
 
     /* Default fallback accent */
     --skill-accent: rgba(255, 255, 255, 0.4);
 }
 
-/* Subtle Colored Radial Gradient Base */
+/* Base Neon Edge Hint */
 .skill-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 120%, color-mix(in srgb, var(--skill-accent) 20%, transparent), transparent 70%);
-    z-index: 0;
-    opacity: 0.8;
-    transition: opacity var(--transition-fast), background var(--transition-medium);
+    border-radius: 999px;
+    padding: 1px;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--skill-accent) 20%, transparent), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.5;
+    transition: opacity 0.5s ease;
 }
 
 /* SVG Noise Overlay */
@@ -167,54 +221,47 @@
 }
 
 .skill-card:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--skill-accent) 40%, rgba(255, 255, 255, 0.15));
-    color: var(--text-dark-primary);
+    transform: translateY(-6px);
+    color: #fff;
+    box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--skill-accent) 40%, transparent);
 }
 
 .skill-card:hover::before {
     opacity: 1;
-    background: radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--skill-accent) 45%, transparent), transparent 80%);
+    background: linear-gradient(to top right, var(--skill-accent), rgba(255,255,255,0.8));
 }
 
 .skill-card:hover svg {
     opacity: 1;
-    transform: scale(1.08);
-    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--skill-accent) 50%, transparent));
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--skill-accent) 60%, transparent));
 }
 
 /* Specific Accent Colors permanently assigned to the cards */
-.skill-card.html-card {
-    --skill-accent: #e34f26;
-}
+.skill-card.html-card { --skill-accent: #e34f26; }
+.skill-card.css-card { --skill-accent: #1572b6; }
+.skill-card.js-card { --skill-accent: #f7df1e; }
+.skill-card.react-card { --skill-accent: #61dafb; }
+.skill-card.tailwind-card { --skill-accent: #38b2ac; }
+.skill-card.git-card { --skill-accent: #f05032; }
 
-.skill-card.css-card {
-    --skill-accent: #1572b6;
-}
+/* The Floating Hover Cloud (Staggered Offsets) */
+@media (min-width: 768px) {
+    .skills-wrapper > .skill-card:nth-child(1) { transform: translateY(20px); }
+    .skills-wrapper > .skill-card:nth-child(2) { transform: translateY(-15px); }
+    .skills-wrapper > .skill-card:nth-child(3) { transform: translateY(10px); }
+    .skills-wrapper > .skill-card:nth-child(4) { transform: translateY(-25px); }
+    .skills-wrapper > .skill-card:nth-child(5) { transform: translateY(15px); }
+    .skills-wrapper > .skill-card:nth-child(6) { transform: translateY(-5px); }
 
-.skill-card.js-card {
-    --skill-accent: #f7df1e;
+    /* Fix hover states colliding with staggered offsets */
+    .skills-wrapper > .skill-card:nth-child(1):hover { transform: translateY(14px); }
+    .skills-wrapper > .skill-card:nth-child(2):hover { transform: translateY(-21px); }
+    .skills-wrapper > .skill-card:nth-child(3):hover { transform: translateY(4px); }
+    .skills-wrapper > .skill-card:nth-child(4):hover { transform: translateY(-31px); }
+    .skills-wrapper > .skill-card:nth-child(5):hover { transform: translateY(9px); }
+    .skills-wrapper > .skill-card:nth-child(6):hover { transform: translateY(-11px); }
 }
-
-.skill-card.react-card {
-    --skill-accent: #61dafb;
-}
-
-.skill-card.tailwind-card {
-    --skill-accent: #38b2ac;
-}
-
-.skill-card.git-card {
-    --skill-accent: #f05032;
-}
-
-/* Unique Skill Card Asymmetrical Shapes */
-.skills-wrapper > .skill-card:nth-child(1) { border-radius: 40px 12px 12px 12px !important; }
-.skills-wrapper > .skill-card:nth-child(2) { border-radius: 12px 40px 12px 12px !important; }
-.skills-wrapper > .skill-card:nth-child(3) { border-radius: 12px 12px 40px 12px !important; }
-.skills-wrapper > .skill-card:nth-child(4) { border-radius: 12px 12px 12px 40px !important; }
-.skills-wrapper > .skill-card:nth-child(5) { border-radius: 40px 12px 40px 12px !important; }
-.skills-wrapper > .skill-card:nth-child(6) { border-radius: 12px 40px 12px 40px !important; }
 
 
 /* Lower blocks (Quote and Experience) */
