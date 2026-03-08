@@ -169,3 +169,22 @@ img {
 body.dark-container {
     background-color: #0a0a0a;
 }
+
+/* 
+ * MOBILE PERFORMANCE OPTIMIZATIONS 
+ * Full-screen SVG SVG fractal noise + mix-blend-mode absolutely tanks mobile GPU fill rate.
+ * We disable the blend mode and reduce opacity on mobile for a buttery smooth 60fps scroll.
+ */
+@media (max-width: 768px) {
+    body::before {
+        mix-blend-mode: normal;
+        opacity: 0.05;
+        will-change: auto; /* Prevent creating a massive hardware layer on low-end RAM */
+    }
+
+    .noise-container::after {
+        mix-blend-mode: normal;
+        opacity: 0.03;
+        will-change: auto;
+    }
+}
