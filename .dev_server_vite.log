@@ -19,10 +19,16 @@ Port 3000 is in use, trying another one...
 12:50:57 AM [vite] page reload index.html
 12:50:59 AM [vite] page reload index.html
 12:51:14 AM [vite] page reload src/js/utils/drawer.js
-ss/main.css
-12:42:13 AM [vite] page reload src/js/utils/lenis-setup.js
-12:42:25 AM [vite] hmr update /src/css/main.css
-12:47:12 AM [vite] hmr update /src/css/main.css
-12:50:57 AM [vite] page reload index.html
-12:50:59 AM [vite] page reload index.html
-12:51:14 AM [vite] page reload src/js/utils/drawer.js
+12:56:04 AM [vite] page reload index.html
+12:56:34 AM [vite] hmr update /src/css/main.css
+12:56:42 AM [vite] page reload src/js/main.js
+12:57:33 AM [vite] page reload src/js/utils/preloader.js
+12:58:16 AM [vite] page reload src/js/utils/preloader.js
+12:59:01 AM [vite] page reload src/js/utils/preloader.js
+1:01:34 AM [vite] page reload src/js/utils/preloader.js
+e] hmr update /src/css/main.css
+12:56:42 AM [vite] page reload src/js/main.js
+12:57:33 AM [vite] page reload src/js/utils/preloader.js
+12:58:16 AM [vite] page reload src/js/utils/preloader.js
+12:59:01 AM [vite] page reload src/js/utils/preloader.js
+1:01:34 AM [vite] page reload src/js/utils/preloader.js

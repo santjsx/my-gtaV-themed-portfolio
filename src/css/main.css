@@ -7,6 +7,7 @@
 @import './components/about.css';
 @import './components/cta.css';
 @import './components/drawer.css';
+@import './components/preloader.css';
 
 /* BASE RESET */
 *,

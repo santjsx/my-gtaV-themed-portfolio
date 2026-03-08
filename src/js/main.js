@@ -4,8 +4,12 @@ import { setupLenis } from './utils/lenis-setup.js';
 import { initScrollObserver } from './utils/scroll-observer.js';
 import { initTitleAnimation } from './utils/title-anim.js';
 import { initResumeDrawer } from './utils/drawer.js';
+import { initPreloader } from './utils/preloader.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Initialize Premium Mobile Preloader
+    initPreloader();
+
     // 1. Initialize smooth scrolling
     setupLenis();
 
