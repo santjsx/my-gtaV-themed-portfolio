@@ -26,9 +26,10 @@ Port 3000 is in use, trying another one...
 12:58:16 AM [vite] page reload src/js/utils/preloader.js
 12:59:01 AM [vite] page reload src/js/utils/preloader.js
 1:01:34 AM [vite] page reload src/js/utils/preloader.js
-e] hmr update /src/css/main.css
-12:56:42 AM [vite] page reload src/js/main.js
+1:02:56 AM [vite] page reload src/js/utils/preloader.js
+reload src/js/main.js
 12:57:33 AM [vite] page reload src/js/utils/preloader.js
 12:58:16 AM [vite] page reload src/js/utils/preloader.js
 12:59:01 AM [vite] page reload src/js/utils/preloader.js
 1:01:34 AM [vite] page reload src/js/utils/preloader.js
+1:02:56 AM [vite] page reload src/js/utils/preloader.js

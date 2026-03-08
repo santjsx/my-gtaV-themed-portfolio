@@ -16,6 +16,7 @@ export function initPreloader() {
     let targetProgress = 0;
     
     // Smooth counter animation
+    let hasLoaded = false;
     const updateCounter = () => {
         if (loadProgress < targetProgress) {
             loadProgress++;
@@ -25,13 +26,13 @@ export function initPreloader() {
 
         if (loadProgress < 100) {
             requestAnimationFrame(updateCounter);
-        } else if (loadProgress >= 100 && !loader.classList.contains('loaded')) {
+        } else if (loadProgress >= 100 && !hasLoaded) {
+            hasLoaded = true; // Prevent running multiple times
+            
             // Unveil the website
+            loader.classList.add('loaded');
             setTimeout(() => {
-                loader.classList.add('loaded');
                 document.body.style.overflow = ''; // Unlock scroll
-                
-                // Remove from DOM eventually to save memory
                 setTimeout(() => loader.remove(), 1200);
             }, 500);
         }
@@ -40,10 +41,10 @@ export function initPreloader() {
     // Start animation loop
     requestAnimationFrame(updateCounter);
 
-    // Initial bump to show it's working
-    setTimeout(() => { targetProgress = 35; }, 100);
-    setTimeout(() => { targetProgress = 60; }, 500);
-    setTimeout(() => { targetProgress = 85; }, 1200);
+    // Initial bumps to show it's working, but NEVER downgrade the target
+    setTimeout(() => { targetProgress = Math.max(targetProgress, 35); }, 100);
+    setTimeout(() => { targetProgress = Math.max(targetProgress, 60); }, 500);
+    setTimeout(() => { targetProgress = Math.max(targetProgress, 85); }, 1200);
 
     // Promise 1: Fetch the PDF to cache it natively (silent background)
     fetch('/Santhosh%20Reddy%20Resume.pdf').catch(() => null);
