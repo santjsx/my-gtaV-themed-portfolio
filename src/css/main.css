@@ -171,9 +171,9 @@ body.dark-container {
 }
 
 /* 
- * MOBILE PERFORMANCE OPTIMIZATIONS 
- * Full-screen SVG SVG fractal noise + mix-blend-mode absolutely tanks mobile GPU fill rate.
- * We disable the blend mode and reduce opacity on mobile for a buttery smooth 60fps scroll.
+ * DEEP MOBILE PERFORMANCE OPTIMIZATIONS 
+ * Full-screen SVG SVG fractal noise + mix-blend-mode + backdrop-filter blur absolutely tanks mobile GPU fill rate.
+ * We disable the blend mode, reduce opacity, and strip frosted-glass blurs on mobile for a buttery smooth 60fps scroll.
  */
 @media (max-width: 768px) {
     body::before {
@@ -186,5 +186,23 @@ body.dark-container {
         mix-blend-mode: normal;
         opacity: 0.03;
         will-change: auto;
+    }
+
+    /* Strip GPU-heavy frosted glass blurs */
+    .site-header {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(10, 10, 10, 0.95); /* Fallback to sleek solid dark grey */
+    }
+
+    .drawer-close, .cta-button.primary, .mobile-resume-btn {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(25, 25, 25, 0.98); 
+    }
+
+    /* Neutralize complex composite shadows */
+    .cta-button.primary, .project-card-v2, .about-grid .bento-card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important; /* Flattened, cheap shadow */
     }
 }
