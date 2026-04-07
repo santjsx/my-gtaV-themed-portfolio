@@ -6,6 +6,7 @@ import { initTitleAnimation } from './utils/title-anim.js';
 import { initResumeDrawer } from './utils/drawer.js';
 import { initPreloader } from './utils/preloader.js';
 import { initHeroEffects } from './utils/hero-effects.js';
+import { initContactSection } from './utils/contact.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Scroll reveal observer
     initScrollObserver();
 
-    // 5. Header scroll effect
+    // 4.5. Contact section interactions
+    initContactSection();
     const header = document.getElementById('header');
     if (header) {
         let ticking = false;
