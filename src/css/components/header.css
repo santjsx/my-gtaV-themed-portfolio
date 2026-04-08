@@ -127,6 +127,18 @@
 }
 
 @media (max-width: 768px) {
+    .site-header {
+        top: var(--space-2);
+        width: calc(100% - var(--space-4));
+        border-radius: 2px;
+    }
+    .header-container {
+        justify-content: flex-start;
+    }
     .nav-links { display: none; }
-    .fight-club-logo { padding: var(--space-3) var(--space-6); border-right: none; }
+    .fight-club-logo { 
+        padding: var(--space-3) var(--space-4); 
+        border-right: none; 
+        font-size: 10px;
+    }
 }

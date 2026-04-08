@@ -50,6 +50,65 @@
 }
 
 /* ═══════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .dossier-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+
+    .dossier-left {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .avatar-card {
+        width: 250px;
+        height: 300px;
+    }
+
+    .quote-block {
+        margin-top: var(--space-8);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .quote-text {
+        align-self: center;
+    }
+
+    .quote-big {
+        font-size: 1.5rem;
+    }
+
+    .asset-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .avatar-card {
+        width: 200px;
+        height: 250px;
+    }
+
+    .manifesto-text {
+        font-size: 14px;
+        line-height: var(--leading-relaxed);
+    }
+
+    .quote-big {
+        font-size: 1.25rem;
+    }
+}
+
+/* ═══════════════════════════════════════════
    LEFT PANE: The Mugshot / Avatar
    ═══════════════════════════════════════════ */
 .dossier-left {

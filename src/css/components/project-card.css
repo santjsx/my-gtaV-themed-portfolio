@@ -279,16 +279,58 @@
    MOBILE ADJUSTMENTS
    ═══════════════════════════════════════════ */
 @media (max-width: 767px) {
+    .works-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+        padding-bottom: var(--space-6);
+    }
+
     .works-title {
-        font-size: clamp(2rem, 8vw, 3rem);
+        font-size: clamp(2rem, 10vw, 3.5rem);
+    }
+
+    .works-count {
+        align-self: flex-start;
+    }
+
+    .project-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+        padding: var(--space-8) var(--space-4);
+    }
+
+    .p-row-num {
+        font-size: 11px;
     }
 
     .p-row-title {
-        font-size: clamp(1.4rem, 5vw, 2rem);
+        font-size: clamp(1.4rem, 6vw, 2.2rem);
     }
 
     .p-row-meta {
         flex-wrap: wrap;
         gap: var(--space-2);
+    }
+
+    .p-row-links {
+        justify-content: flex-start;
+        margin-top: var(--space-4);
+    }
+
+    .p-row-btn {
+        flex-grow: 1;
+        text-align: center;
+        padding: var(--space-3) var(--space-4);
+    }
+}
+
+@media (max-width: 480px) {
+    .project-row {
+        padding: var(--space-6) var(--space-2);
+    }
+    
+    .p-row-title {
+        font-size: 1.25rem;
     }
 }

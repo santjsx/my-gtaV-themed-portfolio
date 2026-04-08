@@ -254,12 +254,21 @@
    MOBILE ADJUSTMENTS
    ═══════════════════════════════════════════ */
 @media (max-width: 899px) {
+    .contact-briefing {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+    
     .contact-main-title {
-        font-size: clamp(2.2rem, 8vw, 3rem);
+        font-size: clamp(2.2rem, 10vw, 3.5rem);
     }
     
     .contact-headline-col {
         text-align: left;
+    }
+
+    .secure-comms-list {
+        gap: var(--space-4);
     }
 
     .comms-row {
@@ -267,6 +276,7 @@
         align-items: flex-start;
         gap: var(--space-2);
         padding: var(--space-4) 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
     .comms-leader {
@@ -276,9 +286,29 @@
     .comms-target {
         font-size: 13px;
         align-self: flex-start;
+        width: 100%;
+        display: block;
     }
     
     .decrypt-mask {
-        padding: 4px 8px;
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px var(--space-4);
+        border: 1px solid var(--border);
+    }
+
+    .decrypt-link:hover .decrypt-mask::after {
+        inset: 0;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-main-title {
+        font-size: 1.75rem;
+    }
+    .contact-subtitle {
+        font-size: 11px;
     }
 }

@@ -463,13 +463,76 @@
    ═══════════════════════════════════════════ */
 .mobile-resume-btn { display: none; }
 
+/* ═══════════════════════════════════════════
+   MOBILE ADJUSTMENTS
+   ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
     .hero {
-        padding-top: calc(var(--nav-height) + var(--space-8));
+        padding-top: calc(var(--nav-height) + var(--space-12));
+        min-height: auto;
     }
 
     .hero-title {
-        font-size: clamp(1.8rem, 7vw, 2.8rem);
+        font-size: clamp(1.4rem, 8vw, 2.4rem);
+        margin-bottom: var(--space-8);
+        word-break: break-word;
+    }
+
+    /* ── Schematic: Vertical Flow ── */
+    .pipeline-schematic {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: var(--space-2) 0;
+        overflow-x: hidden;
+    }
+
+    .schematic-node {
+        flex-direction: row;
+        align-items: center;
+        min-width: unset;
+        width: 100%;
+        gap: var(--space-4);
+        padding: var(--space-2) 0;
+    }
+
+    .node-num {
+        z-index: 2;
+    }
+
+    .schematic-wire {
+        width: 1px;
+        height: 25px;
+        min-width: unset;
+        margin: -5px 0 -5px 14px; /* Vertical alignment with node markers */
+        z-index: 1;
+    }
+
+    .wire-pulse {
+        width: 100%;
+        height: 10px;
+        top: 0;
+        left: 0;
+    }
+
+    @keyframes wirePulse {
+        0% { top: 0%; opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+
+    .hero-feature-card {
+        padding: var(--space-6) var(--space-6);
+    }
+
+    .feature-id-badge {
+        width: 50px;
+        height: 50px;
+    }
+
+    .card-status-line {
+        margin-top: var(--space-4);
     }
 
     .feature-ui-layer > span {
@@ -496,5 +559,14 @@
         cursor: pointer;
         opacity: 0;
         animation: fadeUp 0.8s var(--ease-out) 0.3s forwards;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.6rem;
+    }
+    .node-label {
+        font-size: 10px;
     }
 }
