@@ -1,43 +1,44 @@
 // src/js/utils/contact.js
-// Copy email to clipboard with visual feedback
+// Copy email to clipboard via the secure comms link
 
 export function initContactSection() {
-    const btn = document.getElementById('copy-email-btn');
-    if (!btn) return;
+    const decryptLinks = document.querySelectorAll('.decrypt-link');
+    if (!decryptLinks.length) return;
 
-    btn.addEventListener('click', async () => {
-        const email = btn.dataset.email;
-        const textEl = document.getElementById('copy-email-text');
+    decryptLinks.forEach(link => {
+        link.addEventListener('click', async (e) => {
+            // Only prevent default if it's not a mailto link, 
+            // but we want to allow mailto to open the email client natively.
+            // Actually, let's copy to clipboard AND let mailto trigger if supported.
+            // A simple way is to just do the copy alongside the native click action.
+            
+            const maskEl = link.querySelector('.decrypt-mask');
+            if (!maskEl) return;
+            
+            const email = maskEl.dataset.real;
+            if (!email) return;
 
-        try {
-            await navigator.clipboard.writeText(email);
+            try {
+                await navigator.clipboard.writeText(email);
 
-            // Success feedback
-            btn.classList.add('copied');
-            textEl.textContent = 'Copied to clipboard ✓';
+                const originalText = maskEl.innerText;
+                const originalReal = maskEl.dataset.real;
 
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                textEl.textContent = 'Copy email address';
-            }, 2500);
-        } catch (err) {
-            // Fallback for older browsers
-            const textarea = document.createElement('textarea');
-            textarea.value = email;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
+                // Visual Feedback: Show copied state
+                maskEl.innerText = '[ SECURE_COPIED ]';
+                maskEl.dataset.real = '[ SECURE_COPIED ]';
+                maskEl.style.color = '#4ade80'; // hacker green
+                link.style.pointerEvents = 'none';
 
-            btn.classList.add('copied');
-            textEl.textContent = 'Copied to clipboard ✓';
-
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                textEl.textContent = 'Copy email address';
-            }, 2500);
-        }
+                setTimeout(() => {
+                    maskEl.innerText = originalText;
+                    maskEl.dataset.real = originalReal;
+                    maskEl.style.color = '';
+                    link.style.pointerEvents = 'all';
+                }, 2000);
+            } catch (err) {
+                console.error("Clipboard API failed: ", err);
+            }
+        });
     });
 }

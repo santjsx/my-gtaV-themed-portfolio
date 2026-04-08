@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   CONTACT — Classified Briefing Dossier
+   CONTACT — Secure Comms Protocol
    ═══════════════════════════════════════════ */
 
 /* Edge-to-edge cinematic section */
@@ -21,7 +21,8 @@
     background-image: url('/images/fc/wallpaperflare.com_wallpaper%20(1).jpg');
     background-size: cover;
     background-position: center;
-    filter: grayscale(100%) contrast(1.6) sepia(100%) hue-rotate(315deg) saturate(400%) brightness(0.15);
+    /* Darkened significantly to let the white terminal text punch through */
+    filter: grayscale(100%) contrast(1.6) sepia(100%) hue-rotate(315deg) saturate(300%) brightness(0.08);
     z-index: 0;
     pointer-events: none;
     will-change: transform;
@@ -46,15 +47,15 @@
     z-index: 5;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-12);
+    gap: var(--space-16);
     padding: var(--space-8) 0;
     align-items: start;
 }
 
 @media (min-width: 900px) {
     .contact-briefing {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-16);
+        grid-template-columns: 1fr 1.2fr;
+        gap: var(--space-24);
         align-items: center;
     }
 }
@@ -74,20 +75,14 @@
     align-items: center;
     gap: 10px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     color: var(--accent-danger);
     border: 1px solid var(--accent-danger);
     padding: 6px 16px;
     align-self: flex-start;
-    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
-}
-
-.contact-classified-badge:hover {
-    background: var(--accent-danger);
-    color: var(--bg-dark);
 }
 
 .classified-dot {
@@ -103,10 +98,11 @@
     50%      { opacity: 0.3; box-shadow: 0 0 2px rgba(211, 47, 47, 0.2); }
 }
 
-/* Main title */
+/* Main title (Brutalist) */
 .contact-main-title {
     font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: var(--weight-bold);
+    font-weight: 900;
+    font-family: 'Arial Black', Impact, sans-serif;
     line-height: 1.0;
     color: var(--text-primary);
     margin: 0;
@@ -114,231 +110,136 @@
     text-transform: uppercase;
 }
 
-/* Gradient text (reused from old section) */
-.premium-gradient-text {
-    background: linear-gradient(135deg, #F28B82 0%, #BA68C8 50%, #E53935 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
+.brutal-italic {
+    font-style: italic;
     color: transparent;
-    display: inline-block;
+    -webkit-text-stroke: 1px var(--text-primary);
 }
 
 /* Subtitle */
 .contact-subtitle {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
+    font-family: var(--font-mono);
+    font-size: 13px;
     color: var(--text-secondary);
-    line-height: var(--leading-normal);
-    max-width: 400px;
+    line-height: 1.6;
+    max-width: 420px;
     margin: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════
-   RIGHT COLUMN — Contact Cards
+   RIGHT COLUMN — Secure Comms Protocol
    ═══════════════════════════════════════════ */
-.contact-cards-col {
+.secure-comms-col {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
 }
 
-/* ── Individual Contact Card ── */
-.contact-card {
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
-    padding: var(--space-5) var(--space-6);
-    background: rgba(10, 10, 10, 0.6);
-    border: 1px solid var(--border);
-    border-left: 3px solid transparent;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.4s var(--ease-out);
-    position: relative;
-    overflow: hidden;
-    backface-visibility: hidden;
-}
-
-/* Hover sweep background */
-.contact-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(242, 139, 130, 0.08) 0%, transparent 100%);
-    transform: translateX(-100%);
-    transition: transform 0.5s var(--ease-out);
-    pointer-events: none;
-}
-
-.contact-card:hover::before {
-    transform: translateX(0);
-}
-
-.contact-card:hover {
-    border-left-color: var(--accent-primary);
-    border-color: rgba(242, 139, 130, 0.25);
-    background: rgba(15, 15, 15, 0.8);
-    transform: translateX(4px);
-}
-
-/* Primary card (email) — emphasized */
-.contact-card-primary {
-    border-left-color: var(--accent-danger);
-    background: rgba(211, 47, 47, 0.08);
-    border-color: rgba(211, 47, 47, 0.2);
-}
-
-.contact-card-primary:hover {
-    border-left-color: var(--accent-danger);
-    border-color: rgba(211, 47, 47, 0.4);
-    background: rgba(211, 47, 47, 0.12);
-    box-shadow: 0 8px 32px rgba(211, 47, 47, 0.15);
-}
-
-/* Card icon */
-.contact-card-icon {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.03);
-    transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
-}
-
-.contact-card-icon svg {
-    width: 18px;
-    height: 18px;
-    color: var(--text-secondary);
-    transition: color 0.3s var(--ease-out);
-}
-
-.contact-card:hover .contact-card-icon {
-    border-color: var(--accent-primary);
-    background: rgba(242, 139, 130, 0.1);
-}
-
-.contact-card:hover .contact-card-icon svg {
-    color: var(--accent-primary);
-}
-
-.contact-card-primary .contact-card-icon {
-    border-color: rgba(211, 47, 47, 0.3);
-}
-
-.contact-card-primary .contact-card-icon svg {
-    color: var(--accent-danger);
-}
-
-/* Card info */
-.contact-card-info {
+.secure-comms-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    flex-grow: 1;
-    min-width: 0;
-}
-
-.contact-card-label {
+    gap: var(--space-6);
     font-family: var(--font-mono);
-    font-size: 10px;
+}
+
+.comms-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 14px;
+    color: var(--text-primary);
+    position: relative;
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.comms-protocol {
     font-weight: var(--weight-bold);
-    text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--text-secondary);
-    transition: color 0.3s var(--ease-out);
 }
 
-.contact-card:hover .contact-card-label {
-    color: var(--accent-primary);
+/* Dynamic dot leader using flex-grow and borders */
+.comms-leader {
+    flex-grow: 1;
+    border-bottom: 2px dotted rgba(255,255,255,0.15);
+    margin: 0 16px;
+    transform: translateY(-4px);
+    opacity: 0.5;
 }
 
-.contact-card-value {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: var(--weight-medium);
+.comms-target {
+    font-weight: var(--weight-bold);
     color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+    cursor: crosshair;
+}
+
+/* Standard Link Hover */
+.standard-link:hover {
+    color: var(--accent-danger);
+    text-shadow: 0 0 8px rgba(211, 47, 47, 0.4);
+}
+
+/* WOW FACTOR: The Decrypt Link */
+.decrypt-mask {
+    position: relative;
+    display: inline-block;
+    background-color: var(--text-primary);
+    color: var(--text-primary);
+    padding: 2px 6px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none;
+    line-height: 1;
 }
 
-/* Arrow indicator */
-.contact-card-arrow {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    color: var(--text-muted);
-    flex-shrink: 0;
-    transition: transform 0.3s var(--ease-out), color 0.3s var(--ease-out);
+.decrypt-link:hover .decrypt-mask {
+    background-color: rgba(211, 47, 47, 0.15);
+    color: transparent; /* hide original [ END_TO_END_ENCRYPTED ] word */
 }
 
-.contact-card:hover .contact-card-arrow {
-    color: var(--accent-primary);
-    transform: translateX(6px);
-}
-
-/* ═══════════════════════════════════════════
-   COPY EMAIL BUTTON
-   ═══════════════════════════════════════════ */
-.contact-copy-btn {
+/* Reveal real email using pseudo-element */
+.decrypt-link:hover .decrypt-mask::after {
+    content: attr(data-real);
+    position: absolute;
+    inset: 0;
+    color: var(--accent-danger);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px dashed var(--border);
-    color: var(--text-secondary);
+    text-decoration: line-through;
     font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: var(--weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: all 0.3s var(--ease-out);
-    width: 100%;
-    margin-bottom: var(--space-2);
-}
-
-.contact-copy-btn:hover {
-    border-color: var(--accent-primary);
-    color: var(--accent-primary);
-    background: rgba(242, 139, 130, 0.05);
-}
-
-.contact-copy-btn.copied {
-    border-color: #4ade80;
-    color: #4ade80;
-    border-style: solid;
-}
-
-.contact-copy-btn svg {
-    flex-shrink: 0;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 4px rgba(211, 47, 47, 0.4);
 }
 
 /* ═══════════════════════════════════════════
    RESPONSE TIME INDICATOR
    ═══════════════════════════════════════════ */
-.contact-response-time {
+.comms-status-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--border);
-    margin-top: var(--space-2);
+    letter-spacing: 0.15em;
+    margin-top: var(--space-4);
+    font-style: italic;
 }
 
-.contact-response-dot {
+.comms-ping {
     width: 6px;
     height: 6px;
-    border-radius: 50%;
+    border-radius: 0;
     background: #4ade80;
     box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
     animation: responsePulse 2.5s ease-in-out infinite;
@@ -354,30 +255,30 @@
    ═══════════════════════════════════════════ */
 @media (max-width: 899px) {
     .contact-main-title {
-        font-size: clamp(2rem, 8vw, 3rem);
+        font-size: clamp(2.2rem, 8vw, 3rem);
     }
     
     .contact-headline-col {
         text-align: left;
     }
-    
-    .contact-card-value {
-        font-size: 12px;
-    }
-}
 
-@media (max-width: 500px) {
-    .contact-card {
-        padding: var(--space-4);
-        gap: var(--space-3);
+    .comms-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+        padding: var(--space-4) 0;
     }
-    
-    .contact-card-icon {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .contact-card-arrow {
+
+    .comms-leader {
         display: none;
+    }
+
+    .comms-target {
+        font-size: 13px;
+        align-self: flex-start;
+    }
+    
+    .decrypt-mask {
+        padding: 4px 8px;
     }
 }
