@@ -80,47 +80,70 @@
 
         <h1 class="hero-title" id="hero-title"></h1>
 
-        <!-- The feature card -->
+        <!-- The feature card — DECONSTRUCTION SCHEMATIC -->
         <div class="hero-feature-card fade-up">
           <div class="feature-header-row">
             <div class="feature-id-badge">
               <img src="/images/fc/cbd998cb55bd19d0c52e7a50cfe21b76.jpg" alt="ID Profile">
             </div>
-            <h2 class="feature-title">How I tear down <span class="serif-italic"
-                style="color: var(--accent-primary);">complexity</span><br>into clean systems</h2>
+            <div class="feature-title-group">
+              <span class="feature-id-tag">SYS_ARCHITECT / PR_MAYHEM</span>
+              <h2 class="feature-title" id="complexity-heading" data-text="complexity">How I tear down <span class="serif-italic"
+                  style="color: var(--accent-primary);">complexity</span><br>into clean systems</h2>
+            </div>
           </div>
 
-          <!-- Pipeline Layout -->
-          <div class="feature-ui-layer">
-
-            <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">01</span> Deconstruct
+          <!-- Pipeline Layout: Technical Schematic -->
+          <div class="pipeline-schematic">
+            
+            <!-- Nodes -->
+            <div class="schematic-node node-01">
+              <span class="node-num">01</span>
+              <span class="node-label">[ DECONSTRUCT ]</span>
             </div>
 
-            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
-
-            <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">02</span> Architect
+            <div class="schematic-wire wire-1-2">
+              <div class="wire-pulse"></div>
             </div>
 
-            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
-
-            <div class="ui-pill lime" style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
-              <span style="opacity: 0.6;">03</span> Build
+            <div class="schematic-node node-02">
+              <span class="node-num">02</span>
+              <span class="node-label">[ ARCHITECT ]</span>
             </div>
 
-            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
-
-            <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px;">
-              <span style="opacity: 0.6;">04</span> Optimize
+            <div class="schematic-wire wire-2-3">
+              <div class="wire-pulse"></div>
             </div>
 
-            <span style="color: var(--text-dark-secondary); font-size: 12px; opacity: 0.4;">→</span>
-
-            <div class="ui-pill glass" style="display: flex; align-items: center; gap: 8px; border-style: dashed;">
-              <span style="opacity: 0.6;">05</span> Ship
+            <div class="schematic-node node-03 active">
+              <span class="node-num">03</span>
+              <span class="node-label">[ BUILD ]</span>
             </div>
 
+            <div class="schematic-wire wire-3-4">
+              <div class="wire-pulse"></div>
+            </div>
+
+            <div class="schematic-node node-04">
+              <span class="node-num">04</span>
+              <span class="node-label">[ OPTIMIZE ]</span>
+            </div>
+
+            <div class="schematic-wire wire-4-5">
+              <div class="wire-pulse"></div>
+            </div>
+
+            <div class="schematic-node node-05">
+              <span class="node-num">05</span>
+              <span class="node-label">[ SHIP ]</span>
+            </div>
+
+          </div>
+          
+          <!-- Tactical Footer Overlay -->
+          <div class="card-status-line">
+            <span class="status-scan">SCANNING_PROTOCOLS...</span>
+            <span class="status-value">OPERATIONAL</span>
           </div>
         </div>
 

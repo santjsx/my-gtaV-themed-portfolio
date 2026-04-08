@@ -127,10 +127,53 @@ function initParticles() {
 }
 
 /**
+ * Scramble and reveal effect for the Complexity Schematic card
+ */
+function initComplexityScramble() {
+    const heading = document.getElementById('complexity-heading');
+    if (!heading) return;
+
+    const originalText = heading.getAttribute('data-text') || 'complexity';
+    const targetSpan = heading.querySelector('.serif-italic');
+    if (!targetSpan) return;
+
+    const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/01';
+    
+    // 1. SCRAMBLE ANIMATION for the word "complexity"
+    let iteration = 0;
+    const scrambleInterval = setInterval(() => {
+        targetSpan.textContent = originalText
+            .split('')
+            .map((char, i) => {
+                if (i < iteration) return originalText[i];
+                return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('');
+
+        if (iteration >= originalText.length) {
+            clearInterval(scrambleInterval);
+        }
+
+        iteration += 1 / 3;
+    }, 40);
+
+    // 2. SEQUENCED DECRYPTION (Visual only as CSS handles the redacted bars on hover)
+    // We can add a class to the card to trigger an initial reveal sequence
+    const card = document.querySelector('.hero-feature-card');
+    if (card) {
+        // Triggered after title reveal
+        setTimeout(() => {
+            card.classList.add('ready-for-reveal');
+        }, 2500);
+    }
+}
+
+/**
  * Initialize all hero effects
  */
 export function initHeroEffects() {
     initHeroTitle();
     initScrambleText();
     initParticles();
+    initComplexityScramble();
 }
