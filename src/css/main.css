@@ -8,6 +8,7 @@
 @import './components/cta.css';
 @import './components/drawer.css';
 @import './components/preloader.css';
+@import './components/lanyard.css';
 
 /* ═══════════════════════════════════════════
    BASE RESET
@@ -116,20 +117,74 @@ img {
 }
 
 /* ═══════════════════════════════════════════
+   GLOBAL FIGHT CLUB LAYERS
+   ═══════════════════════════════════════════ */
+
+/* Film Grain Overlay — Cinematic Premium Texture */
+.film-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+}
+
+/* Subliminal Tyler Flash */
+.subliminal-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-primary);
+    opacity: 0;
+    transition: none;
+}
+
+.subliminal-flash.active {
+    animation: subliminalPop 0.08s steps(1) forwards;
+}
+
+.subliminal-flash span {
+    font-family: var(--font-mono);
+    font-size: clamp(1.2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--bg-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+@keyframes subliminalPop {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Container relative z-index */
+.container-relative {
+    position: relative;
+    z-index: 2;
+}
+
+/* ═══════════════════════════════════════════
    PERFORMANCE ANIMATIONS
    ═══════════════════════════════════════════ */
 .fade-up {
     opacity: 0;
     transform: translate3d(0, 40px, 0);
-    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     will-change: opacity, transform;
-    backface-visibility: hidden; /* Force GPU compositing layer */
+    backface-visibility: hidden;
 }
 
 .fade-up.visible {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    will-change: auto; /* Release GPU memory after animation completes */
+    will-change: auto;
 }
 
 /* Base pill structure */
@@ -148,43 +203,54 @@ img {
 }
 
 /* ═══════════════════════════════════════════
-   FOOTER — The Watermark End
+   COMPACT CINEMATIC QUOTES
    ═══════════════════════════════════════════ */
-.massive-footer {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    padding: var(--space-12) var(--space-4) var(--space-12);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    background: var(--bg-dark);
-}
-
-.massive-footer-title {
-    font-family: 'Arial Black', Impact, sans-serif;
-    font-size: clamp(2rem, 6vw, 6rem); /* Sized down perfectly */
-    font-weight: 900;
+.compact-cinematic-quote {
+    display: block;
+    font-family: var(--font-serif);
     font-style: italic;
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
-    transform: skewX(-10deg);
-    line-height: 1.1;
-    white-space: normal; /* Completely prevents horizontal scroll-breaking */
-    text-align: center;
+    font-size: 15px; /* Increased size */
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    position: relative;
+    padding-left: var(--space-4);
     
-    /* Hollow, classified stamp styling */
+    /* Bright, colorful, beautiful eye-catching gradient */
+    background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 50%, #f28b82 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
-    -webkit-text-stroke: 1px var(--text-secondary);
-    
-    transition: color 0.4s ease, -webkit-text-stroke 0.4s ease, transform 0.5s var(--ease-out), text-shadow 0.4s ease;
-    cursor: crosshair;
+    opacity: 0.95;
+    text-shadow: 0 4px 12px rgba(120, 255, 214, 0.15); /* Soft glowing shadow */
 }
 
-.massive-footer-title:hover {
-    color: var(--bg-dark); /* Keeps interior dark */
-    -webkit-text-stroke: 1px var(--accent-danger);
-    text-shadow: 4px 4px 0 var(--accent-primary); /* Intense 3D pop effect */
-    transform: skewX(-10deg) translate3d(0, -4px, 0);
+.compact-cinematic-quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background: var(--accent-primary);
+    opacity: 0.5;
 }
+
+.text-right {
+    text-align: right;
+}
+
+.text-right .compact-cinematic-quote {
+    padding-left: 0;
+    padding-right: var(--space-4);
+}
+
+.text-right .compact-cinematic-quote::before {
+    left: auto;
+    right: 0;
+}
+
+.mt-2 { margin-top: var(--space-2); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }

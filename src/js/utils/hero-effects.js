@@ -1,179 +1,130 @@
 // src/js/utils/hero-effects.js
-// Cinematic hero enhancements: word-by-word title reveal, scramble text, floating particles
+// Premium Fight Club hero: staggered reveal, scramble text, subliminal flash, glow tracking
+
+const FC_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/01';
 
 /**
- * Builds the hero title with word-by-word stagger animation
+ * Staggered reveal of headline rows with a cinematic delay
  */
-function initHeroTitle() {
-    const titleEl = document.getElementById('hero-title');
-    if (!titleEl) return;
+function initHeadlineReveal() {
+    const rows = document.querySelectorAll('.headline-row, .headline-divider');
+    if (!rows.length) return;
 
-    // Define the title as segments. Each segment is either plain text or a special span.
-    const segments = [
-        { text: "I'm Santhosh, a Developer who doesn't build what you ", type: 'plain' },
-        { text: "want", type: 'serif-italic' },
-        { text: " ", type: 'plain' },
-        { html: '<span style="color: var(--accent-danger); font-family: var(--font-mono); margin: 0 4px;">//</span>', type: 'raw' },
-        { text: " I build what you ", type: 'plain' },
-        { text: "need.", type: 'serif-italic' },
-        { text: " Where ", type: 'plain' },
-        { text: "destruction meets creation.", type: 'highlight-raw' },
-    ];
+    rows.forEach((row, i) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(30px)';
+        row.style.transition = `opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)`;
+        row.style.transitionDelay = `${0.3 + i * 0.12}s`;
+    });
 
-    let wordIndex = 0;
-
-    segments.forEach(seg => {
-        if (seg.type === 'raw') {
-            // Insert raw HTML element directly
-            const wrapper = document.createElement('span');
-            wrapper.classList.add('hero-word');
-            wrapper.innerHTML = seg.html;
-            wrapper.style.animationDelay = `${0.4 + wordIndex * 0.05}s`;
-            titleEl.appendChild(wrapper);
-            wordIndex++;
-            return;
-        }
-
-        const words = seg.text.split(/(\s+)/);
-        words.forEach(word => {
-            if (word === '') return;
-
-            const span = document.createElement('span');
-            span.classList.add('hero-word');
-
-            if (word.trim() === '') {
-                // Whitespace
-                span.innerHTML = '&nbsp;';
-                span.style.animationDelay = `${0.4 + wordIndex * 0.05}s`;
-            } else {
-                if (seg.type === 'serif-italic') {
-                    const inner = document.createElement('span');
-                    inner.className = 'serif-italic';
-                    inner.textContent = word;
-                    span.appendChild(inner);
-                } else if (seg.type === 'highlight-raw') {
-                    const inner = document.createElement('span');
-                    inner.className = 'highlight-raw';
-                    inner.textContent = word;
-                    span.appendChild(inner);
-                } else {
-                    span.textContent = word;
-                }
-                span.style.animationDelay = `${0.4 + wordIndex * 0.05}s`;
-                wordIndex++;
-            }
-
-            titleEl.appendChild(span);
+    // Trigger after a frame so CSS kicks in
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            rows.forEach(row => {
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            });
         });
     });
 }
 
 /**
- * Scramble text effect on the hero intro line
+ * Scramble-reveal the hero rule tag "// first rule of clean code"
  */
-function initScrambleText() {
-    const el = document.getElementById('hero-intro-text');
+function initRuleTagScramble() {
+    const el = document.getElementById('hero-rule-tag');
     if (!el) return;
 
-    const originalText = el.getAttribute('data-text') || el.textContent;
-    const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/01';
+    const originalText = el.textContent;
+    el.textContent = '';
     let iteration = 0;
 
-    el.textContent = '';
-
-    // Start after a short delay
     setTimeout(() => {
         const interval = setInterval(() => {
             el.textContent = originalText
                 .split('')
                 .map((char, i) => {
                     if (i < iteration) return originalText[i];
-                    return chars[Math.floor(Math.random() * chars.length)];
+                    if (char === ' ') return ' ';
+                    return FC_CHARS[Math.floor(Math.random() * FC_CHARS.length)];
                 })
                 .join('');
 
             if (iteration >= originalText.length) {
                 clearInterval(interval);
             }
-
-            iteration += 1 / 2; // Speed: 2 frames per character
+            iteration += 0.5;
         }, 30);
-    }, 600);
+    }, 400);
 }
 
 /**
- * Ambient floating particles
+ * Subliminal Tyler Flash — randomly fires a full-screen pink flash
+ * with a Fight Club quote for exactly 1-2 frames
  */
-function initParticles() {
-    const container = document.getElementById('hero-particles');
-    if (!container) return;
+function initSubliminalFlash() {
+    const flashEl = document.getElementById('subliminal-flash');
+    if (!flashEl) return;
 
-    const PARTICLE_COUNT = 20;
+    const quotes = [
+        'You are not your code.',
+        'It\'s only after we\'ve lost everything that we\'re free to build anything.',
+        'The things you own end up owning you.',
+        'Self-improvement is masturbation.',
+        'First rule: you do not talk about bugs.',
+    ];
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('hero-particle');
-
-        // Random positioning & timing
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${60 + Math.random() * 40}%`; // Start from bottom half
-        particle.style.animationDuration = `${4 + Math.random() * 6}s`;
-        particle.style.animationDelay = `${Math.random() * 8}s`;
-        particle.style.width = `${1 + Math.random() * 2}px`;
-        particle.style.height = particle.style.width;
-
-        container.appendChild(particle);
-    }
-}
-
-/**
- * Scramble and reveal effect for the Complexity Schematic card
- */
-function initComplexityScramble() {
-    const heading = document.getElementById('complexity-heading');
-    if (!heading) return;
-
-    const originalText = heading.getAttribute('data-text') || 'complexity';
-    const targetSpan = heading.querySelector('.serif-italic');
-    if (!targetSpan) return;
-
-    const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/01';
-    
-    // 1. SCRAMBLE ANIMATION for the word "complexity"
-    let iteration = 0;
-    const scrambleInterval = setInterval(() => {
-        targetSpan.textContent = originalText
-            .split('')
-            .map((char, i) => {
-                if (i < iteration) return originalText[i];
-                return chars[Math.floor(Math.random() * chars.length)];
-            })
-            .join('');
-
-        if (iteration >= originalText.length) {
-            clearInterval(scrambleInterval);
-        }
-
-        iteration += 1 / 3;
-    }, 40);
-
-    // 2. SEQUENCED DECRYPTION (Visual only as CSS handles the redacted bars on hover)
-    // We can add a class to the card to trigger an initial reveal sequence
-    const card = document.querySelector('.hero-feature-card');
-    if (card) {
-        // Triggered after title reveal
+    function triggerFlash() {
+        const quote = quotes[Math.floor(Math.random() * quotes.length)];
+        flashEl.querySelector('span').textContent = quote;
+        flashEl.classList.add('active');
+        
         setTimeout(() => {
-            card.classList.add('ready-for-reveal');
-        }, 2500);
+            flashEl.classList.remove('active');
+        }, 100);
+
+        // Next flash: 12-30 seconds
+        setTimeout(triggerFlash, 12000 + Math.random() * 18000);
     }
+
+    // First flash after 6-14 seconds
+    setTimeout(triggerFlash, 6000 + Math.random() * 8000);
+}
+
+/**
+ * Ambient glow follows cursor (desktop only)
+ */
+function initGlowTracking() {
+    const glow = document.querySelector('.hero-ambient-glow');
+    if (!glow || window.innerWidth < 900) return;
+
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    let targetX = 50, targetY = 50, currentX = 50, currentY = 50;
+
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        targetX = ((e.clientX - rect.left) / rect.width) * 100;
+        targetY = ((e.clientY - rect.top) / rect.height) * 100;
+    });
+
+    function lerp() {
+        currentX += (targetX - currentX) * 0.04;
+        currentY += (targetY - currentY) * 0.04;
+        glow.style.left = `${currentX}%`;
+        glow.style.top = `${currentY}%`;
+        requestAnimationFrame(lerp);
+    }
+    lerp();
 }
 
 /**
  * Initialize all hero effects
  */
 export function initHeroEffects() {
-    initHeroTitle();
-    initScrambleText();
-    initParticles();
-    initComplexityScramble();
+    initHeadlineReveal();
+    initRuleTagScramble();
+    initSubliminalFlash();
+    initGlowTracking();
 }

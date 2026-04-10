@@ -7,6 +7,7 @@ import { initResumeDrawer } from './utils/drawer.js';
 import { initPreloader } from './utils/preloader.js';
 import { initHeroEffects } from './utils/hero-effects.js';
 import { initContactSection } from './utils/contact.js';
+import { initLanyardWidget } from './utils/lanyard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -20,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4.5. Contact section interactions
     initContactSection();
+    
+    // Initialize Discord Lanyard Status Widget
+    initLanyardWidget();
     
     // Header scrolled state
     const header = document.getElementById('header');

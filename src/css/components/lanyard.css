@@ -1,0 +1,298 @@
+/* ═══════════════════════════════════════════
+   LANYARD WIDGET — Floating Discord Status
+   ═══════════════════════════════════════════ */
+
+.lanyard-container {
+    position: fixed;
+    bottom: var(--space-8);
+    right: var(--space-8);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-4);
+}
+
+/* ── Avatar Floating Button ── */
+.lanyard-avatar-wrapper {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
+    background: var(--bg-dark);
+}
+
+.lanyard-avatar-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.lanyard-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: grayscale(80%) contrast(1.2);
+    transition: filter 0.3s;
+}
+
+.lanyard-avatar-wrapper:hover .lanyard-avatar {
+    filter: grayscale(0%) contrast(1.1);
+}
+
+/* Active status outline colors */
+.lanyard-avatar-wrapper.status-online { border-color: #43b581; }
+.lanyard-avatar-wrapper.status-idle { border-color: #faa61a; }
+.lanyard-avatar-wrapper.status-dnd { border-color: #f04747; }
+.lanyard-avatar-wrapper.status-offline { border-color: #747f8d; }
+
+/* Status indicator dot */
+.lanyard-indicator {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-dark);
+    background: #747f8d; /* Default offline */
+    transition: background-color 0.3s;
+}
+
+.lanyard-avatar-wrapper.status-online .lanyard-indicator {
+    background: #43b581;
+    box-shadow: 0 0 8px rgba(67, 181, 129, 0.4);
+}
+.lanyard-avatar-wrapper.status-idle .lanyard-indicator { background: #faa61a; }
+.lanyard-avatar-wrapper.status-dnd .lanyard-indicator { background: #f04747; }
+
+
+/* ── Popover Glassmorphism Card ── */
+.lanyard-popover {
+    background: rgba(15, 15, 15, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: var(--space-4);
+    min-width: 240px;
+    max-width: 300px;
+    
+    /* Animation states */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.95);
+    transform-origin: bottom right;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.lanyard-popover.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.lanyard-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: var(--space-3);
+}
+
+.lanyard-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #747f8d;
+}
+.status-online .lanyard-status-dot { background: #43b581; }
+.status-idle .lanyard-status-dot { background: #faa61a; }
+.status-dnd .lanyard-status-dot { background: #f04747; }
+
+.lanyard-status-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ── Activities List ── */
+.lanyard-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: var(--space-2);
+}
+
+/* Custom Scrollbar for popover */
+.lanyard-body::-webkit-scrollbar {
+    width: 4px;
+}
+.lanyard-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+.lanyard-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+.lanyard-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lanyard-activity {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.activity-name {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.activity-details,
+.activity-state {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: normal; /* allow wrapping slightly */
+    word-break: break-word;
+}
+
+.activity-custom {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-primary);
+    opacity: 0.9;
+}
+
+.activity-divider {
+    height: 1px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    margin: var(--space-2) 0;
+}
+
+/* Offline Terminal Message */
+.lanyard-offline-message {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 2px solid var(--text-muted);
+    padding: var(--space-3) var(--space-4);
+    border-radius: 0 4px 4px 0;
+}
+
+.offline-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+.offline-text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+/* ── Floating Chat Bubble Hint ── */
+.lanyard-trigger-group {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.lanyard-hint {
+    display: flex;
+    flex-direction: column;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--space-3) var(--space-4);
+    border-radius: 12px 12px 0 12px;
+    
+    /* Position exactly on top of the avatar */
+    position: absolute;
+    bottom: calc(100% + 14px);
+    right: 0;
+    
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transform-origin: bottom right;
+    animation: gentleFloatTop 3s ease-in-out infinite;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Chat Bubble Tail pointing DOWN to the avatar */
+.lanyard-hint::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    bottom: -6px;
+    width: 10px;
+    height: 10px;
+    background: rgba(15, 15, 15, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+}
+
+.hint-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.hint-subtext {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+/* Fade out hint when interacting with the widget */
+.lanyard-trigger-group:hover .lanyard-hint,
+.lanyard-container:has(.lanyard-popover.active) .lanyard-hint {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px) scale(0.95);
+}
+
+@keyframes gentleFloatTop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 768px) {
+    .lanyard-container {
+        bottom: var(--space-4);
+        right: var(--space-4);
+    }
+    
+    .lanyard-hint {
+        display: none; /* Hide hint on mobile to save space */
+    }
+}

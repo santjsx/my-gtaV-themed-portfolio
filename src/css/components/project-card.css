@@ -1,336 +1,210 @@
 /* ═══════════════════════════════════════════
-   CASE FILES — Classified Project Archive
+   WORKS — Project Mayhem / Fight Club Minimal
    ═══════════════════════════════════════════ */
-
-/* Cinematic Background */
-#work {
-    position: relative;
-    z-index: 1;
+.works-section.minimal-works {
+    padding: var(--space-24) 0;
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#work::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    height: calc(100% + 200px);
-    background-image: url('/images/fc/wallpaperflare.com_wallpaper.jpg');
-    background-size: cover;
-    background-position: center;
-    filter: grayscale(100%) contrast(1.5) brightness(0.12);
-    pointer-events: none;
-    z-index: -2;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    will-change: transform;
-    backface-visibility: hidden;
-}
-
-/* ═══════════════════════════════════════════
-   HEADER — Classified Archive
-   ═══════════════════════════════════════════ */
-.works-header {
-    margin-bottom: var(--space-10);
+.minimal-works-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: var(--space-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: var(--space-6);
+    margin-bottom: var(--space-12);
 }
 
-.works-header-left {
+.works-header-group {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: 4px;
 }
 
-.works-tag {
+.works-pretitle {
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--accent-danger);
+    font-size: 10px;
+    color: var(--accent-primary);
     text-transform: uppercase;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
+    opacity: 0.7;
 }
 
-.works-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 900;
-    font-family: 'Arial Black', Impact, sans-serif;
-    letter-spacing: -0.04em;
+.minimal-section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
     color: var(--text-primary);
+    margin: 0;
     line-height: 1;
     text-transform: uppercase;
-    margin: 0;
+    letter-spacing: -0.02em;
 }
 
-.works-count {
+.minimal-section-title .italic-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    color: var(--accent-primary);
+}
+
+.minimal-works-count {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    align-self: flex-end;
+    letter-spacing: 0.1em;
 }
 
-/* ═══════════════════════════════════════════
-   LEDGER — The Case File List
-   ═══════════════════════════════════════════ */
-.project-ledger {
+/* ── Project Row ── */
+.minimal-project-list {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid var(--border);
 }
 
-.project-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    padding: var(--space-6) var(--space-4);
-    border-top: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
+.minimal-project-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-8) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.4s var(--ease-out);
     cursor: crosshair;
-    transition: border-color 0.3s ease;
+    position: relative;
 }
 
-@media (min-width: 768px) {
-    .project-row {
-        grid-template-columns: 50px 1fr auto;
-        align-items: center;
-        gap: var(--space-8);
-        padding: var(--space-8) var(--space-6);
-    }
-}
-
-/* ── The White Flood Hover (WOW FACTOR — retained) ── */
-.p-row-hover-bg {
+/* Fight Club hover — left pink danger border appears */
+.minimal-project-row::before {
+    content: '';
     position: absolute;
-    inset: 0;
-    width: 100%;
+    left: 0;
+    top: 0;
+    width: 0;
     height: 100%;
-    background: var(--text-primary);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.5s var(--ease-out);
+    background: rgba(242, 139, 130, 0.06);
+    transition: width 0.6s var(--ease-out);
     z-index: 0;
-    pointer-events: none;
-    will-change: transform;
-    backface-visibility: hidden;
 }
 
-.project-row:hover .p-row-hover-bg {
-    transform: scaleY(1);
-    transform-origin: top;
+.minimal-project-row:hover::before {
+    width: 100%;
 }
 
-.project-row > *:not(.p-row-hover-bg) {
+.minimal-project-row:hover {
+    padding-left: var(--space-6);
+    border-bottom-color: rgba(242, 139, 130, 0.2);
+}
+
+.p-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
     position: relative;
     z-index: 1;
 }
 
-/* ── Case Number ── */
-.p-row-num {
+.p-num {
     font-family: var(--font-mono);
     font-size: 12px;
-    font-weight: var(--weight-bold);
     color: var(--text-muted);
-    letter-spacing: 0.1em;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease;
 }
 
-.project-row:hover .p-row-num {
-    color: var(--accent-danger);
+.minimal-project-row:hover .p-num {
+    color: var(--accent-primary);
 }
 
-/* ── Case Info Block ── */
-.p-row-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+.p-title {
+    font-size: clamp(1.4rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    transition: transform 0.4s var(--ease-out), color 0.4s ease;
+    position: relative;
+    z-index: 1;
 }
 
-/* Meta row: tag + status */
-.p-row-meta {
+.minimal-project-row:hover .p-title {
+    transform: translateX(12px);
+}
+
+.p-right {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-10);
+    position: relative;
+    z-index: 1;
 }
 
-.case-tag {
+.p-category {
     font-family: var(--font-mono);
     font-size: 10px;
-    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     color: var(--text-muted);
     border: 1px solid var(--border);
-    padding: 2px 8px;
-    transition: color 0.3s ease, border-color 0.3s ease;
+    padding: 3px 8px;
 }
 
-.project-row:hover .case-tag {
-    color: var(--bg-dark);
-    border-color: rgba(0,0,0,0.2);
-}
-
-.case-status {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
-}
-
-.case-status.deployed {
-    color: #4ade80;
-}
-
-.case-status.active {
-    color: var(--accent-danger);
-    animation: statusPulse 2s ease-in-out infinite;
-}
-
-@keyframes statusPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-}
-
-.project-row:hover .case-status {
-    color: var(--bg-dark);
-}
-
-/* ── Title ── */
-.p-row-title {
-    font-family: var(--font-sans);
-    font-size: clamp(1.6rem, 3vw, 2.8rem);
-    font-weight: 900;
-    color: var(--text-primary);
-    text-transform: uppercase;
-    margin: 0;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    transition: color 0.3s ease, transform 0.4s var(--ease-out), letter-spacing 0.4s var(--ease-out);
-}
-
-.project-row:hover .p-row-title {
-    color: var(--bg-dark);
-    transform: translate3d(8px, 0, 0);
-    letter-spacing: 0.02em;
-}
-
-/* ── Description ── */
-.p-row-desc {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    max-width: 500px;
-    margin: 0;
-    transition: color 0.3s ease;
-}
-
-.project-row:hover .p-row-desc {
-    color: rgba(0, 0, 0, 0.5);
-}
-
-/* ── Links ── */
-.p-row-links {
+.p-links {
     display: flex;
-    gap: var(--space-3);
-    margin-top: var(--space-3);
+    gap: var(--space-4);
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-@media (min-width: 768px) {
-    .p-row-links {
-        margin-top: 0;
-        justify-content: flex-end;
-    }
+.minimal-project-row:hover .p-links {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-.p-row-btn {
+.minimal-link {
     font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-primary);
-    background: transparent;
-    border: 1px solid var(--border);
-    padding: var(--space-2) var(--space-5);
-    transition: all 0.3s var(--ease-out);
+    letter-spacing: 0.05em;
+    color: var(--accent-primary);
     text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
 }
 
-.project-row:hover .p-row-btn {
-    border-color: var(--bg-dark);
-    color: var(--bg-dark);
+.minimal-link:hover {
+    border-color: var(--accent-primary);
 }
 
-.p-row-btn:hover {
-    background: var(--accent-danger) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--accent-danger) !important;
-}
-
-/* ═══════════════════════════════════════════
-   MOBILE ADJUSTMENTS
-   ═══════════════════════════════════════════ */
-@media (max-width: 767px) {
-    .works-header {
+/* Mobile */
+@media (max-width: 768px) {
+    .minimal-project-row {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--space-4);
-        padding-bottom: var(--space-6);
     }
 
-    .works-title {
-        font-size: clamp(2rem, 10vw, 3.5rem);
+    .p-right {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .works-count {
-        align-self: flex-start;
+    .p-links {
+        opacity: 1;
+        transform: none;
     }
 
-    .project-row {
-        grid-template-columns: 1fr;
+    .p-left {
         gap: var(--space-4);
-        padding: var(--space-8) var(--space-4);
     }
 
-    .p-row-num {
-        font-size: 11px;
+    .minimal-project-row:hover {
+        padding-left: 0;
     }
 
-    .p-row-title {
-        font-size: clamp(1.4rem, 6vw, 2.2rem);
-    }
-
-    .p-row-meta {
-        flex-wrap: wrap;
-        gap: var(--space-2);
-    }
-
-    .p-row-links {
-        justify-content: flex-start;
-        margin-top: var(--space-4);
-    }
-
-    .p-row-btn {
-        flex-grow: 1;
-        text-align: center;
-        padding: var(--space-3) var(--space-4);
-    }
-}
-
-@media (max-width: 480px) {
-    .project-row {
-        padding: var(--space-6) var(--space-2);
-    }
-    
-    .p-row-title {
-        font-size: 1.25rem;
+    .minimal-project-row:hover .p-title {
+        transform: none;
     }
 }

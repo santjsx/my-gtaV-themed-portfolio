@@ -1,314 +1,235 @@
 /* ═══════════════════════════════════════════
-   CONTACT — Secure Comms Protocol
+   CONTACT — Editorial Split / Fight Club
    ═══════════════════════════════════════════ */
-
-/* Edge-to-edge cinematic section */
-.cta-cinematic-section {
-    position: relative;
-    width: 100vw;
-    left: 50%;
-    transform: translateX(-50%);
+.contact-section {
     padding: var(--space-32) 0;
-    overflow: hidden;
-    margin-bottom: var(--space-8);
-}
-
-/* Deep darkroom red-wash background */
-.cta-cinematic-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/images/fc/wallpaperflare.com_wallpaper%20(1).jpg');
-    background-size: cover;
-    background-position: center;
-    /* Darkened significantly to let the white terminal text punch through */
-    filter: grayscale(100%) contrast(1.6) sepia(100%) hue-rotate(315deg) saturate(300%) brightness(0.08);
-    z-index: 0;
-    pointer-events: none;
-    will-change: transform;
-    backface-visibility: hidden;
-}
-
-/* Bleeds gracefully into the black areas */
-.cta-cinematic-section::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, var(--bg-dark), transparent 15%, transparent 85%, var(--bg-dark));
-    z-index: 1;
-    pointer-events: none;
-}
-
-/* ═══════════════════════════════════════════
-   BRIEFING LAYOUT — Split Grid
-   ═══════════════════════════════════════════ */
-.contact-briefing {
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
     position: relative;
-    z-index: 5;
+}
+
+/* ── Split Layout ── */
+.contact-layout {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-16);
-    padding: var(--space-8) 0;
     align-items: start;
 }
 
-@media (min-width: 900px) {
-    .contact-briefing {
-        grid-template-columns: 1fr 1.2fr;
-        gap: var(--space-24);
-        align-items: center;
-    }
+/* ── Left Column: Statement ── */
+.contact-left {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-8));
 }
 
-/* ═══════════════════════════════════════════
-   LEFT COLUMN — Headline + Badge
-   ═══════════════════════════════════════════ */
-.contact-headline-col {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-}
-
-/* Classified badge */
-.contact-classified-badge {
+.contact-tag {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    color: var(--accent-danger);
-    border: 1px solid var(--accent-danger);
-    padding: 6px 16px;
-    align-self: flex-start;
+    color: var(--accent-primary);
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-8);
+    opacity: 0.8;
 }
 
-.classified-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-danger);
-    animation: statusPulse 2s ease-in-out infinite;
+.contact-headline {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-8);
 }
 
-@keyframes statusPulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(211, 47, 47, 0.6); }
-    50%      { opacity: 0.3; box-shadow: 0 0 2px rgba(211, 47, 47, 0.2); }
-}
-
-/* Main title (Brutalist) */
-.contact-main-title {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 900;
-    font-family: 'Arial Black', Impact, sans-serif;
-    line-height: 1.0;
+.ch-row {
+    display: block;
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     color: var(--text-primary);
-    margin: 0;
-    letter-spacing: -0.04em;
     text-transform: uppercase;
 }
 
-.brutal-italic {
+/* Reuse the serif-accent from hero */
+.contact-section .serif-accent {
+    font-family: var(--font-serif);
     font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.contact-section .serif-accent.danger {
+    background: linear-gradient(135deg, #F28B82 0%, #E53935 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
-    -webkit-text-stroke: 1px var(--text-primary);
 }
 
-/* Subtitle */
-.contact-subtitle {
-    font-family: var(--font-mono);
-    font-size: 13px;
+.contact-desc {
+    font-size: 1rem;
     color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 420px;
-    margin: 0;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    line-height: var(--leading-normal);
+    max-width: 400px;
 }
 
-/* ═══════════════════════════════════════════
-   RIGHT COLUMN — Secure Comms Protocol
-   ═══════════════════════════════════════════ */
-.secure-comms-col {
+/* ── Right Column: Contact Cards ── */
+.contact-right {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
-.secure-comms-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.contact-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
-    font-family: var(--font-mono);
+    gap: 8px;
+    padding: var(--space-6) var(--space-8);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    text-decoration: none;
+    transition: all 0.4s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.comms-row {
+/* Pink sweep on hover */
+.contact-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-card:hover {
+    background: rgba(242, 139, 130, 0.04);
+    border-color: rgba(242, 139, 130, 0.15);
+    transform: translateX(4px);
+}
+
+.contact-card:hover::before {
+    opacity: 1;
+}
+
+/* Primary card — email */
+.contact-card.primary-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.card-top {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
+}
+
+.card-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+
+.card-arrow {
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: transform 0.3s var(--ease-out), color 0.3s ease;
+}
+
+.contact-card:hover .card-arrow {
+    transform: translateX(6px);
+    color: var(--accent-primary);
+}
+
+.card-value {
+    font-family: var(--font-mono);
     font-size: 14px;
     color: var(--text-primary);
-    position: relative;
-    padding: var(--space-4) 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    letter-spacing: 0.02em;
 }
 
-.comms-protocol {
-    font-weight: var(--weight-bold);
-    letter-spacing: 0.15em;
-    color: var(--text-secondary);
-}
-
-/* Dynamic dot leader using flex-grow and borders */
-.comms-leader {
-    flex-grow: 1;
-    border-bottom: 2px dotted rgba(255,255,255,0.15);
-    margin: 0 16px;
-    transform: translateY(-4px);
-    opacity: 0.5;
-}
-
-.comms-target {
-    font-weight: var(--weight-bold);
-    color: var(--text-primary);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: color 0.3s ease;
-    cursor: crosshair;
-}
-
-/* Standard Link Hover */
-.standard-link:hover {
-    color: var(--accent-danger);
-    text-shadow: 0 0 8px rgba(211, 47, 47, 0.4);
-}
-
-/* WOW FACTOR: The Decrypt Link */
-.decrypt-mask {
-    position: relative;
-    display: inline-block;
-    background-color: var(--text-primary);
-    color: var(--text-primary);
-    padding: 2px 6px;
-    white-space: nowrap;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    user-select: none;
-    line-height: 1;
-}
-
-.decrypt-link:hover .decrypt-mask {
-    background-color: rgba(211, 47, 47, 0.15);
-    color: transparent; /* hide original [ END_TO_END_ENCRYPTED ] word */
-}
-
-/* Reveal real email using pseudo-element */
-.decrypt-link:hover .decrypt-mask::after {
-    content: attr(data-real);
-    position: absolute;
-    inset: 0;
-    color: var(--accent-danger);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: line-through;
+.card-hint {
     font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
     letter-spacing: 0.05em;
-    text-shadow: 0 0 4px rgba(211, 47, 47, 0.4);
 }
 
-/* ═══════════════════════════════════════════
-   RESPONSE TIME INDICATOR
-   ═══════════════════════════════════════════ */
-.comms-status-row {
+/* Status row */
+.contact-status {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-top: var(--space-4);
-    font-style: italic;
-}
-
-.comms-ping {
-    width: 6px;
-    height: 6px;
-    border-radius: 0;
-    background: #4ade80;
-    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
-    animation: responsePulse 2.5s ease-in-out infinite;
-}
-
-@keyframes responsePulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.3; }
+    letter-spacing: 0.08em;
+    padding: var(--space-6) var(--space-8);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    margin-top: var(--space-2);
 }
 
 /* ═══════════════════════════════════════════
-   MOBILE ADJUSTMENTS
+   FOOTER — Fight Club Sign-off
    ═══════════════════════════════════════════ */
-@media (max-width: 899px) {
-    .contact-briefing {
+.minimal-footer {
+    padding: var(--space-8) 0;
+    background: var(--bg-dark);
+}
+
+.minimal-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.footer-detail {
+    color: var(--accent-primary);
+    opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE
+   ═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .contact-layout {
         grid-template-columns: 1fr;
         gap: var(--space-12);
     }
-    
-    .contact-main-title {
-        font-size: clamp(2.2rem, 10vw, 3.5rem);
-    }
-    
-    .contact-headline-col {
-        text-align: left;
+
+    .contact-left {
+        position: static;
     }
 
-    .secure-comms-list {
-        gap: var(--space-4);
-    }
-
-    .comms-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-2);
-        padding: var(--space-4) 0;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .comms-leader {
-        display: none;
-    }
-
-    .comms-target {
-        font-size: 13px;
-        align-self: flex-start;
-        width: 100%;
-        display: block;
-    }
-    
-    .decrypt-mask {
-        display: block;
-        width: 100%;
-        text-align: center;
-        padding: 12px var(--space-4);
-        border: 1px solid var(--border);
-    }
-
-    .decrypt-link:hover .decrypt-mask::after {
-        inset: 0;
-        justify-content: center;
+    .ch-row {
+        font-size: clamp(1.8rem, 8vw, 3rem);
     }
 }
 
-@media (max-width: 480px) {
-    .contact-main-title {
-        font-size: 1.75rem;
+@media (max-width: 768px) {
+    .contact-card {
+        padding: var(--space-4) var(--space-6);
     }
-    .contact-subtitle {
-        font-size: 11px;
+
+    .minimal-footer-content {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
     }
 }
