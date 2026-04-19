@@ -1,4 +1,3 @@
-// src/js/main.js
 import '../css/main.css';
 import { setupLenis } from './utils/lenis-setup.js';
 import { initScrollObserver } from './utils/scroll-observer.js';
@@ -8,6 +7,7 @@ import { initPreloader } from './utils/preloader.js';
 import { initHeroEffects } from './utils/hero-effects.js';
 import { initContactSection } from './utils/contact.js';
 import { initLanyardWidget } from './utils/lanyard.js';
+import { initGSAPAnimations } from './utils/gsap-animations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -84,7 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Title typewriter animation
         initTitleAnimation();
 
-        // 4. Scroll reveal observer
+        // 3. Initialize Parallax & Interactions via GSAP
+        initGSAPAnimations();
+
+        // 4. Scroll reveal observer (now using GSAP ScrollTrigger batches)
         initScrollObserver();
     });
 });

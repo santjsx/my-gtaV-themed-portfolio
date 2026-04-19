@@ -1,27 +1,35 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 export function setupLenis() {
+    gsap.registerPlugin(ScrollTrigger);
+
     const lenis = new Lenis({
-        lerp: 0.12,               /* Slightly higher = snappier feel while staying silky */
-        wheelMultiplier: 0.9,     /* Tame aggressive scroll wheels */
+        lerp: 0.1,               /* Silky smooth */
+        wheelMultiplier: 1.0,     /* Standard wheel multiplier */
         smoothWheel: true,
         smoothTouch: true,
         touchMultiplier: 2.0,     /* Natural mobile swipe without overshoot */
         gestureOrientation: 'vertical',
         infinite: false,
         autoResize: true,
-        syncTouch: true,          /* Synchronize touch events with rAF for zero-stutter */
-        syncTouchLerp: 0.06,     /* Gentle touch deceleration curve */
+        syncTouch: true,          /* Synchronize touch events with rAF */
+        syncTouchLerp: 0.08,     /* Gentle touch deceleration curve */
     });
 
-    // Use a single, clean rAF loop
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
+    // Synchronize Lenis with ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
+    // Add Lenis's requestAnimationFrame to GSAP's ticker
+    // This ensures perfect synchronization between GSAP animations and smooth scrolling
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+
+    // Prevents lagging by setting GSAP's max lag processing to 0
+    gsap.ticker.lagSmoothing(0);
 
     // Pause Lenis when tab is hidden to save GPU cycles
     document.addEventListener('visibilitychange', () => {

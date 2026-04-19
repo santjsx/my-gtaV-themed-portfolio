@@ -1,33 +1,81 @@
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 export function initScrollObserver() {
-    const observer = new IntersectionObserver((entries) => {
-        // Only count stagger for elements that are actually being processed in this batch
-        let batchStagger = 0;
+    // We clear typical initial CSS opacity/transform rules from main.css 
+    // to put GSAP in control of these scroll reveals. 
 
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Calculate delay dynamically for this batch (60ms stagger)
-                const delay = batchStagger * 60;
-                batchStagger++;
+    // 1. Generic .fade-up Elements Batch Reveal (CTAs, Headers, etc.)
+    gsap.set(".fade-up", { y: 40, opacity: 0 });
 
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-
-                    // Release will-change after transition completes to free GPU memory
-                    entry.target.addEventListener('transitionend', () => {
-                        entry.target.style.willChange = 'auto';
-                    }, { once: true });
-                }, delay);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        root: null,
-        // Reduced negative margin so it triggers earlier and feels more accurate
-        rootMargin: '0px 0px -30px 0px',
-        // Slight threshold so part of the element needs to be visible
-        threshold: 0.05 
+    ScrollTrigger.batch(".fade-up", {
+        interval: 0.15, // time window to batch items entering at once
+        batchMax: 6,   // maximum items to apply stagger to at once
+        onEnter: batch => gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            stagger: 0.12,
+            duration: 0.8,
+            ease: "power3.out",
+            overwrite: true,
+            clearProps: "transform"
+        }),
+        start: "top 90%", // Trigger slightly before it comes fully into view
     });
 
-    // We no longer pre-calculate delay based on global index, preventing massive delays for footer items
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    // 2. Arsenal Rows (Skill bars) Stagger
+    gsap.set(".arsenal-row", { x: -30, opacity: 0 });
+    
+    ScrollTrigger.batch(".arsenal-row", {
+        onEnter: batch => gsap.to(batch, {
+            opacity: 1,
+            x: 0,
+            stagger: 0.12,
+            duration: 0.7,
+            ease: "power2.out",
+            overwrite: true,
+            clearProps: "transform"
+        }),
+        start: "top 85%"
+    });
+
+    // 3. Project Cards (Mayhem Grid) Sequence Reveal
+    gsap.set(".mayhem-target", { y: 40, opacity: 0, scale: 0.98 });
+    
+    ScrollTrigger.batch(".mayhem-target", {
+        onEnter: batch => gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: {
+                each: 0.15,
+                grid: [1, 2] // Grid format staggering (approx)
+            },
+            duration: 0.8,
+            ease: "power3.out",
+            clearProps: "scale", // Cleanup scaling transforms so hover animations work perfectly
+            overwrite: true
+        }),
+        start: "top 85%"
+    });
+
+    // 4. Phase Cards (Cinema Chapter Cards) Sequence Reveal
+    // Slight 3D rotation reveal
+    gsap.set(".phase-card", { y: 30, opacity: 0, rotationX: 5, transformPerspective: 800 });
+    
+    ScrollTrigger.batch(".phase-card", {
+        onEnter: batch => gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            stagger: 0.2,
+            duration: 0.9,
+            ease: "power3.out",
+            clearProps: "transformPerspective,rotationX,transform", 
+            overwrite: true
+        }),
+        start: "top 85%"
+    });
 }

@@ -174,17 +174,9 @@ img {
    PERFORMANCE ANIMATIONS
    ═══════════════════════════════════════════ */
 .fade-up {
+    /* GSAP takes control over transform and opacity. We just prep it for GPU acceleration. */
     opacity: 0;
-    transform: translate3d(0, 40px, 0);
-    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     will-change: opacity, transform;
-    backface-visibility: hidden;
-}
-
-.fade-up.visible {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    will-change: auto;
 }
 
 /* Base pill structure */

@@ -1,19 +1,48 @@
-// src/js/utils/lanyard.js
+import gsap from 'gsap';
 
 const DiscordID = '1284925883240550552';
 const API_URL = `https://api.lanyard.rest/v1/users/${DiscordID}`;
 
 export function initLanyardWidget() {
     const toggleBtn = document.getElementById('lanyard-toggle');
-    
     if (!toggleBtn) return;
 
-    // Toggle dynamic island expansion
+    let isAnimating = false;
+
+    // Toggle dynamic island expansion with GSAP physics
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleBtn.classList.toggle('active');
-        if (toggleBtn.classList.contains('active')) {
-            fetchLanyardData(); // Refresh data when opened
+        if (isAnimating) return;
+
+        const isOpening = !toggleBtn.classList.contains('active');
+        isAnimating = true;
+
+        if (isOpening) {
+            toggleBtn.classList.add('active');
+            fetchLanyardData(); // Refresh data
+
+            gsap.fromTo(toggleBtn, 
+                { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
+                { height: "auto", width: 320, padding: 16, borderRadius: 18, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
+            );
+        } else {
+            const content = toggleBtn.querySelector('.island-content');
+            gsap.to(content, { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" });
+            
+            gsap.to(toggleBtn, {
+                height: 68, 
+                width: 68, 
+                padding: 6,
+                borderRadius: 22, 
+                duration: 0.6, 
+                delay: 0.1,
+                ease: "expo.out", 
+                onComplete: () => {
+                    toggleBtn.classList.remove('active');
+                    gsap.set(content, { clearProps: "all" });
+                    isAnimating = false;
+                }
+            });
         }
     });
 
@@ -22,21 +51,21 @@ export function initLanyardWidget() {
     if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            toggleBtn.classList.remove('active');
+            if(toggleBtn.classList.contains('active')) toggleBtn.click();
         });
     }
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
-        if (!toggleBtn.contains(e.target)) {
-            toggleBtn.classList.remove('active');
+        if (!toggleBtn.contains(e.target) && toggleBtn.classList.contains('active')) {
+            toggleBtn.click();
         }
     });
 
     // Close when scrolling
     window.addEventListener('scroll', () => {
-        if (toggleBtn.classList.contains('active')) {
-            toggleBtn.classList.remove('active');
+        if (toggleBtn.classList.contains('active') && !isAnimating) {
+            toggleBtn.click();
         }
     }, { passive: true });
 
