@@ -87,6 +87,7 @@ async function fetchLanyardData() {
             updateMoodDisplay(json.data.kv);
             updateHeroQuote(json.data.kv);
             updateCustomColors(json.data.kv);
+            updateAboutPhoto(json.data.kv);
         }
     } catch (error) {
         console.error('Failed to fetch Lanyard data:', error);
@@ -317,6 +318,70 @@ function updateCustomColors(kv) {
         root.style.setProperty('--accent-primary', accentColor);
         root.style.setProperty('--skill-accent', accentColor);
         root.style.setProperty('--border-hover', `color-mix(in srgb, ${accentColor}, transparent 60%)`);
+    }
+}
+
+/**
+ * Updates the about section portrait using Lanyard KV data
+ * @param {Object} kv - Key-value pairs from Lanyard
+ */
+function updateAboutPhoto(kv) {
+    const imgEl = document.getElementById('about-image');
+    if (!imgEl) return;
+
+    const originalSrc = 'images/santhoshh.webp';
+    const newSrc = kv ? kv.about_photo_url : null;
+    
+    // Choose the target source
+    const targetSrc = (newSrc && newSrc.trim() !== '') ? newSrc : originalSrc;
+
+    // Prevent redundant transitions
+    if (imgEl.dataset.currentSrc === targetSrc) return;
+
+    // Check if the source is actually different (ignoring path prefixes for local files)
+    const currentPath = imgEl.src.split('/').pop();
+    const targetPath = targetSrc.split('/').pop();
+    if (currentPath === targetPath && !targetSrc.startsWith('http')) {
+        imgEl.dataset.currentSrc = targetSrc;
+        return;
+    }
+
+    // Preload to ensure smooth GSAP transition
+    const tempImg = new Image();
+    tempImg.onload = () => transitionImage(imgEl, targetSrc);
+    tempImg.onerror = () => {
+        if (targetSrc !== originalSrc) {
+            console.warn('Dynamic image failed to load, reverting to default.');
+            updateAboutPhoto(null); // Force revert
+        }
+    };
+    tempImg.src = targetSrc;
+}
+
+/**
+ * Executes the cross-fade animation for the About image
+ */
+function transitionImage(imgEl, src) {
+    if (typeof gsap !== 'undefined') {
+        gsap.to(imgEl, {
+            opacity: 0,
+            scale: 1.05,
+            duration: 0.8,
+            ease: "power2.in",
+            onComplete: () => {
+                imgEl.src = src;
+                imgEl.dataset.currentSrc = src;
+                gsap.to(imgEl, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "power2.out"
+                });
+            }
+        });
+    } else {
+        imgEl.src = src;
+        imgEl.dataset.currentSrc = src;
     }
 }
 
