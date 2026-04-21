@@ -370,15 +370,14 @@
         position: absolute;
         bottom: 1rem;
         right: 0;
-        font-size: clamp(2.5rem, 12vw, 4rem);
-        opacity: 0.15;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+        font-size: clamp(2rem, 9vw, 3.2rem);
+        opacity: 0.35;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
         pointer-events: none;
         z-index: -1;
         text-align: right;
         line-height: 0.9;
         white-space: nowrap;
-        filter: blur(0.5px);
     }
 
     .headline-row {
