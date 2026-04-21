@@ -10,6 +10,7 @@ import { initLanyardWidget } from './utils/lanyard.js';
 import { initGSAPAnimations } from './utils/gsap-animations.js';
 import { initHeroCorrection } from './utils/hero-correction.js';
 import { initAboutReveal } from './utils/about-reveal.js';
+import { initMusicHistory } from './utils/music.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -100,5 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 4. Scroll reveal observer (now using GSAP ScrollTrigger batches)
         initScrollObserver();
+
+        // 5. Music History Sync
+        initMusicHistory();
     });
 });
