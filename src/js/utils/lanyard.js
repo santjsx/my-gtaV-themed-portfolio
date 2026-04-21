@@ -86,6 +86,7 @@ async function fetchLanyardData() {
             updateWidgetUI(json.data);
             updateMoodDisplay(json.data.kv);
             updateHeroQuote(json.data.kv);
+            updateCustomColors(json.data.kv);
         }
     } catch (error) {
         console.error('Failed to fetch Lanyard data:', error);
@@ -279,6 +280,43 @@ function updateMoodDisplay(kv) {
         }
     } else {
         moodContainer.style.display = 'none'; // Hide if empty
+    }
+}
+
+/**
+ * Updates the site's accent colors using Lanyard KV data
+ * @param {Object} kv - Key-value pairs from Lanyard
+ */
+function updateCustomColors(kv) {
+    const accentColor = kv ? kv.accent_color : null;
+    if (!accentColor) return;
+
+    const root = document.documentElement;
+    
+    // Simple check to avoid redundant updates
+    // We store the last applied color to a property to compare easily
+    if (root.dataset.lastAccent === accentColor) return;
+    root.dataset.lastAccent = accentColor;
+
+    if (typeof gsap !== 'undefined') {
+        // Smoothly transition the primary accent variables
+        // We use a proxy object to animate the color string
+        const colorTarget = { color: getComputedStyle(root).getPropertyValue('--accent-primary').trim() };
+        
+        gsap.to(colorTarget, {
+            color: accentColor,
+            duration: 2,
+            ease: "power2.out",
+            onUpdate: () => {
+                root.style.setProperty('--accent-primary', colorTarget.color);
+                root.style.setProperty('--skill-accent', colorTarget.color);
+                root.style.setProperty('--border-hover', `color-mix(in srgb, ${colorTarget.color}, transparent 60%)`);
+            }
+        });
+    } else {
+        root.style.setProperty('--accent-primary', accentColor);
+        root.style.setProperty('--skill-accent', accentColor);
+        root.style.setProperty('--border-hover', `color-mix(in srgb, ${accentColor}, transparent 60%)`);
     }
 }
 
