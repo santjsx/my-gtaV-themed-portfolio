@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
     server: {
@@ -9,6 +10,10 @@ export default defineConfig({
         outDir: 'dist',
         cssMinify: true,
         rollupOptions: {
+            input: {
+                main: resolve(__dirname, 'index.html'),
+                music: resolve(__dirname, 'music.html'),
+            },
             output: {
                 assetFileNames: "assets/[name].[hash].[ext]",
                 chunkFileNames: "assets/[name].[hash].js",
