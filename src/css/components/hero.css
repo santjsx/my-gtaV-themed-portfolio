@@ -368,17 +368,17 @@
     .meta-name {
         display: block;
         position: absolute;
-        bottom: -20px;
+        bottom: 1rem;
         right: 0;
-        font-size: clamp(4rem, 20vw, 8rem);
-        opacity: 0.08;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+        font-size: clamp(2.5rem, 12vw, 4rem);
+        opacity: 0.15;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
         pointer-events: none;
         z-index: -1;
         text-align: right;
-        line-height: 0.8;
+        line-height: 0.9;
         white-space: nowrap;
-        filter: blur(1px); /* Subtle depth effect */
+        filter: blur(0.5px);
     }
 
     .headline-row {
