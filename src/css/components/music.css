@@ -1,4 +1,4 @@
-/* THE FREQUENCY — Standalone Grid Layout */
+/* THE LISTENING LOG 2.0 — Purely Typographic Index */
 .music-page-wrapper {
     padding-top: 140px;
     padding-bottom: 150px;
@@ -27,198 +27,177 @@
 }
 
 .music-hero-header {
-    margin-bottom: 80px;
+    margin-bottom: clamp(60px, 10vw, 100px);
 }
 
 .music-page-title {
     font-family: var(--font-sans);
-    font-size: clamp(3.5rem, 12vw, 9rem);
+    font-size: clamp(3rem, 12vw, 10rem);
     font-weight: 900;
-    line-height: 0.85;
-    letter-spacing: -0.05em;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
     margin: 0 0 24px;
     color: var(--text-primary);
 }
 
 .music-page-tagline {
     font-family: var(--font-serif);
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-size: clamp(1.1rem, 2vw, 1.45rem);
     font-style: italic;
     color: var(--text-muted);
-    max-width: 550px;
+    max-width: 600px;
     line-height: 1.5;
 }
 
-/* GRID SYSTEM */
-.frequency-list {
+/* MASTER LOG — TYPOGRAPHIC INDEX */
+.media-log-container {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.log-header-row {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 items per row for ultra-density look */
-    gap: 24px;
-    row-gap: 48px;
-}
-
-.track-card {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    cursor: pointer;
-}
-
-.track-artwork-wrapper {
-    position: relative;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: border-color 0.4s ease;
-}
-
-.track-card:hover .track-artwork-wrapper {
-    border-color: var(--accent-primary);
-}
-
-.track-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0; /* Hidden until loaded or found in cache */
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, filter 0.8s ease;
-    filter: saturate(0.8);
-}
-
-.track-img.loaded {
-    opacity: 1;
-}
-
-.track-card:hover .track-img {
-    transform: scale(1.08);
-    filter: saturate(1.1);
-}
-
-.track-img-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-}
-
-/* INFO BLOCK */
-.track-info-card {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.track-name-grid {
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.track-artist-grid {
+    grid-template-columns: 100px 80px 2fr 1.5fr 1fr;
+    padding: 20px 0;
+    border-bottom: 2px solid var(--text-primary);
     font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.2em;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
-.track-time-grid {
+.log-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.log-item {
+    display: grid;
+    grid-template-columns: 100px 80px 2fr 1.5fr 1fr;
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    align-items: baseline;
+    text-decoration: none;
+}
+
+.log-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 10px;
+}
+
+/* Columns Details */
+.col-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.col-type {
     font-family: var(--font-mono);
     font-size: 8px;
     font-weight: 900;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-top: 6px;
-    letter-spacing: 0.05em;
-    opacity: 0.6;
+    color: var(--accent-primary);
+    letter-spacing: 0.1em;
 }
 
-/* NOW PLAYING STATE */
-.track-card.is-now-playing .track-name-grid {
+.col-title {
+    font-family: var(--font-sans);
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.col-creator {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.col-collection {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* NOW PLAYING HIGHLIGHT */
+.log-item.is-live .col-title {
     color: var(--accent-primary);
 }
 
-.live-pulse-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: var(--accent-primary);
-    color: #000;
-    font-family: var(--font-mono);
-    font-size: 8px;
+.log-item.is-live .col-date {
+    color: var(--accent-primary);
     font-weight: 900;
-    padding: 3px 8px;
-    letter-spacing: 0.15em;
-    z-index: 2;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    animation: badgePulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    animation: livePulse 2s infinite;
 }
 
-@keyframes badgePulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(0.95); opacity: 0.8; }
+@keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* RESPONSIVE: THE DOSSIER STACK */
+@media (max-width: 1024px) {
+    .log-header-row {
+        grid-template-columns: 80px 80px 2fr 1fr;
+    }
+    .log-item {
+        grid-template-columns: 80px 80px 2fr 1fr;
+    }
+    .col-collection { display: none; }
+}
+
+@media (max-width: 768px) {
+    .log-header-row {
+        display: none;
+    }
+    
+    .log-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 40px 0;
+    }
+    
+    .col-date {
+        font-size: 9px;
+        margin-bottom: 4px;
+        display: block;
+    }
+    
+    .col-type {
+        margin-bottom: 12px;
+        display: block;
+    }
+    
+    .col-title {
+        font-size: 28px;
+        line-height: 1.1;
+    }
+    
+    .col-creator {
+        font-size: 18px;
+        margin-top: 4px;
+        display: block;
+    }
 }
 
 .frequency-loading {
-    grid-column: 1 / -1;
     padding: 100px 0;
-    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
+    color: var(--text-muted);
     text-align: center;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
     opacity: 0.5;
-}
-
-/* RESPONSIVE BREAKPOINTS */
-@media (max-width: 1200px) {
-    .frequency-list {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media (max-width: 992px) {
-    .frequency-list {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-    
-    .music-page-title {
-        font-size: 6rem;
-    }
-}
-
-@media (max-width: 640px) {
-    .frequency-list {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        row-gap: 32px;
-    }
-    
-    .music-page-wrapper {
-        padding-top: 100px;
-    }
-    
-    .music-hero-header {
-        margin-bottom: 40px;
-    }
-    
-    .track-name-grid {
-        font-size: 11px;
-    }
 }
