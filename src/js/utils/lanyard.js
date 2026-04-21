@@ -397,7 +397,6 @@ function updateSkills(kv) {
     const skillsStr = kv ? kv.skills : null;
     const titleHTML = `<h3 class="arsenal-title">THE ARSENAL_</h3>`;
     
-    // Fallback original HTML structure
     const originalSkillsHTML = `
         <div class="arsenal-row"><span class="arsenal-name">HTML / CSS</span><span class="arsenal-line"></span><span class="arsenal-level">EXPERT</span></div>
         <div class="arsenal-row"><span class="arsenal-name">JAVASCRIPT</span><span class="arsenal-line"></span><span class="arsenal-level">ADVANCED</span></div>
@@ -406,14 +405,14 @@ function updateSkills(kv) {
         <div class="arsenal-row"><span class="arsenal-name">GIT</span><span class="arsenal-line"></span><span class="arsenal-level">PROFICIENT</span></div>
     `;
 
-    let targetHTML = '';
+    let dynamicSkillsHTML = '';
 
     if (skillsStr && skillsStr.trim() !== '') {
         const items = skillsStr.split(',').map(s => s.trim()).filter(s => s !== '');
         items.forEach(item => {
             const [name, level] = item.split(':').map(part => part.trim());
             if (name) {
-                targetHTML += `
+                dynamicSkillsHTML += `
                     <div class="arsenal-row">
                         <span class="arsenal-name">${escapeHTML(name)}</span>
                         <span class="arsenal-line"></span>
@@ -424,14 +423,8 @@ function updateSkills(kv) {
         });
     }
 
-    // Decide if we should update or fallback
-    if (!targetHTML) {
-        if (!listContainer.dataset.dynamic) return; // Already showing fallback
-        targetHTML = originalSkillsHTML;
-        delete listContainer.dataset.dynamic;
-    } else {
-        listContainer.dataset.dynamic = 'true';
-    }
+    // Always include original skills, then add dynamic ones
+    const targetHTML = originalSkillsHTML + dynamicSkillsHTML;
 
     // Comparison for redundancy
     const currentRowsRaw = listContainer.innerHTML.replace(titleHTML, '').trim();
@@ -440,11 +433,13 @@ function updateSkills(kv) {
     const oldRows = listContainer.querySelectorAll('.arsenal-row');
 
     if (typeof gsap !== 'undefined' && oldRows.length > 0) {
+        // If we are just adding/subtracting, a full fade-out might be jarring, 
+        // but for now, we'll use the cinematic transition logic.
         gsap.to(oldRows, {
             opacity: 0,
             x: -20,
-            duration: 0.4,
-            stagger: 0.05,
+            duration: 0.3,
+            stagger: 0.03,
             ease: "power2.in",
             onComplete: () => {
                 listContainer.innerHTML = titleHTML + targetHTML;
@@ -454,12 +449,9 @@ function updateSkills(kv) {
                     { 
                         opacity: 1, 
                         x: 0, 
-                        duration: 0.6, 
-                        stagger: 0.08, 
-                        ease: "power2.out",
-                        onComplete: () => {
-                            // Re-trigger magnetism if necessary or just let it be
-                        }
+                        duration: 0.5, 
+                        stagger: 0.05, 
+                        ease: "power2.out"
                     }
                 );
             }
