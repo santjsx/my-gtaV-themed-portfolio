@@ -115,15 +115,20 @@
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
-/* "Initiate" highlight */
+/* "Initiate" highlight & Active State */
+.nav-item.highlight,
+.nav-item.active {
+    color: var(--text-primary);
+}
+
 .nav-item.highlight {
     color: var(--accent-primary);
 }
 
-.nav-item.highlight::after {
+.nav-item::after {
     content: '';
     position: absolute;
-    bottom: -6px; /* Moved line to bottom */
+    bottom: -6px;
     left: 0;
     width: 100%;
     height: 1px;
@@ -131,12 +136,15 @@
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.3s ease;
+    pointer-events: none;
 }
 
-.nav-item.highlight:hover::after {
+.nav-item.active::after,
+.nav-item:hover::after {
     transform: scaleX(1);
     transform-origin: left;
 }
+
 
 /* Hide mobile elements on desktop */
 .mobile-menu-toggle {
