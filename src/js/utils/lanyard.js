@@ -260,12 +260,15 @@ function updateMoodDisplay(kv) {
     
     if (!moodDisplay || !moodContainer) return;
 
-    // Extract 'mood' (shorter command) or fallback to 'current_mood'
-    const currentMood = kv ? (kv.mood || kv.current_mood) : null;
-
+    // Prioritize 'mood' and strip any literal double quotes from the string
+    let currentMood = kv ? kv.mood : null;
+    
     if (currentMood) {
+        // Clean up: remove literal double quotes if they wrap the string (common bot artifact)
+        currentMood = currentMood.replace(/^"|"$/g, '');
+        
         moodDisplay.textContent = currentMood;
-        moodContainer.style.display = 'block'; // Show if data exists
+        moodContainer.style.display = 'block'; 
         
         // Add a nice fade-in effect if GSAP is available
         if (typeof gsap !== 'undefined') {
