@@ -91,17 +91,25 @@
 
 .character-name {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap; /* Ensure multi-line if needed on smaller screens */
     margin: 0;
+    gap: 0.1em;
 }
 
 .character-name span {
-    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-size: clamp(3.2rem, 10vw, 6.5rem);
     font-weight: 900;
     line-height: 0.85;
     letter-spacing: -0.04em;
     text-transform: uppercase;
     color: var(--text-primary);
+    display: inline-block;
+}
+
+/* Helper class for text splitting script */
+.char {
+    display: inline-block;
+    will-change: opacity, transform, filter;
 }
 
 .character-name-accent {

@@ -9,6 +9,7 @@ import { initContactSection } from './utils/contact.js';
 import { initLanyardWidget } from './utils/lanyard.js';
 import { initGSAPAnimations } from './utils/gsap-animations.js';
 import { initHeroCorrection } from './utils/hero-correction.js';
+import { initAboutReveal } from './utils/about-reveal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 0. Preloader (mobile only)
@@ -93,6 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 3.5. Hero correction sequence (Strike + Arrow)
         initHeroCorrection();
+
+        // 3.6. About cinematic reveal
+        initAboutReveal();
 
         // 4. Scroll reveal observer (now using GSAP ScrollTrigger batches)
         initScrollObserver();

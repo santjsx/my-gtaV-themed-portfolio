@@ -313,6 +313,11 @@
     gap: 8px;
 }
 
+#status-display {
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
 .hero-status-dot {
     width: 6px;
     height: 6px;

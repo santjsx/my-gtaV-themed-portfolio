@@ -2,6 +2,7 @@ import gsap from 'gsap';
 
 const DiscordID = '1284925883240550552';
 const API_URL = `https://api.lanyard.rest/v1/users/${DiscordID}`;
+const LANYARD_API_KEY = 'bc6ba6a2b964e5c0610729a5c973b1d6'; // Used for KV management/auth
 
 export function initLanyardWidget() {
     const toggleBtn = document.getElementById('lanyard-toggle');
@@ -83,6 +84,7 @@ async function fetchLanyardData() {
         
         if (json.success && json.data) {
             updateWidgetUI(json.data);
+            updateMoodDisplay(json.data.kv);
         }
     } catch (error) {
         console.error('Failed to fetch Lanyard data:', error);
@@ -200,6 +202,35 @@ function updateWidgetUI(data) {
         });
         
         activitiesContainer.innerHTML = htmlContent;
+    }
+}
+
+/**
+ * Updates the custom mood display using Lanyard KV data
+ * @param {Object} kv - Key-value pairs from Lanyard
+ */
+function updateMoodDisplay(kv) {
+    const moodContainer = document.getElementById('mood-block');
+    const moodDisplay = document.getElementById('status-display');
+    
+    if (!moodDisplay || !moodContainer) return;
+
+    // Extract 'mood' (shorter command) or fallback to 'current_mood'
+    const currentMood = kv ? (kv.mood || kv.current_mood) : null;
+
+    if (currentMood) {
+        moodDisplay.textContent = currentMood;
+        moodContainer.style.display = 'block'; // Show if data exists
+        
+        // Add a nice fade-in effect if GSAP is available
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(moodContainer, 
+                { opacity: 0, x: -10 }, 
+                { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }
+            );
+        }
+    } else {
+        moodContainer.style.display = 'none'; // Hide if empty
     }
 }
 
