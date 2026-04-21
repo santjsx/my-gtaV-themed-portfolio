@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Discord Lanyard Status Widget
     initLanyardWidget();
     
+    // 1. Lenis smooth scrolling
+    const lenis = setupLenis();
+    
     // Header scrolled state
     const header = document.getElementById('header');
     if (header) {

@@ -8,6 +8,8 @@
     position: relative;
     overflow: hidden;
     padding: var(--nav-height) 0 var(--space-12);
+    /* Promotion to layer */
+    transform: translateZ(0);
 }
 
 /* ── Premium Mesh Gradient Background ── */
@@ -21,6 +23,7 @@
         linear-gradient(145deg, rgba(12, 12, 14, 1) 0%, rgba(6, 6, 8, 1) 45%, rgba(0, 0, 0, 1) 100%);
     /* This creates a volumetric Apple-Pro-style dark void */
     opacity: 1;
+    will-change: transform;
 }
 
 /* ── Interactive Spotlight (CSS Var Driven) ── */
@@ -50,6 +53,16 @@
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 100%);
     transform: translateZ(-10px);
+    will-change: transform;
+}
+
+@media (max-width: 900px) {
+    .hero-grid-bg {
+        /* Simplify mask for mobile performance */
+        mask-image: none;
+        -webkit-mask-image: none;
+        opacity: 0.1;
+    }
 }
 
 /* ── Layout: Split Editorial ── */
