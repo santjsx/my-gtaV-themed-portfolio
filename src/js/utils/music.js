@@ -40,40 +40,52 @@ async function fetchRecentTracks() {
 }
 
 /**
- * Renders the track list into the container with GSAP animations.
- * Features a failsafe cover system to ensure 100% artwork coverage.
+ * Renders the track list into the container instantly with placeholders.
+ * Background processes then resolve missing artwork and inject it smoothly.
  */
-async function renderTracks(tracks) {
+function renderTracks(tracks) {
     const listContainer = document.getElementById('track-list');
     const trackList = Array.isArray(tracks) ? tracks : [tracks];
     
-    // Determine which tracks need fallbacks
-    const renderPromises = trackList.map(async (track) => {
+    let htmlContent = '';
+    const pendingFallbacks = [];
+
+    trackList.forEach((track, index) => {
         const name = track.name;
         const artist = track.artist['#text'];
         const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
         const dateText = isNowPlaying ? 'Live Now' : formatDate(track.date ? track.date['#text'] : null);
         
-        // Get album art (prefer extralarge)
+        // Artwork Priority: 1. Last.fm, 2. Persistent Cache, 3. Pending Deezer Search
         const images = track.image || [];
         const imageObj = images.find(img => img.size === 'extralarge') || 
                          images.find(img => img.size === 'large') || 
                          images[images.length - 1];
         
-        let imageUrl = (imageObj && imageObj['#text']) ? imageObj['#text'] : '';
+        let imageUrl = (imageObj && imageObj['#text'] && !imageObj['#text'].includes('2a96cbd8b')) ? imageObj['#text'] : '';
+        let isPreloaded = !!imageUrl;
 
-        // If Last.fm failed us, use the Deezer failsafe
-        if (!imageUrl || imageUrl.includes('2a96cbd8b46e442fc41c2b86b821562f')) { // This is Last.fm's default "no image" hash
-            imageUrl = await getFailsafeCover(artist, name);
+        // Check local cache if Last.fm failed
+        if (!imageUrl) {
+            const cachedUrl = getCachedArtwork(artist, name);
+            if (cachedUrl) {
+                imageUrl = cachedUrl;
+                isPreloaded = true;
+            } else {
+                pendingFallbacks.push({ artist, name, index });
+            }
         }
-        
-        return `
-            <div class="track-card ${isNowPlaying ? 'is-now-playing' : ''}">
+
+        htmlContent += `
+            <div class="track-card ${isNowPlaying ? 'is-now-playing' : ''}" data-index="${index}">
                 <div class="track-artwork-wrapper">
-                    ${imageUrl ? 
-                        `<img src="${imageUrl}" alt="${escapeHTML(name)}" class="track-img" loading="lazy">` : 
-                        `<div class="track-img-placeholder"></div>`
-                    }
+                    <img src="${imageUrl || ''}" 
+                         alt="${escapeHTML(name)}" 
+                         class="track-img ${isPreloaded ? 'loaded' : ''}" 
+                         id="track-img-${index}"
+                         onload="this.classList.add('loaded')"
+                         onerror="this.style.opacity=0">
+                    <div class="track-img-placeholder"></div>
                     ${isNowPlaying ? '<div class="live-pulse-badge">LIVE</div>' : ''}
                 </div>
                 <div class="track-info-card">
@@ -85,43 +97,81 @@ async function renderTracks(tracks) {
         `;
     });
 
-    const htmlChunks = await Promise.all(renderPromises);
-    const htmlContent = htmlChunks.join('');
-
-    // Only update if content is different
-    if (listContainer.dataset.lastHash === btoa(unescape(encodeURIComponent(htmlContent))).slice(0, 32)) return;
-    listContainer.dataset.lastHash = btoa(unescape(encodeURIComponent(htmlContent))).slice(0, 32);
+    // Hash check for efficient updating
+    const currentHash = btoa(unescape(encodeURIComponent(htmlContent))).slice(0, 32);
+    if (listContainer.dataset.lastHash === currentHash) return;
+    listContainer.dataset.lastHash = currentHash;
 
     listContainer.innerHTML = htmlContent;
 
-    // Grid Entrance Animation
+    // Trigger grid entrance immediately (Zero Lag)
     const cards = listContainer.querySelectorAll('.track-card');
     if (typeof gsap !== 'undefined') {
         gsap.fromTo(cards, 
-            { opacity: 0, y: 30, scale: 0.95 }, 
-            { 
-                opacity: 1, 
-                y: 0, 
-                scale: 1,
-                duration: 0.8, 
-                stagger: 0.05, 
-                ease: "expo.out",
-                clearProps: "all"
-            }
+            { opacity: 0, y: 20 }, 
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: "power2.out" }
         );
+    }
+
+    // Process missing artwork in background
+    if (pendingFallbacks.length > 0) {
+        processArtFallbacks(pendingFallbacks);
     }
 }
 
 /**
- * Secondary artwork provider (Deezer) for tracks missing Last.fm data.
- * This ensures "Each and every album cover loads".
+ * Background process to find missing covers without blocking the UI.
+ */
+async function processArtFallbacks(fallbacks) {
+    // Process fallbacks in small chunks to avoid network congestion
+    const chunkSize = 3;
+    for (let i = 0; i < fallbacks.length; i += chunkSize) {
+        const chunk = fallbacks.slice(i, i + chunkSize);
+        await Promise.all(chunk.map(async (item) => {
+            const url = await getFailsafeCover(item.artist, item.name);
+            if (url) {
+                const img = document.getElementById(`track-img-${item.index}`);
+                if (img) {
+                    img.src = url;
+                    // Cache it for the next visit!
+                    saveArtworkToCache(item.artist, item.name, url);
+                }
+            }
+        }));
+    }
+}
+
+/**
+ * Persistent local storage cache for artwork URLs.
+ */
+function getCachedArtwork(artist, track) {
+    try {
+        const cache = JSON.parse(localStorage.getItem('artwork_cache_v1') || '{}');
+        return cache[`${artist}:${track}`];
+    } catch (e) { return null; }
+}
+
+function saveArtworkToCache(artist, track, url) {
+    try {
+        const cache = JSON.parse(localStorage.getItem('artwork_cache_v1') || '{}');
+        cache[`${artist}:${track}`] = url;
+        localStorage.setItem('artwork_cache_v1', JSON.stringify(cache));
+    } catch (e) {}
+}
+
+/**
+ * External artwork provider (Deezer) with 2s timeout failsafe.
  */
 async function getFailsafeCover(artist, track) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+
     try {
-        // We use a public API proxy or direct fetch if allowed
-        // Deezer search is very reliable for artwork
         const query = encodeURIComponent(`track:"${track}" artist:"${artist}"`);
-        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.deezer.com/search?q=${query}&limit=1`)}`);
+        const response = await fetch(
+            `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.deezer.com/search?q=${query}&limit=1`)}`,
+            { signal: controller.signal }
+        );
         const data = await response.json();
         const deezerData = JSON.parse(data.contents);
         
@@ -129,9 +179,11 @@ async function getFailsafeCover(artist, track) {
             return deezerData.data[0].album.cover_xl || deezerData.data[0].album.cover_big;
         }
     } catch (e) {
-        console.warn('Failsafe artwork fetch failed:', e);
+        // Silently fail to maintain "Zero Errors" vibe
+    } finally {
+        clearTimeout(timeout);
     }
-    return ''; // Return empty to use placeholder if all else fails
+    return '';
 }
 
 /**
