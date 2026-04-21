@@ -54,38 +54,57 @@ function renderTracks(tracks) {
         const name = track.name;
         const artist = track.artist['#text'];
         const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
-        const dateText = isNowPlaying ? 'Now Playing' : formatDate(track.date ? track.date['#text'] : null);
+        const dateText = isNowPlaying ? 'Live Now' : formatDate(track.date ? track.date['#text'] : null);
+        
+        // Get album art (prefer extralarge)
+        const images = track.image || [];
+        const imageObj = images.find(img => img.size === 'extralarge') || 
+                         images.find(img => img.size === 'large') || 
+                         images[images.length - 1];
+        
+        // Fallback for missing images
+        const imageUrl = (imageObj && imageObj['#text']) ? imageObj['#text'] : '';
         
         htmlContent += `
-            <div class="track-row ${isNowPlaying ? 'is-now-playing' : ''}">
-                <div class="track-info">
-                    <span class="track-name">${escapeHTML(name)}</span>
-                    <span class="track-artist">by ${escapeHTML(artist)}</span>
+            <div class="track-card ${isNowPlaying ? 'is-now-playing' : ''}">
+                <div class="track-artwork-wrapper">
+                    ${imageUrl ? 
+                        `<img src="${imageUrl}" alt="${escapeHTML(name)}" class="track-img" loading="lazy">` : 
+                        `<div class="track-img-placeholder"></div>`
+                    }
+                    ${isNowPlaying ? '<div class="live-pulse-badge">LIVE</div>' : ''}
                 </div>
-                <div class="track-meta">
-                    ${dateText}
+                <div class="track-info-card">
+                    <h4 class="track-name-grid">${escapeHTML(name)}</h4>
+                    <p class="track-artist-grid">${escapeHTML(artist)}</p>
+                    <span class="track-time-grid">${dateText}</span>
                 </div>
             </div>
         `;
     });
 
-    // We check if content changed to avoid redundant re-renders
-    if (listContainer.innerHTML === htmlContent) return;
+    // Only update if content is different
+    if (listContainer.dataset.lastHash === btoa(htmlContent).slice(0, 32)) return;
+    listContainer.dataset.lastHash = btoa(htmlContent).slice(0, 32);
 
     listContainer.innerHTML = htmlContent;
 
-    // Cinematic Entrance Stagger
-    const rows = listContainer.querySelectorAll('.track-row');
+    // Grid Entrance Animation
+    const cards = listContainer.querySelectorAll('.track-card');
     if (typeof gsap !== 'undefined') {
-        gsap.fromTo(rows, 
-            { opacity: 0, x: -20, filter: "blur(5px)" }, 
+        gsap.fromTo(cards, 
+            { 
+                opacity: 0, 
+                y: 30,
+                scale: 0.95
+            }, 
             { 
                 opacity: 1, 
-                x: 0, 
-                filter: "blur(0px)",
+                y: 0, 
+                scale: 1,
                 duration: 0.8, 
-                stagger: 0.08, 
-                ease: "power2.out",
+                stagger: 0.05, 
+                ease: "expo.out",
                 clearProps: "all"
             }
         );
