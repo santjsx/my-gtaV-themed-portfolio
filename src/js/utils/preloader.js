@@ -42,59 +42,58 @@ export function initPreloader() {
             }, "-=0.6")
             .to(bottomMeta, { opacity: 1, y: 0, duration: 0.8 }, "-=0.8");
 
-        // ── 3. Loading Logic ──
-        let loadProgress = 0;
-        let targetProgress = 0;
+        // ── 3. Loading Logic (Smooth GSAP Counter) ──
         let isFullyLoaded = false;
+        const counterObj = { value: 0 };
 
-        const setTarget = (val) => {
-            if (val > targetProgress) targetProgress = val;
-        };
-
-        const updateCounter = () => {
-            if (percentEl && loadProgress < targetProgress) {
-                // Smooth interpolation towards target
-                loadProgress += (targetProgress - loadProgress) * 0.1 + 0.2;
-                
-                if (loadProgress > targetProgress) loadProgress = targetProgress;
-                
-                percentEl.textContent = Math.floor(loadProgress).toString().padStart(2, '0');
-            }
-
-            if (loadProgress < 100) {
-                requestAnimationFrame(updateCounter);
-            } else if (loadProgress >= 100 && !isFullyLoaded) {
-                isFullyLoaded = true;
-                triggerExitSequence();
-            }
-        };
-        requestAnimationFrame(updateCounter);
-
-        // simulated steps - safety checked
-        setTimeout(() => { setTarget(25); }, 200);
-        setTimeout(() => { setTarget(50); }, 600);
-        setTimeout(() => { setTarget(85); }, 1100);
-
-        // Window Load Promise
-        const windowLoad = new Promise(res => {
-            if (document.readyState === 'complete') {
-                res();
-            } else {
-                window.addEventListener('load', res, { once: true });
+        // Initial visual crawl (0 to 90)
+        // This ensures the user sees progress immediately
+        const counterTl = gsap.to(counterObj, {
+            value: 90,
+            duration: 3,
+            ease: "power1.inOut",
+            onUpdate: () => {
+                if (percentEl) {
+                    percentEl.textContent = Math.floor(counterObj.value).toString().padStart(2, '0');
+                }
             }
         });
 
-        // Failsafe: Resolve after 3.5s max
-        const failsafe = new Promise(res => setTimeout(res, 3500));
+        const triggerExit = () => {
+            if (isFullyLoaded) return;
+            isFullyLoaded = true;
+            
+            // Finish the counter to 100 smoothly
+            counterTl.kill();
+            gsap.to(counterObj, {
+                value: 100,
+                duration: 0.8,
+                ease: "power2.out",
+                onUpdate: () => {
+                    if (percentEl) {
+                        percentEl.textContent = Math.floor(counterObj.value).toString().padStart(2, '0');
+                    }
+                },
+                onComplete: () => {
+                    triggerExitSequence();
+                }
+            });
+        };
+
+        // Window Load Promise
+        const windowLoad = new Promise(res => {
+            if (document.readyState === 'complete') res();
+            else window.addEventListener('load', res, { once: true });
+        });
+
+        // Failsafe: Continue anyway after 4s
+        const failsafe = new Promise(res => setTimeout(res, 4000));
         
         fetch('/Santhosh%20Reddy%20Resume.pdf').catch(() => null);
 
         Promise.race([windowLoad, failsafe]).then(() => {
-            // Intentional delay to allow the "Entrance Animation" to breathe 
-            // before we slam the progress to 100%
-            setTimeout(() => {
-                setTarget(100);
-            }, 1500); 
+            // Once loaded, we wait a beat for the entrance to finish, then hit 100
+            setTimeout(triggerExit, 1000);
         });
 
         // ── 4. Exit Sequence (The "Wow" Moment) ──
@@ -109,14 +108,12 @@ export function initPreloader() {
             });
 
             exitTl
-                // A. Subliminal Tension: Slight jitter/tighten before release
                 .to(nameEls, {
-                    scale: 1.05,
-                    letterSpacing: "0.1em",
+                    scale: 1.02,
+                    letterSpacing: "0.05em",
                     duration: 0.8,
                     ease: "power2.inOut"
                 })
-                // B. The Flash Cut: Everything fades to white/black instantly
                 .to([topMeta, bottomMeta, nameEls], {
                     opacity: 0,
                     y: -20,
@@ -124,7 +121,6 @@ export function initPreloader() {
                     stagger: 0.05,
                     ease: "power4.in"
                 })
-                // C. The Cinematic Split: Open the Letterboxes and Panels
                 .to(letterboxes, {
                     scaleY: 0,
                     opacity: 0,
