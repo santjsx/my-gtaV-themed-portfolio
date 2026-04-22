@@ -426,6 +426,41 @@
     display: none;
 }
 
+.hint-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hint-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ff3b30; /* iOS Red */
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 800;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 1.5px solid #12632b; /* Match green bubble border/bg */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: badgePulse 2s infinite;
+    z-index: 2;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.6); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 4px rgba(255, 59, 48, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+}
+
 .hint-icon {
     font-size: 12px;
 }
