@@ -30,11 +30,36 @@
     <span>You are not your code.</span>
   </div>
 
-  <!-- Mobile Premium Preloader -->
-  <div id="premium-preloader" class="mobile-only-loader noise-bg-loader">
+  <!-- Cinematic Title Sequence Loader -->
+  <div id="premium-preloader" class="cinematic-loader">
+    <!-- Cinematic Shutter Panels -->
+    <div class="loader-panel panel-top"></div>
+    <div class="loader-panel panel-bottom"></div>
+    
+    <!-- Letterbox "Cinemascope" Bars -->
+    <div class="loader-letterbox lb-top" aria-hidden="true"></div>
+    <div class="loader-letterbox lb-bottom" aria-hidden="true"></div>
+
+    <!-- Analog Film Texture Layer -->
+    <div class="loader-grain" aria-hidden="true"></div>
+
     <div class="loader-content">
-      <div class="loader-counter"><span id="loader-percent">00</span><span class="loader-symbol">%</span></div>
-      <div class="loader-label" id="loader-dynamic-text">Initializing</div>
+      <div class="loader-top-meta">
+        <span class="loader-subtitle" id="loader-dynamic-text">ARCHIVE // 2026 // AD_SR</span>
+      </div>
+      
+      <div class="loader-center-title">
+        <div class="line-wrapper"><h1 class="loader-name">SANTHOSH</h1></div>
+        <div class="line-wrapper"><h1 class="loader-name accent">REDDY</h1></div>
+      </div>
+
+      <div class="loader-bottom-meta">
+        <div class="loader-counter">
+          <span class="loader-prefix">SERIAL_NO: </span>
+          <span id="loader-percent">00</span>
+          <span class="loader-symbol">%</span>
+        </div>
+      </div>
     </div>
   </div>
 
