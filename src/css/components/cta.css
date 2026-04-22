@@ -36,7 +36,7 @@
 }
 
 .danger-text {
-    color: var(--accent-danger);
+    color: var(--accent-primary);
 }
 
 .contact-desc {
@@ -47,7 +47,7 @@
     max-width: 400px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-left: 2px solid var(--accent-danger);
+    border-left: 2px solid var(--accent-primary);
     padding-left: var(--space-4);
 }
 
