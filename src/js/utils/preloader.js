@@ -32,42 +32,47 @@ export function initPreloader() {
         });
 
         entranceTl
-            .to(topMeta, { opacity: 1, y: 0, duration: 1 }, "+=0.5")
+            .to(topMeta, { opacity: 1, y: 0, duration: 1 }, "+=0.2")
+            .to(bottomMeta, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4") // Show counter earlier
             .to(nameEls, {
                 y: 0,
                 opacity: 1,
                 filter: "blur(0px)",
                 stagger: 0.2,
-                ease: "expo.out"
-            }, "-=0.6")
-            .to(bottomMeta, { opacity: 1, y: 0, duration: 0.8 }, "-=0.8");
+                ease: "expo.out",
+                onStart: () => {
+                    // Start the counter precisely when the name reveal begins
+                    startCounterCrawl();
+                }
+            }, "-=0.6");
 
         // ── 3. Loading Logic (Smooth GSAP Counter) ──
         let isFullyLoaded = false;
         const counterObj = { value: 0 };
+        let counterTl;
 
-        // Initial visual crawl (0 to 90)
-        // This ensures the user sees progress immediately
-        const counterTl = gsap.to(counterObj, {
-            value: 90,
-            duration: 3,
-            ease: "power1.inOut",
-            onUpdate: () => {
-                if (percentEl) {
-                    percentEl.textContent = Math.floor(counterObj.value).toString().padStart(2, '0');
+        function startCounterCrawl() {
+            counterTl = gsap.to(counterObj, {
+                value: 90,
+                duration: 4, // Slower crawl for better visibility
+                ease: "none", // Linear for better number counting feel
+                onUpdate: () => {
+                    if (percentEl) {
+                        percentEl.textContent = Math.floor(counterObj.value).toString().padStart(2, '0');
+                    }
                 }
-            }
-        });
+            });
+        }
 
         const triggerExit = () => {
             if (isFullyLoaded) return;
             isFullyLoaded = true;
             
             // Finish the counter to 100 smoothly
-            counterTl.kill();
+            if (counterTl) counterTl.kill();
             gsap.to(counterObj, {
                 value: 100,
-                duration: 0.8,
+                duration: 1.2, // Slower zip to 100 for visibility
                 ease: "power2.out",
                 onUpdate: () => {
                     if (percentEl) {
