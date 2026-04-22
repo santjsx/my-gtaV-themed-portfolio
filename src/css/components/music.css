@@ -10,17 +10,22 @@
 }
 
 .back-home-link {
+    display: inline-flex;
+    align-items: center;
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
-    color: var(--text-muted);
+    color: var(--text-secondary); /* Brighter base color */
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    transition: color 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.8;
 }
 
 .back-home-link:hover {
     color: var(--accent-primary);
+    opacity: 1;
+    transform: translateX(-6px); /* Sophisticated slide-on-hover */
 }
 
 .music-hero-header {
@@ -34,7 +39,14 @@
     line-height: 0.85;
     letter-spacing: -0.06em;
     margin: 0 0 24px;
-    color: var(--text-primary);
+    
+    /* Cinematic Gradient */
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--text-primary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    padding-right: 0.2em;
 }
 
 .music-page-tagline {
