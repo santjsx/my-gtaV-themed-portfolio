@@ -47,16 +47,34 @@
         0 0 20px rgba(242, 139, 130, 0.1);
 }
 
-/* Active (Expanded) State */
+/* Active (Expanded) State — THE PHONE */
 .lanyard-island.active {
-    width: 320px;
-    height: auto;
-    padding: 16px;
-    border-radius: 18px;
+    width: 260px;
+    height: 480px;
+    padding: 20px;
+    border-radius: 40px; /* Ultra-rounded phone corners */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border-color: rgba(242, 139, 130, 0.2);
+    border: 6px solid rgba(255, 255, 255, 0.05); /* The Bezel */
+    background: linear-gradient(180deg, rgba(20, 20, 22, 0.95), rgba(10, 10, 12, 0.98));
+    box-shadow: 
+        0 24px 64px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+/* The Dynamic Island Notch */
+.lanyard-island.active::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 20px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10;
 }
 
 /* ── Avatar ── */
@@ -131,24 +149,30 @@
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    margin-top: 56px;
-    gap: 16px;
+    margin-top: 40px; /* Leave space for notch and status */
+    gap: 20px;
+    width: 100%;
 }
 
 /* ── Specific Sections ── */
 .lanyard-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .lanyard-section-label {
     font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 600;
+    font-size: 8px;
+    font-weight: 700;
     color: var(--text-muted);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
+    margin-bottom: 2px;
 }
 
 /* ── Expanded Message Box (iMessage Style) ── */
@@ -161,14 +185,14 @@
 }
 
 .msg-bubble {
-    background: linear-gradient(135deg, #12632b, #0c4a1e);
-    padding: 10px 14px;
-    border-radius: 16px 16px 4px 16px;
-    max-width: 90%;
+    background: #248bf5; /* Standard iMessage Blue */
+    padding: 12px 16px;
+    border-radius: 18px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 4px 12px rgba(18, 99, 43, 0.3);
+    box-shadow: 0 4px 12px rgba(36, 139, 245, 0.2);
 }
 
 .island-greeting {
@@ -206,10 +230,10 @@
 
 .island-close-btn {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 28px;
-    height: 28px;
+    top: 36px; /* Below the status bar area */
+    right: 16px;
+    width: 24px;
+    height: 24px;
     display: none;
     align-items: center;
     justify-content: center;
@@ -239,19 +263,26 @@
 
 .island-status-text {
     font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent);
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
+    color: var(--accent-primary);
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
     align-items: center;
-    justify-content: center;
     gap: 4px;
-    box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-primary) 10%, transparent);
+    box-shadow: none;
+}
+
+.lanyard-section:has(.island-header) {
+    background: transparent;
+    border: none;
+    padding: 0 4px;
+    margin-top: -10px;
+    order: -1; /* Move status to the very top */
 }
 
 .status-prefix {

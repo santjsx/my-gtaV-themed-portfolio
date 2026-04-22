@@ -24,16 +24,16 @@ export function initLanyardWidget() {
 
             gsap.fromTo(toggleBtn, 
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
-                { height: "auto", width: 320, padding: 16, borderRadius: 18, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
+                { height: 480, width: 260, padding: 20, borderRadius: 40, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
             );
 
             const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
             gsap.to(avatarWrapper, {
-                top: 16,
-                left: 16,
-                width: 44,
-                height: 44,
-                borderRadius: 14,
+                top: 40,
+                left: 20,
+                width: 32,
+                height: 32,
+                borderRadius: 10,
                 duration: 0.8,
                 ease: "expo.out"
             });
