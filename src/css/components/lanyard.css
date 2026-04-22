@@ -342,6 +342,7 @@
     align-items: center;
     gap: 4px;
     box-shadow: none;
+    margin-left: 40px; /* Shifted to the right to clear the pfp */
 }
 
 .lanyard-section:has(.island-header) {
