@@ -71,6 +71,7 @@
     padding: 24px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
@@ -131,14 +132,15 @@
     font-family: var(--font-serif);
     font-size: 14px;
     font-style: italic;
-    color: var(--text-secondary);
+    color: var(--text-primary); /* Brightened */
+    opacity: 0.8;
     margin: 0;
 }
 
 .card-meta-box {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.08); /* Brighter border */
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -146,14 +148,15 @@
 
 .card-meta-item {
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: 9px; /* Slightly larger */
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-primary); /* Much brighter */
+    opacity: 0.7;
 }
 
 .card-meta-label {
-    opacity: 0.5;
+    opacity: 0.4;
     margin-right: 4px;
 }
 
