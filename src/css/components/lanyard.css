@@ -74,15 +74,7 @@
     overflow: visible;
 }
 
-.lanyard-island.active .island-avatar-wrapper {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    margin-right: 12px;
-}
+
 
 .lanyard-avatar {
     width: 100%;
@@ -139,7 +131,7 @@
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    margin-top: 16px;
+    margin-top: 56px;
     gap: 16px;
 }
 

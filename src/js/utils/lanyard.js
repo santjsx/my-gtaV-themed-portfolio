@@ -26,10 +26,34 @@ export function initLanyardWidget() {
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
                 { height: "auto", width: 320, padding: 16, borderRadius: 18, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
             );
+
+            const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
+            gsap.to(avatarWrapper, {
+                top: 16,
+                left: 16,
+                width: 44,
+                height: 44,
+                borderRadius: 14,
+                duration: 0.8,
+                ease: "expo.out"
+            });
         } else {
             const content = toggleBtn.querySelector('.island-content');
             gsap.to(content, { opacity: 0, y: -10, duration: 0.2, ease: "power2.in" });
             
+            const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
+            gsap.to(avatarWrapper, {
+                top: 6,
+                left: 6,
+                width: 54,
+                height: 54,
+                borderRadius: 16,
+                duration: 0.6,
+                delay: 0.1,
+                ease: "expo.out",
+                clearProps: "all"
+            });
+
             gsap.to(toggleBtn, {
                 height: 68, 
                 width: 68, 
