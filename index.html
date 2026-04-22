@@ -115,10 +115,7 @@
             <span class="meta-label">Status</span>
             <span class="meta-value"><span class="hero-status-dot"></span> Available</span>
           </div>
-          <div class="meta-block" id="mood-block" style="display: none;">
-            <span class="meta-label">Mood</span>
-            <span class="meta-value" id="status-display"></span>
-          </div>
+
           <div class="meta-block">
             <span class="meta-label">Focus</span>
             <span class="meta-value">Frontend / UI</span>
@@ -439,22 +436,41 @@
 
   <!-- 8. Floating Lanyard Status Widget -->
   <div id="lanyard-widget" class="lanyard-container">
-    <div class="lanyard-hint">
-      <span class="hint-text">"Check out what Santhosh is doing"</span>
-      <span class="hint-subtext">Click to view Live</span>
+    <div class="lanyard-hint wobble-hint">
+      <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span class="hint-text">Santhosh sent you a message</span>
     </div>
     <div class="lanyard-island" id="lanyard-toggle">
       <div class="island-avatar-wrapper">
-        <img src="images/pixel%20art.jpg" alt="Santhosh" class="lanyard-avatar">
+        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img">
         <div class="lanyard-indicator" id="lanyard-indicator"></div>
       </div>
       <div class="island-content">
-        <div class="island-header">
-          <span class="island-status-dot" id="lanyard-status-dot"></span>
-          <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+        <div class="lanyard-section">
+          <span class="lanyard-section-label">MESSAGE</span>
+          <div class="island-message-box imessage-style">
+            <div class="msg-bubble">
+              <p class="island-greeting">Hello! Thank you for visiting my portfolio. Please take a look around, and feel free to reach out if you'd like to collaborate.</p>
+              <a href="#contact" class="msg-contact-btn" id="lanyard-contact-btn">Reply</a>
+            </div>
+          </div>
         </div>
-        <div class="island-activities" id="lanyard-activities">
-          <!-- Activities will be populated here by JS -->
+
+        <div class="lanyard-section">
+          <span class="lanyard-section-label">MOOD</span>
+          <div class="island-header">
+            <span class="island-status-dot" id="lanyard-status-dot"></span>
+            <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+          </div>
+        </div>
+
+        <div class="lanyard-section">
+          <span class="lanyard-section-label">ACTIVITY</span>
+          <div class="island-activities" id="lanyard-activities">
+            <!-- Activities will be populated here by JS -->
+          </div>
         </div>
       </div>
       <button class="island-close-btn" id="lanyard-close" aria-label="Close widget">&times;</button>

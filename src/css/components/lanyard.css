@@ -71,7 +71,7 @@
     flex-shrink: 0;
     transition: all 0.5s var(--ease-out);
     background: var(--bg-dark);
-    overflow: hidden;
+    overflow: visible;
 }
 
 .lanyard-island.active .island-avatar-wrapper {
@@ -115,7 +115,9 @@
     box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
 }
 .lanyard-island.status-idle .lanyard-indicator { background: #f59e0b; }
-.lanyard-island.status-dnd .lanyard-indicator {
+.lanyard-island.status-dnd .lanyard-indicator,
+.lanyard-island.status-offline .lanyard-indicator,
+.lanyard-island.status-inactive .lanyard-indicator {
     background: var(--accent-danger);
     box-shadow: 0 0 8px rgba(211, 47, 47, 0.5);
 }
@@ -138,15 +140,75 @@
     visibility: visible;
     transform: translateY(0);
     margin-top: 16px;
+    gap: 16px;
+}
+
+/* ── Specific Sections ── */
+.lanyard-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lanyard-section-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ── Expanded Message Box (iMessage Style) ── */
+.island-message-box.imessage-style {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.msg-bubble {
+    background: linear-gradient(135deg, #12632b, #0c4a1e);
+    padding: 10px 14px;
+    border-radius: 16px 16px 4px 16px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(18, 99, 43, 0.3);
+}
+
+.island-greeting {
+    font-size: 12px;
+    color: #ffffff;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.msg-contact-btn {
+    background: rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 20px;
+    align-self: flex-start;
+    transition: background 0.2s ease;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.msg-contact-btn:hover {
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .island-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 12px;
     position: relative;
 }
 
@@ -185,18 +247,27 @@
 
 .island-status-text {
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--accent-primary);
+    font-size: 10px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
+    background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 25%, transparent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--accent-primary) 10%, transparent);
 }
-.island-status-text::before {
-    content: "> SYSTEM [";
+
+.status-prefix {
     color: var(--text-secondary);
 }
-.island-status-text::after {
-    content: "]";
-    color: var(--text-secondary);
+
+.status-value {
+    color: var(--accent-primary);
 }
 
 .island-status-dot {
@@ -343,17 +414,16 @@
     bottom: calc(100% + 12px);
     right: 0;
     display: flex;
-    flex-direction: column;
-    background: rgba(20, 20, 22, 0.9);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 10px 14px;
-    border-radius: 14px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #12632b, #0c4a1e);
+    padding: 8px 12px;
+    border-radius: 14px 14px 4px 14px;
+    box-shadow: 0 6px 20px rgba(18, 99, 43, 0.4);
 
     transform-origin: bottom right;
-    animation: floatHint 3s ease-in-out infinite;
+    animation: wobbleHint 4s ease-in-out infinite;
     transition: opacity 0.3s ease, transform 0.4s var(--ease-spring), visibility 0.3s ease;
     user-select: none;
     pointer-events: none;
@@ -361,35 +431,21 @@
 }
 
 .lanyard-hint::after {
-    content: '';
-    position: absolute;
-    right: 28px;
-    bottom: -5px;
-    width: 10px;
-    height: 10px;
-    background: rgba(20, 20, 22, 0.9);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    transform: rotate(45deg);
-    border-radius: 0 0 3px 0;
+    display: none;
+}
+
+.hint-icon {
+    font-size: 12px;
 }
 
 .hint-text {
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-primary);
-    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 500;
+    color: #ffffff;
+    text-transform: none;
     white-space: nowrap;
-}
-
-.hint-subtext {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 9px;
-    color: var(--accent-danger);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 2px;
+    letter-spacing: 0;
 }
 
 .lanyard-container:hover .lanyard-hint,
@@ -400,9 +456,13 @@
     transform: translateY(4px) scale(0.95);
 }
 
-@keyframes floatHint {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+@keyframes wobbleHint {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    5% { transform: translateY(-4px) rotate(-3deg); }
+    10% { transform: translateY(-4px) rotate(3deg); }
+    15% { transform: translateY(-4px) rotate(-3deg); }
+    20% { transform: translateY(-1px) rotate(1deg); }
+    25% { transform: translateY(0) rotate(0deg); }
 }
 
 @media (max-width: 768px) {

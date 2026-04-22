@@ -56,6 +56,14 @@ export function initLanyardWidget() {
         });
     }
 
+    // Contact button inside the widget
+    const contactBtn = document.getElementById('lanyard-contact-btn');
+    if (contactBtn) {
+        contactBtn.addEventListener('click', () => {
+            if(toggleBtn.classList.contains('active')) toggleBtn.click();
+        });
+    }
+
     // Close when clicking outside
     document.addEventListener('click', (e) => {
         if (!toggleBtn.contains(e.target) && toggleBtn.classList.contains('active')) {
@@ -84,7 +92,6 @@ async function fetchLanyardData() {
         
         if (json.success && json.data) {
             updateWidgetUI(json.data);
-            updateMoodDisplay(json.data.kv);
             updateHeroQuote(json.data.kv);
             updateCustomColors(json.data.kv);
             updateAboutPhoto(json.data.kv);
@@ -100,27 +107,38 @@ function updateWidgetUI(data) {
     const statusText = document.getElementById('lanyard-status-text');
     const activitiesContainer = document.getElementById('lanyard-activities');
     
-    // Update basic status (online, idle, dnd, offline)
-    const status = data.discord_status;
+    let mood = data.kv ? data.kv.mood : null;
+    if (mood) mood = mood.replace(/^"|"$/g, '');
+
+    const activities = data.activities || [];
+    const isSpotify = data.listening_to_spotify;
+
+    // Determine resolved status
+    let status = data.discord_status;
+    if (!mood && activities.length === 0 && !isSpotify) {
+        status = 'inactive';
+    }
     
     // Reset classes
-    island.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline');
+    island.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline', 'status-inactive');
     
     // Apply new status
     island.classList.add(`status-${status}`);
+    
     if (statusText) {
-        statusText.textContent = status.toUpperCase();
+        const displayStatus = status === 'inactive' ? 'OFFLINE' : status.toUpperCase();
+        statusText.innerHTML = mood 
+            ? `<span class="status-prefix">CURRENT MOOD:</span> <span class="status-value">${escapeHTML(mood)}</span>` 
+            : `<span class="status-prefix">STATUS:</span> <span class="status-value">${displayStatus}</span>`;
     }
     
     // Render activities
     if (activitiesContainer) {
-        const activities = data.activities || [];
-        const isSpotify = data.listening_to_spotify;
         
         if (activities.length === 0 && !isSpotify) {
             activitiesContainer.innerHTML = `
                 <div class="lanyard-offline-message">
-                    Not currently engaged in any active tasks. Probably grabbing a coffee or AFK.
+                    Currently offline. Engaged in deep work or away from the desk.
                 </div>
             `;
             return;
@@ -257,33 +275,6 @@ function updateHeroQuote(kv) {
     }
 }
 
-function updateMoodDisplay(kv) {
-    const moodContainer = document.getElementById('mood-block');
-    const moodDisplay = document.getElementById('status-display');
-    
-    if (!moodDisplay || !moodContainer) return;
-
-    // Prioritize 'mood' and strip any literal double quotes from the string
-    let currentMood = kv ? kv.mood : null;
-    
-    if (currentMood) {
-        // Clean up: remove literal double quotes if they wrap the string (common bot artifact)
-        currentMood = currentMood.replace(/^"|"$/g, '');
-        
-        moodDisplay.textContent = currentMood;
-        moodContainer.style.display = 'block'; 
-        
-        // Add a nice fade-in effect if GSAP is available
-        if (typeof gsap !== 'undefined') {
-            gsap.fromTo(moodContainer, 
-                { opacity: 0, x: -10 }, 
-                { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }
-            );
-        }
-    } else {
-        moodContainer.style.display = 'none'; // Hide if empty
-    }
-}
 
 /**
  * Updates the site's accent colors using Lanyard KV data
@@ -323,12 +314,15 @@ function updateCustomColors(kv) {
 }
 
 /**
- * Updates the about section portrait using Lanyard KV data
+ * Updates the about and widget portraits using Lanyard KV data
  * @param {Object} kv - Key-value pairs from Lanyard
  */
 function updateAboutPhoto(kv) {
-    const imgEl = document.getElementById('about-image');
-    if (!imgEl) return;
+    const mainImg = document.getElementById('about-image');
+    const lanyardImg = document.getElementById('lanyard-avatar-img');
+    const imagesToUpdate = [mainImg, lanyardImg].filter(Boolean);
+    
+    if (imagesToUpdate.length === 0) return;
 
     const originalSrc = 'images/santhoshh.webp';
     const newSrc = kv ? kv.about_photo_url : null;
@@ -336,20 +330,23 @@ function updateAboutPhoto(kv) {
     // Choose the target source
     const targetSrc = (newSrc && newSrc.trim() !== '') ? newSrc : originalSrc;
 
-    // Prevent redundant transitions
-    if (imgEl.dataset.currentSrc === targetSrc) return;
+    // Use the first available image to check for transition redundancy
+    const refImg = imagesToUpdate[0];
+    if (refImg.dataset.currentSrc === targetSrc) return;
 
     // Check if the source is actually different (ignoring path prefixes for local files)
-    const currentPath = imgEl.src.split('/').pop();
+    const currentPath = refImg.src.split('/').pop();
     const targetPath = targetSrc.split('/').pop();
     if (currentPath === targetPath && !targetSrc.startsWith('http')) {
-        imgEl.dataset.currentSrc = targetSrc;
+        imagesToUpdate.forEach(img => img.dataset.currentSrc = targetSrc);
         return;
     }
 
     // Preload to ensure smooth GSAP transition
     const tempImg = new Image();
-    tempImg.onload = () => transitionImage(imgEl, targetSrc);
+    tempImg.onload = () => {
+        imagesToUpdate.forEach(img => transitionImage(img, targetSrc));
+    };
     tempImg.onerror = () => {
         if (targetSrc !== originalSrc) {
             console.warn('Dynamic image failed to load, reverting to default.');
