@@ -468,12 +468,6 @@
         margin-top: -64px;
     }
 
-    .character-name {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-    }
-
     .character-name span {
         font-size: clamp(3rem, 12vw, 5rem);
     }
