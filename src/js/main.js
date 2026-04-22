@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Lenis smooth scrolling (Single initialization)
     const lenis = setupLenis();
+
+    // 2. Fundamental UI Initialization (Non-blocking)
+    initResumeDrawer();
+    initContactSection();
+    initLanyardWidget();
     
     // Header scrolled state
     const header = document.getElementById('header');
