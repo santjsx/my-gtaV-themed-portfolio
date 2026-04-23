@@ -23,9 +23,22 @@ export function initLanyardWidget() {
             fetchLanyardData(); // Refresh data
             updatePhoneClock(); // Set live clock
 
+            // Read the CSS-computed target size (respects media queries)
+            const computed = getComputedStyle(toggleBtn);
+            const targetW = parseFloat(computed.width);
+            const targetH = parseFloat(computed.height);
+            const targetR = parseFloat(computed.borderRadius) || 44;
+
             gsap.fromTo(toggleBtn, 
                 { height: 68, width: 68, padding: 6, borderRadius: 22 }, 
-                { height: 600, width: 300, padding: 0, borderRadius: 44, duration: 0.8, ease: "expo.out", clearProps: "all", onComplete: () => isAnimating = false }
+                { 
+                    height: targetH, width: targetW, padding: 0, borderRadius: targetR, 
+                    duration: 0.8, ease: "expo.out", 
+                    onComplete: () => {
+                        gsap.set(toggleBtn, { clearProps: "width,height,padding,borderRadius,inset,top,left,right,bottom,transform" });
+                        isAnimating = false;
+                    }
+                }
             );
 
             const avatarWrapper = toggleBtn.querySelector('.island-avatar-wrapper');
