@@ -678,35 +678,40 @@
 
     .lanyard-island.active {
         position: fixed;
-        bottom: 12px;
-        right: 12px;
-        width: calc(100vw - 24px);
-        max-width: 360px;
-        height: calc(100dvh - 24px);
-        max-height: 700px;
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%);
+        width: calc(100vw - 32px);
+        max-width: 380px;
+        height: calc(100dvh - 40px);
         border-radius: 40px;
-        border-width: 5px;
+        border-width: 4px;
         z-index: 1001;
     }
 
     .lanyard-island.active .island-content {
-        padding: 6px 14px 0;
+        padding: 0 14px;
         width: 100%;
     }
 
+    .lanyard-island.active .phone-status-bar {
+        padding: 14px 22px 6px;
+    }
+
     .lanyard-island.active .phone-screen-scroll {
-        gap: 12px;
+        gap: 14px;
+        padding-top: 40px;
+    }
+
+    .lanyard-island.active .phone-nav-bar {
+        padding: 10px 0 6px;
     }
 
     .lanyard-island.active .phone-nav-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .lanyard-hint {
-        display: flex;
-        transform: scale(0.85);
-        bottom: calc(100% + 8px);
+        width: 42px;
+        height: 42px;
     }
 
     .lanyard-island.active .phone-gesture-bar {
@@ -744,7 +749,13 @@
         padding: 14px 16px;
     }
 
-    /* Hide side buttons on mobile since the phone is edge-to-edge */
+    .lanyard-hint {
+        display: flex;
+        transform: scale(0.85);
+        bottom: calc(100% + 8px);
+    }
+
+    /* Hide side buttons on mobile */
     .lanyard-container:has(.lanyard-island.active)::before,
     .lanyard-container:has(.lanyard-island.active)::after {
         display: none;
@@ -753,7 +764,9 @@
 
 @media (max-width: 380px) {
     .lanyard-island.active {
+        width: calc(100vw - 20px);
+        height: calc(100dvh - 24px);
         border-radius: 36px;
-        border-width: 4px;
+        border-width: 3px;
     }
 }
