@@ -43,10 +43,12 @@ async function fetchMediaLog() {
             const topData = await topRes.json();
             console.log('🎵 TOP TRACKS RESPONSE:', topData);
 
-            // Check for Now Playing (Isolated)
+            // Check for Now Playing (Primary: Last.fm, Fallback: Lanyard for real-time)
             let isLive = false;
             let nowPlaying = null;
+            
             try {
+                // 1. Primary: Last.fm
                 const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=2`;
                 const recentRes = await fetch(recentUrl);
                 const recentData = await recentRes.json();
@@ -54,9 +56,26 @@ async function fetchMediaLog() {
                 const tracks = (recentData && recentData.recenttracks && recentData.recenttracks.track) ? 
                                (Array.isArray(recentData.recenttracks.track) ? recentData.recenttracks.track : [recentData.recenttracks.track]) : [];
                 
-                // The current track is always at index 0
                 nowPlaying = tracks[0] || null;
                 isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+
+                // 2. Fallback: Lanyard (Real-time Spotify check)
+                if (!isLive) {
+                    const lanyardRes = await fetch(`https://api.lanyard.rest/v1/users/1284925883240550552`);
+                    const lanyardData = await lanyardRes.json();
+                    
+                    if (lanyardData.success && lanyardData.data.listening_to_spotify && lanyardData.data.spotify) {
+                        const spot = lanyardData.data.spotify;
+                        isLive = true;
+                        nowPlaying = {
+                            name: spot.song,
+                            artist: { '#text': spot.artist, name: spot.artist },
+                            album: { '#text': spot.album },
+                            '@attr': { nowplaying: 'true' }
+                        };
+                        console.log('🛰️ LIVE SYNC: Lanyard override active');
+                    }
+                }
                 
                 console.log('📻 LIVE CHECK:', { isLive, track: nowPlaying?.name });
             } catch (err) {
