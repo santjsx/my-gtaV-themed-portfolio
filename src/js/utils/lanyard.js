@@ -716,14 +716,14 @@ async function handleVibeIntegration() {
         // 2. Render Full Cinema Archive (if on My Vibe page)
         if (fullFavsReel && favsData.items) {
             fullFavsReel.innerHTML = favsData.items.map(movie => {
-                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
+                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '';
                 const rating = (movie.vote_average && movie.vote_average > 0) ? movie.vote_average.toFixed(1) : null;
                 const ratingHTML = rating ? `<div class="fav-rating-badge">★ ${rating}</div>` : '';
                 
                 return `
                     <div class="fav-movie-card-full">
                         <div class="fav-poster-wrapper-full">
-                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy">
+                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy" decoding="async">
                             ${ratingHTML}
                         </div>
                         <div class="fav-info-full">
@@ -736,14 +736,14 @@ async function handleVibeIntegration() {
 
         if (fullWatchlistGrid && watchlistData.items) {
             fullWatchlistGrid.innerHTML = watchlistData.items.map(movie => {
-                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
+                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '';
                 const rating = (movie.vote_average && movie.vote_average > 0) ? movie.vote_average.toFixed(1) : null;
                 const ratingHTML = rating ? `<div class="fav-rating-badge">★ ${rating}</div>` : '';
                 
                 return `
                     <div class="fav-movie-card-full">
                         <div class="fav-poster-wrapper-full">
-                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy">
+                            <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster-full" loading="lazy" decoding="async">
                             ${ratingHTML}
                         </div>
                         <div class="fav-info-full">
