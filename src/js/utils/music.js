@@ -7,7 +7,7 @@ const LASTFM_API_KEY = 'a403d71a4af1bacfddab789750be1c18';
 const LASTFM_USER = 'santhoshh25';
 const FETCH_LIMIT = 30;
 
-const CACHE_KEY = 'lastfm_top_tracks_v4';
+const CACHE_KEY = 'lastfm_top_tracks_v5';
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
 /**
@@ -39,40 +39,52 @@ async function fetchMediaLog() {
             const topUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=${FETCH_LIMIT}&period=7day`;
             const topRes = await fetch(topUrl);
             const topData = await topRes.json();
-            const topTracks = topData.toptracks.track || [];
+            console.log('🎵 TOP TRACKS RESPONSE:', topData);
 
-            // Check for Now Playing
-            const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
-            const recentRes = await fetch(recentUrl);
-            const recentData = await recentRes.json();
-            const nowPlaying = recentData.recenttracks.track[0] || null;
-            const isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+            // Check for Now Playing (Isolated)
+            let isLive = false;
+            let nowPlaying = null;
+            try {
+                const recentUrl = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
+                const recentRes = await fetch(recentUrl);
+                const recentData = await recentRes.json();
+                console.log('📻 RECENT TRACKS RESPONSE:', recentData);
+                
+                nowPlaying = (recentData && recentData.recenttracks && recentData.recenttracks.track) ? 
+                             (Array.isArray(recentData.recenttracks.track) ? recentData.recenttracks.track[0] : recentData.recenttracks.track) : null;
+                isLive = nowPlaying && nowPlaying['@attr'] && nowPlaying['@attr'].nowplaying === 'true';
+            } catch (err) {
+                console.warn('Now Playing fetch failed:', err);
+            }
 
-            // Process Albums
-            finalTracks = await Promise.all(topTracks.map(async (track) => {
-                const albumName = extractAlbumFromTitle(track.name) || 'COLLECTION';
+            const tracksData = (topData && topData.toptracks && topData.toptracks.track) ? 
+                               (Array.isArray(topData.toptracks.track) ? topData.toptracks.track : [topData.toptracks.track]) : [];
+            
+            finalTracks = tracksData.map((track) => {
+                const name = track.name || 'Unknown Track';
+                const artist = (track.artist && track.artist.name) ? track.artist.name : (track.artist ? track.artist['#text'] : 'Unknown Artist');
+                const albumName = extractAlbumFromTitle(name) || 'COLLECTION';
+                
                 return {
-                    name: track.name,
-                    artist: { name: track.artist.name },
+                    name: name,
+                    artist: { name: artist },
                     album: albumName,
-                    playcount: track.playcount,
+                    playcount: track.playcount || '0',
                     isLive: false
                 };
-            }));
+            });
 
             // Inject Live track if active
-            if (isLive) {
+            if (isLive && nowPlaying) {
                 const liveTrack = {
                     name: nowPlaying.name,
-                    artist: { name: nowPlaying.artist['#text'] },
-                    album: nowPlaying.album['#text'] || 'NOW PLAYING',
+                    artist: { name: nowPlaying.artist['#text'] || (nowPlaying.artist ? nowPlaying.artist.name : 'Unknown Artist') },
+                    album: (nowPlaying.album && nowPlaying.album['#text']) ? nowPlaying.album['#text'] : 'NOW PLAYING',
                     isLive: true,
                     playcount: 'LIVE'
                 };
-                // Remove duplicates and put live at top
                 finalTracks = [liveTrack, ...finalTracks.filter(t => 
-                    !(t.name.toLowerCase() === nowPlaying.name.toLowerCase() && 
-                      t.artist.name.toLowerCase() === nowPlaying.artist['#text'].toLowerCase())
+                    !(t.name.toLowerCase() === nowPlaying.name.toLowerCase())
                 )].slice(0, FETCH_LIMIT);
             }
 
@@ -92,6 +104,11 @@ async function fetchMediaLog() {
  * Renders the music data into the grid.
  */
 function renderMusicGrid(container, tracks) {
+    if (!tracks || tracks.length === 0) {
+        container.innerHTML = '<div class="frequency-loading">NO RECENT HISTORY FOUND</div>';
+        return;
+    }
+
     let htmlContent = `
         <div class="playlist-container fade-up">
             <div class="playlist-header">
@@ -109,18 +126,24 @@ function renderMusicGrid(container, tracks) {
             ? '<div class="live-eq"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>' 
             : (index + 1);
         
+        // Safety checks for rendering
+        const trackName = track.name || 'Unknown Track';
+        const artistName = (track.artist && track.artist.name) ? track.artist.name : 'Unknown Artist';
+        const albumName = track.album || 'COLLECTION';
+        const playcount = track.playcount || '0';
+
         htmlContent += `
             <div class="track-row ${isLive ? 'is-live' : ''}">
                 <div class="track-col col-index">${indexContent}</div>
                 <div class="track-col col-title">
                     <div class="track-info">
-                        <span class="track-name">${escapeHTML(track.name)}</span>
-                        <span class="track-artist">${escapeHTML(track.artist.name)}</span>
+                        <span class="track-name">${escapeHTML(trackName)}</span>
+                        <span class="track-artist">${escapeHTML(artistName)}</span>
                     </div>
                 </div>
-                <div class="track-col col-album">${escapeHTML(track.album)}</div>
+                <div class="track-col col-album">${escapeHTML(albumName)}</div>
                 <div class="track-col col-plays">
-                    ${isLive ? '<span class="live-tag">LIVE</span>' : track.playcount}
+                    ${isLive ? '<span class="live-tag">LIVE</span>' : playcount}
                 </div>
             </div>
         `;

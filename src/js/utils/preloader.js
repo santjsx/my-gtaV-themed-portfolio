@@ -62,6 +62,7 @@ export function initPreloader() {
         let counterTl;
 
         function startCounterCrawl() {
+            console.log('🔢 LOADER: Starting counter crawl');
             counterTl = gsap.to(counterObj, {
                 value: 90,
                 duration: 4, // Slower crawl for better visibility
@@ -106,15 +107,18 @@ export function initPreloader() {
         
         fetch('/Santhosh%20Reddy%20Resume.pdf').catch(() => null);
 
-        Promise.race([windowLoad, failsafe]).then(() => {
+        Promise.race([windowLoad, failsafe]).then((res) => {
+            console.log('🎬 LOADER: Window load or failsafe triggered');
             // Once loaded, we wait a beat for the entrance to finish, then hit 100
             setTimeout(triggerExit, 1000);
         });
 
         // ── 4. Exit Sequence (The "Wow" Moment) ──
         function triggerExitSequence() {
+            console.log('🚀 LOADER: Starting exit sequence');
             const exitTl = gsap.timeline({
                 onComplete: () => {
+                    console.log('✅ LOADER: Exit sequence complete');
                     document.body.style.overflow = '';
                     loader.classList.add('loaded');
                     setTimeout(() => loader.remove(), 1000);
@@ -154,4 +158,18 @@ export function initPreloader() {
                 }, "<");
         }
     });
+}
+
+/**
+ * Emergency Failsafe: Forcefully removes the preloader if it hangs.
+ */
+export function forceHidePreloader() {
+    const loader = document.getElementById('premium-preloader');
+    if (loader) {
+        console.warn('⚠️ LOADER: Emergency removal triggered');
+        loader.style.transition = 'opacity 0.8s ease';
+        loader.style.opacity = '0';
+        document.body.style.overflow = '';
+        setTimeout(() => loader.remove(), 800);
+    }
 }
