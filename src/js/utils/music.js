@@ -124,11 +124,22 @@ async function fetchMediaLog() {
         // Inject Live track if active
         if (isLive && nowPlaying) {
             const liveArtist = nowPlaying.artist['#text'] || (nowPlaying.artist ? nowPlaying.artist.name : 'Unknown Artist');
-            let liveAlbumArt = nowPlaying.image ? nowPlaying.image[nowPlaying.image.length - 1]['#text'] : null;
             
-            // Fallback to iTunes for Live track if Last.fm fails
-            if (!liveAlbumArt || liveAlbumArt === '' || liveAlbumArt.includes('default_album_medium')) {
-                liveAlbumArt = await fetchiTunesAlbumArt(nowPlaying.name, liveArtist);
+            // Priority 1: High-Res iTunes
+            let liveAlbumArt = await fetchiTunesAlbumArt(nowPlaying.name, liveArtist);
+            
+            // Priority 2: Last.fm Fallback
+            if (!liveAlbumArt) {
+                liveAlbumArt = nowPlaying.image ? nowPlaying.image[nowPlaying.image.length - 1]['#text'] : (nowPlaying.album_art_url || null);
+            }
+            
+            // Clean up placeholders
+            if (liveAlbumArt && (
+                liveAlbumArt.includes('default_album') || 
+                liveAlbumArt.includes('2a96cbd8b46e442fc41c2b86b821562f') ||
+                liveAlbumArt.includes('noimage')
+            )) {
+                liveAlbumArt = null;
             }
 
             const liveTrack = {
