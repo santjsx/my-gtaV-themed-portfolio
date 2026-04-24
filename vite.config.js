@@ -13,6 +13,7 @@ export default defineConfig({
             input: {
                 main: resolve(__dirname, 'index.html'),
                 music: resolve(__dirname, 'music.html'),
+                cinema: resolve(__dirname, 'cinema.html'),
             },
             output: {
                 assetFileNames: "assets/[name].[hash].[ext]",
