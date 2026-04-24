@@ -17,6 +17,9 @@ export function initLanyardWidget() {
     let hintDismissed = false;
     const hintBubble = document.querySelector('.lanyard-hint');
 
+    // Randomize greeting message on initialization
+    randomizeGreeting();
+
     // Toggle dynamic island expansion with GSAP physics
     toggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -762,6 +765,26 @@ function updatePhoneClock() {
     const h = now.getHours();
     const m = now.getMinutes().toString().padStart(2, '0');
     el.textContent = `${h}:${m}`;
+}
+
+/**
+ * Randomizes the greeting message in the widget
+ */
+function randomizeGreeting() {
+    const greetingEl = document.getElementById('lanyard-greeting');
+    if (!greetingEl) return;
+
+    const messages = [
+        "Hey! Glad you're here.<br>Digging my style? Let's make something happen.",
+        "Always up for a chat!<br>Got a project in mind? Let's talk shop.",
+        "Welcome to my space.<br>Check out my work and say hi if you're vibing.",
+        "Building things that matter.<br>Looking for a creative partner? I'm your guy.",
+        "Code, design, and a lot of caffeine.<br>Let's build something beautiful together.",
+        "Exploring the digital frontier.<br>Drop a message and let's start a conversation."
+    ];
+
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    greetingEl.innerHTML = randomMessage;
 }
 
 /**
