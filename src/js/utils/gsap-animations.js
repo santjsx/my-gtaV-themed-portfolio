@@ -117,4 +117,17 @@ export function initGSAPAnimations() {
             });
         });
     });
+    
+    // ── PAGE ENTRANCE ANIMATIONS ──
+    const fadeUps = document.querySelectorAll('.fade-up');
+    if (fadeUps.length > 0) {
+        gsap.to(fadeUps, {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power4.out",
+            delay: 0.1 // Small delay to ensure scripts are ready
+        });
+    }
 }

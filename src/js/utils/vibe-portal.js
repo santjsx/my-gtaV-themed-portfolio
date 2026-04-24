@@ -70,8 +70,7 @@ export function initVibePortal() {
                 gsap.to(cards, {
                     opacity: 0, y: -30, duration: 0.25, stagger: 0.05, ease: "power2.in",
                     onComplete: () => {
-                        portal.classList.remove('active');
-                        document.body.style.overflow = '';
+                        // Keep the portal active/visible during navigation to prevent "hero flash"
                         window.location.href = href;
                     }
                 });
