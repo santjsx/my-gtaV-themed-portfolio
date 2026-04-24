@@ -233,22 +233,17 @@ function updateWidgetUI(data) {
 
     // Determine resolved status
     let status = data.discord_status;
-    const watchingAct = activities.find(a => 
-        a.name.toLowerCase().includes('watching') || 
-        (a.details && a.details.toLowerCase().includes('watching')) ||
-        a.name.toLowerCase() === 'netflix' ||
-        a.name.toLowerCase() === 'prime video'
-    );
     const kvTMDBId = data.kv ? data.kv.tmdb_id : null;
+    const kvTMDBTitle = data.kv ? data.kv.tmdb_title : null;
 
-    if (!mood && activities.length === 0 && !isSpotify && !watchingAct && !kvTMDBId) {
+    if (!mood && activities.length === 0 && !isSpotify && !kvTMDBId && !kvTMDBTitle) {
         status = 'inactive';
     }
     
-    // Handle Watching integration
+    // Handle Watching integration (Manual KV trigger only)
     if (watchingSection && watchingContent) {
-        if (watchingAct || kvTMDBId) {
-            handleWatchingIntegration(watchingAct, kvTMDBId, watchingSection, watchingContent);
+        if (kvTMDBId || kvTMDBTitle) {
+            handleWatchingIntegration(kvTMDBId || kvTMDBTitle, watchingSection, watchingContent);
         } else {
             watchingSection.style.display = 'none';
             lastMovieId = null;
@@ -594,19 +589,11 @@ function updateSkills(kv) {
     }
 }
 
-async function handleWatchingIntegration(activity, kvId, section, content) {
-    let query = '';
-    let type = 'movie'; // default
-
-    if (kvId) {
-        query = kvId; // Assume it's an ID or exact title
-    } else if (activity) {
-        // Extract title: "Watching Inception" -> "Inception"
-        query = activity.details || activity.state || activity.name;
-        query = query.replace(/Watching\s+/i, '').trim();
-    }
-
+async function handleWatchingIntegration(query, section, content) {
     if (!query || query === lastMovieId) return;
+    
+    // If query looks like an ID, it's an ID. Otherwise, it's a title.
+    const isId = /^\d+$/.test(query);
     
     // If no API key, we can't do much but show the text
     if (!TMDB_API_KEY) {
@@ -625,10 +612,14 @@ async function handleWatchingIntegration(activity, kvId, section, content) {
     try {
         let movieData = null;
         
-        // If it's a numeric ID (from KV)
-        if (kvId && /^\d+$/.test(kvId)) {
-            const res = await fetch(`https://api.themoviedb.org/3/movie/${kvId}?api_key=${TMDB_API_KEY}`);
+        if (isId) {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/${query}?api_key=${TMDB_API_KEY}`);
             movieData = await res.json();
+            // If movie not found, try TV
+            if (movieData.status_code === 34) {
+                const tvRes = await fetch(`https://api.themoviedb.org/3/tv/${query}?api_key=${TMDB_API_KEY}`);
+                movieData = await tvRes.json();
+            }
         } else {
             // Search by title
             const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
