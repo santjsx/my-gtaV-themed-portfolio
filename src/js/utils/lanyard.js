@@ -304,7 +304,7 @@ function updateWidgetUI(data, lastfmTrack) {
     // Render activities
     if (activitiesContainer) {
         
-        if (activities.length === 0 && !isSpotify) {
+        if (activities.length === 0 && !hasLiveMusic) {
             activitiesContainer.innerHTML = `
                 <div class="lanyard-offline-message">
                     Currently offline. Engaged in deep work or away from the desk.
