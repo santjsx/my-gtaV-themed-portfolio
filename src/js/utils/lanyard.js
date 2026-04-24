@@ -258,11 +258,18 @@ async function fetchLanyardData() {
             if (lastfmJson && lastfmJson.recenttracks && lastfmJson.recenttracks.track) {
                 const track = Array.isArray(lastfmJson.recenttracks.track) ? lastfmJson.recenttracks.track[0] : lastfmJson.recenttracks.track;
                 if (track && track['@attr'] && track['@attr'].nowplaying === 'true') {
+                    let albumArt = track.image ? track.image[track.image.length - 1]['#text'] : null;
+                    
+                    // Fallback to iTunes if Last.fm has no image
+                    if (!albumArt || albumArt === '') {
+                        albumArt = await fetchiTunesAlbumArt(track.name, track.artist['#text'] || track.artist.name);
+                    }
+
                     lastfmTrack = {
                         song: track.name,
                         artist: track.artist['#text'] || track.artist.name,
                         album: track.album['#text'],
-                        album_art_url: track.image ? track.image[track.image.length - 1]['#text'] : null
+                        album_art_url: albumArt
                     };
                 }
             }
@@ -735,6 +742,24 @@ function updatePhoneClock() {
     const h = now.getHours();
     const m = now.getMinutes().toString().padStart(2, '0');
     el.textContent = `${h}:${m}`;
+}
+
+/**
+ * Fetches high-resolution album art from iTunes Search API
+ */
+async function fetchiTunesAlbumArt(song, artist) {
+    try {
+        const query = encodeURIComponent(`${song} ${artist}`);
+        const res = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=1`);
+        const json = await res.json();
+        if (json.results && json.results.length > 0) {
+            // Upgrade artwork size to 600x600
+            return json.results[0].artworkUrl100.replace('100x100bb.jpg', '600x600bb.jpg').replace('100x100', '600x600');
+        }
+    } catch (e) {
+        console.warn('iTunes Search fallback failed:', e);
+    }
+    return null;
 }
 
 /**
