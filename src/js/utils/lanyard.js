@@ -817,6 +817,9 @@ function initChatSystem() {
         }});
     });
 
+    // Prevent clicks inside chat from closing the phone
+    chatScreen.addEventListener('click', (e) => e.stopPropagation());
+
     // Back to Main
     const closeChat = () => {
         gsap.to(chatScreen, { opacity: 0, x: 20, duration: 0.4, ease: "power2.inOut", onComplete: () => {
