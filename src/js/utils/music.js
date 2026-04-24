@@ -1,3 +1,5 @@
+import gsap from 'gsap';
+
 /**
  * THE MUSIC ARCHIVE 4.0 — High-Performance Sonic Catalog
  * Optimized with session caching and shimmering skeleton loaders.
@@ -110,7 +112,7 @@ function renderMusicGrid(container, tracks) {
     }
 
     let htmlContent = `
-        <div class="playlist-container fade-up">
+        <div class="spotify-playlist fade-up" style="opacity: 0;">
             <div class="playlist-header">
                 <span class="col-index">#</span>
                 <span class="col-title">TITLE</span>
@@ -151,6 +153,15 @@ function renderMusicGrid(container, tracks) {
 
     htmlContent += `</div></div>`;
     container.innerHTML = htmlContent;
+
+    // Trigger Entrance Animation
+    gsap.to(container.querySelector('.spotify-playlist'), {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 0.2
+    });
 }
 
 /**
