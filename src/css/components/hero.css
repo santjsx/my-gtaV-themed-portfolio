@@ -147,7 +147,7 @@
 }
 
 .hero-accent-text {
-    background: linear-gradient(135deg, var(--accent-primary) 0%, #ff8a80 100%);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #fff 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
