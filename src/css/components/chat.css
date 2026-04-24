@@ -167,10 +167,30 @@
 }
 
 .chat-success-message p {
+    margin: 0;
+}
+
+.success-text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.success-title {
     font-family: var(--font-sans);
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: 800;
     color: #fff;
+    letter-spacing: 0.01em;
+}
+
+.success-subtitle {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    max-width: 220px;
 }
 
 .chat-close-btn {
