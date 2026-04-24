@@ -1,0 +1,56 @@
+/* ═══════════════════════════════════════════
+   ORBIT WIDGET — People in Space
+   ═══════════════════════════════════════════ */
+.space-widget {
+    margin-top: var(--space-4);
+    transition: all 0.4s var(--ease-spring);
+    cursor: help;
+}
+
+.space-widget:hover {
+    transform: translateX(-4px);
+}
+
+.astros-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent-primary);
+    background: rgba(242, 139, 130, 0.05);
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(242, 139, 130, 0.1);
+}
+
+.astros-icon {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 10px var(--accent-primary);
+}
+
+.astros-icon::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid var(--accent-primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: orbitPulse 3s linear infinite;
+}
+
+@keyframes orbitPulse {
+    0% { transform: scale(0.5); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+@media (max-width: 900px) {
+    .space-widget {
+        align-items: flex-start;
+        text-align: left;
+    }
+}

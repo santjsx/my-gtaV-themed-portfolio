@@ -11,6 +11,7 @@ import { initAboutReveal } from './utils/about-reveal.js';
 import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
+import { initAstrosWidget } from './utils/astros.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. PHASE 0: CRITICAL BOOT (Immediate)
@@ -52,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { fn: initNavHighlighter, delay: 600 },
             { fn: initResumeDrawer, delay: 800 },
             { fn: initContactSection, delay: 1000 },
-            { fn: initLanyardWidget, delay: 1200 }
+            { fn: initLanyardWidget, delay: 1200 },
+            { fn: initAstrosWidget, delay: 1400 }
         ];
 
         deferredModules.forEach(({ fn, delay }) => {
