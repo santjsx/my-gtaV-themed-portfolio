@@ -8,7 +8,8 @@
   <meta name="description" content="Santhosh Reddy — Developer. Clean Code.">
   <link rel="icon" type="image/png" href="/favicon.png">
 
-  <!-- Fonts: Inter / Playfair Display / JetBrains Mono -->
+  <!-- Critical Resource Preload -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGkyMZhrib2Bg-4.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Special+Elite&display=swap">
@@ -18,7 +19,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer async></script>
     <link rel="stylesheet" href="/src/css/main.css">
-    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/main.js" fetchpriority="high"></script>
   </head>
   
   <body class="dark-container" style="padding: 0;">

@@ -13,25 +13,16 @@ import { initNavHighlighter } from './utils/nav-highlighter.js';
 import { initVibePortal } from './utils/vibe-portal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Force scroll to top on reload
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
+    // 1. PHASE 0: CRITICAL BOOT (Immediate)
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // 0. Preloader (Mobile & Desktop)
+    // Initial fundamental UI
     const preloaderPromise = initPreloader();
-
-    // 1. Lenis smooth scrolling (Single initialization)
     const lenis = setupLenis();
-
-    // 2. Fundamental UI Initialization (Non-blocking)
-    initResumeDrawer();
-    initContactSection();
-    initLanyardWidget();
     initVibePortal();
-    
-    // Header scrolled state
+
+    // Header optimized scroll listener
     const header = document.getElementById('header');
     if (header) {
         let ticking = false;
@@ -46,64 +37,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    // Mobile Overlay Menu Toggle
+    // 2. PHASE 1: UI INTERACTIVITY (After Preloader)
+    preloaderPromise.then(() => {
+        // Essential entrance effects
+        initHeroEffects();
+        initTitleAnimation();
+        
+        // Stagger non-critical modules to avoid long tasks
+        const deferredModules = [
+            { fn: initGSAPAnimations, delay: 0 },
+            { fn: initAboutReveal, delay: 100 },
+            { fn: initScrollObserver, delay: 200 },
+            { fn: initMusicHistory, delay: 400 },
+            { fn: initNavHighlighter, delay: 600 },
+            { fn: initResumeDrawer, delay: 800 },
+            { fn: initContactSection, delay: 1000 },
+            { fn: initLanyardWidget, delay: 1200 }
+        ];
+
+        deferredModules.forEach(({ fn, delay }) => {
+            setTimeout(() => {
+                if (typeof fn === 'function') fn();
+            }, delay);
+        });
+    });
+
+    // Mobile Menu Optimization
+    setupMobileMenu();
+});
+
+function setupMobileMenu() {
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const navOverlay = document.getElementById('nav-overlay');
     const navClose = document.getElementById('nav-close');
     const navItemLinks = document.querySelectorAll('.nav-overlay .nav-item');
 
-    if (mobileToggle && navOverlay) {
-        mobileToggle.addEventListener('click', () => {
-            const isActive = mobileToggle.classList.contains('active');
-            mobileToggle.classList.toggle('active');
-            navOverlay.classList.toggle('active');
-            
-            // Lock background scroll when open
-            document.body.style.overflow = isActive ? '' : 'hidden';
-        });
+    if (!mobileToggle || !navOverlay) return;
 
-        if (navClose) {
-            navClose.addEventListener('click', () => {
-                mobileToggle.classList.remove('active');
-                navOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
+    const toggleMenu = (open) => {
+        mobileToggle.classList.toggle('active', open);
+        navOverlay.classList.toggle('active', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+    };
 
-        // Close menu when a link is clicked
-        navItemLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    mobileToggle.classList.remove('active');
-                    navOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-    }
-
-    // Initialize animations after preloader finishes
-    preloaderPromise.then(() => {
-        // 0.5. Hero cinematic effects
-        initHeroEffects();
-
-        // 2. Title typewriter animation
-        initTitleAnimation();
-
-        // 3. Initialize Parallax & Interactions via GSAP
-        initGSAPAnimations();
-        
-
-        // 3.6. About cinematic reveal
-        initAboutReveal();
-
-        // 4. Scroll reveal observer (now using GSAP ScrollTrigger batches)
-        initScrollObserver();
-
-        // 5. Music History Sync
-        initMusicHistory();
-
-        // 6. Navigation ScrollSpy
-        initNavHighlighter();
+    mobileToggle.addEventListener('click', () => {
+        const isOpen = navOverlay.classList.contains('active');
+        toggleMenu(!isOpen);
     });
-});
+
+    if (navClose) navClose.addEventListener('click', () => toggleMenu(false));
+
+    navItemLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) toggleMenu(false);
+        });
+    });
+}

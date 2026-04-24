@@ -707,8 +707,33 @@ async function handleVibeIntegration() {
     if (!TMDB_API_KEY) return;
     if (!vibeSection && !fullFavsReel && !fullWatchlistGrid && !fullSeriesFavGrid && !fullSeriesWatchlistGrid) return;
 
+    // ── CACHE CONSTANTS ──
+    const CACHE_KEY_PREFIX = 'tmdb_list_';
+    const CACHE_TTL = 15 * 60 * 1000; // 15 Minutes
+
+    const getCache = (id) => {
+        const cached = sessionStorage.getItem(CACHE_KEY_PREFIX + id);
+        if (!cached) return null;
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp > CACHE_TTL) return null;
+        return data;
+    };
+
+    const setCache = (id, data) => {
+        sessionStorage.setItem(CACHE_KEY_PREFIX + id, JSON.stringify({ data, timestamp: Date.now() }));
+    };
+
+    const injectSkeletons = (container) => {
+        if (!container) return;
+        container.innerHTML = Array(12).fill(0).map(() => `
+            <div class="fav-movie-card-full">
+                <div class="fav-poster-wrapper-full skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-text" style="width: 70%"></div>
+            </div>
+        `).join('');
+    };
+
     try {
-        // 1. Fetch All Cinema Lists in Parallel
         const lists = [
             { id: '8647764', container: fullFavsReel },
             { id: '8647767', container: fullWatchlistGrid },
@@ -716,41 +741,45 @@ async function handleVibeIntegration() {
             { id: '8647784', container: fullSeriesWatchlistGrid }
         ];
 
+        // 1. Show Skeletons Immediately
+        lists.forEach(list => injectSkeletons(list.container));
+
         await Promise.all(lists.map(async (list) => {
             if (!list.container) return;
             
             try {
-                let allItems = [];
-                let currentPage = 1;
-                let totalPages = 1;
-
-                // Loop to fetch all pages
-                do {
-                    const res = await fetch(`https://api.themoviedb.org/3/list/${list.id}?api_key=${TMDB_API_KEY}&page=${currentPage}`);
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                // Check Cache First
+                let allItems = getCache(list.id);
+                
+                if (!allItems) {
+                    allItems = [];
+                    let currentPage = 1;
                     
-                    const data = await res.json();
-                    const items = data.items || data.results || [];
-                    allItems = [...allItems, ...items];
-                    
-                    // Note: TMDB v3 list API sometimes doesn't return total_pages for simple lists
-                    // but we can check if item_count is greater than what we have
-                    const totalItems = data.item_count || 0;
-                    if (totalItems > allItems.length && items.length > 0) {
-                        currentPage++;
-                    } else {
-                        break;
-                    }
-                } while (currentPage <= 5); // Failsafe cap at 100 items (5 pages)
+                    do {
+                        const res = await fetch(`https://api.themoviedb.org/3/list/${list.id}?api_key=${TMDB_API_KEY}&page=${currentPage}`);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        const data = await res.json();
+                        const items = data.items || data.results || [];
+                        allItems = [...allItems, ...items];
+                        
+                        if (data.item_count > allItems.length && items.length > 0) {
+                            currentPage++;
+                        } else {
+                            break;
+                        }
+                    } while (currentPage <= 5);
 
-                if (allItems.length > 0) {
-                    // Sort items: Oldest First (based on release_date or first_air_date)
+                    // Sort items: Oldest First
                     allItems.sort((a, b) => {
                         const dateA = a.release_date || a.first_air_date || '9999-99-99';
                         const dateB = b.release_date || b.first_air_date || '9999-99-99';
                         return dateA.localeCompare(dateB);
                     });
 
+                    setCache(list.id, allItems);
+                }
+
+                if (allItems.length > 0) {
                     list.container.innerHTML = allItems.map(item => {
                         const poster = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : '';
                         const rating = (item.vote_average && item.vote_average > 0) ? item.vote_average.toFixed(1) : null;
@@ -760,7 +789,7 @@ async function handleVibeIntegration() {
                         return `
                             <div class="fav-movie-card-full">
                                 <div class="fav-poster-wrapper-full">
-                                    <img src="${poster}" alt="${escapeHTML(title)}" class="fav-poster-full" loading="lazy" decoding="async">
+                                    <img src="${poster}" alt="${escapeHTML(title)}" class="fav-poster-full" loading="lazy" decoding="async" onload="this.classList.add('loaded')">
                                     ${ratingHTML}
                                 </div>
                                 <div class="fav-info-full">

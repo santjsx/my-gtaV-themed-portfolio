@@ -105,8 +105,18 @@ img {
     background-color: var(--bg-dark);
 }
 
-.noise-container {
+.noise-container,
+#about,
+#work,
+#contact,
+.hero-section {
     background-color: var(--bg-dark);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px; /* Estimated height for layout calculation */
+    will-change: transform, opacity; /* Hint to browser for upcoming animations */
+}
+
+.noise-container {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     /* Scale padding for mobile */
@@ -114,8 +124,6 @@ img {
     margin: var(--space-8) 0;
     position: relative;
     z-index: 1;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 800px;
 }
 
 /* ═══════════════════════════════════════════
@@ -251,4 +259,5 @@ img {
 .mt-2 { margin-top: var(--space-2); }
 .mt-4 { margin-top: var(--space-4); }
 .mt-6 { margin-top: var(--space-6); }
-.mt-8 { margin-top: var(--space-8); }
+.mt-8 { margin-top: var(--space-8); }@ i m p o r t   ' . / c o m p o n e n t s / s k e l e t o n s . c s s ' ;  
+ 
