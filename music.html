@@ -162,15 +162,28 @@
             <span class="lanyard-section-label">WATCHING</span>
             <div id="watching-content"></div>
           </div>
-          <div class="lanyard-section cinema-section" id="lanyard-cinema" style="display: none;">
-            <div class="cinema-header">
-              <span class="lanyard-section-label">FAVORITES</span>
+          <div class="lanyard-section vibe-section" id="lanyard-vibe" style="display: none;">
+            <div class="vibe-header">
+              <span class="lanyard-section-label">MY VIBE</span>
+              <div class="vibe-tabs">
+                <button class="vibe-tab active" data-tab="movies">Cinema</button>
+                <button class="vibe-tab" data-tab="music">Audio</button>
+                <div class="vibe-tab-indicator"></div>
+              </div>
             </div>
-            <div id="favorites-reel" class="favorites-reel"></div>
-            <div class="cinema-header mt-4">
-              <span class="lanyard-section-label">WATCHLIST</span>
+            
+            <div class="vibe-panes">
+              <!-- Movies Pane -->
+              <div class="vibe-pane active" id="pane-movies">
+                <div id="favorites-reel" class="favorites-reel"></div>
+                <div id="watchlist-queue" class="watchlist-queue mt-4"></div>
+              </div>
+              
+              <!-- Music Pane -->
+              <div class="vibe-pane" id="pane-music">
+                <div id="curated-music-list" class="curated-music-list"></div>
+              </div>
             </div>
-            <div id="watchlist-queue" class="watchlist-queue"></div>
           </div>
           <div class="lanyard-section activity-section">
             <span class="lanyard-section-label">ACTIVITIES</span>

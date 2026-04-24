@@ -211,6 +211,9 @@ export function initLanyardWidget() {
     // Keep phone clock updated every minute
     updatePhoneClock();
     setInterval(updatePhoneClock, 30000);
+
+    // Initialize the Vibe Tab Switcher
+    initVibeSwitcher();
 }
 
 async function fetchLanyardData() {
@@ -262,8 +265,8 @@ function updateWidgetUI(data) {
         }
     }
 
-    // Cinema Module (Favorites & Watchlist)
-    handleCinemaIntegration();
+    // My Vibe Module (Favorites, Watchlist & Music)
+    handleVibeIntegration();
     
     // Reset classes
     island.classList.remove('status-online', 'status-idle', 'status-dnd', 'status-offline', 'status-inactive');
@@ -687,68 +690,125 @@ function updatePhoneClock() {
 }
 
 /**
- * Cinema Module: Personal Favorites & Watchlist
+ * My Vibe Module: Cinema & Audio Hub
  */
-let cinemaDataLoaded = false;
-async function handleCinemaIntegration() {
-    if (cinemaDataLoaded) return; // Only load once per session or manually refresh
+let vibeDataLoaded = false;
+
+function initVibeSwitcher() {
+    const tabs = document.querySelectorAll('.vibe-tab');
+    const indicator = document.querySelector('.vibe-tab-indicator');
+    const panes = document.querySelectorAll('.vibe-pane');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const target = tab.getAttribute('data-tab');
+            
+            // Update Active State
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Move Indicator
+            if (indicator) {
+                const tabRect = tab.getBoundingClientRect();
+                const containerRect = tab.parentElement.getBoundingClientRect();
+                gsap.to(indicator, {
+                    left: tabRect.left - containerRect.left,
+                    width: tabRect.width,
+                    duration: 0.4,
+                    ease: "power3.out"
+                });
+            }
+
+            // Switch Panes
+            panes.forEach(pane => {
+                if (pane.id === `pane-${target}`) {
+                    pane.classList.add('active');
+                } else {
+                    pane.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // Set initial indicator position
+    const activeTab = document.querySelector('.vibe-tab.active');
+    if (activeTab && indicator) {
+        setTimeout(() => {
+            const tabRect = activeTab.getBoundingClientRect();
+            const containerRect = activeTab.parentElement.getBoundingClientRect();
+            gsap.set(indicator, {
+                left: tabRect.left - containerRect.left,
+                width: tabRect.width
+            });
+        }, 100);
+    }
+}
+
+async function handleVibeIntegration() {
+    if (vibeDataLoaded) return; 
     
-    const cinemaSection = document.getElementById('lanyard-cinema');
+    const vibeSection = document.getElementById('lanyard-vibe');
     const favsReel = document.getElementById('favorites-reel');
     const watchlistQueue = document.getElementById('watchlist-queue');
+    const musicList = document.getElementById('curated-music-list');
     
-    if (!cinemaSection || !TMDB_API_KEY) return;
+    if (!vibeSection || !TMDB_API_KEY) return;
 
     try {
-        // Fetch Favorites List (8647764)
+        // 1. Fetch Cinema Data
         const favsRes = await fetch(`https://api.themoviedb.org/3/list/8647764?api_key=${TMDB_API_KEY}`);
         const favsData = await favsRes.json();
         
-        // Fetch Watchlist List (8647767)
         const watchlistRes = await fetch(`https://api.themoviedb.org/3/list/8647767?api_key=${TMDB_API_KEY}`);
         const watchlistData = await watchlistRes.json();
 
-        let hasContent = false;
-
-        // Render Favorites
-        if (favsData && favsData.items && favsData.items.length > 0) {
-            hasContent = true;
+        // 2. Render Cinema Tab
+        if (favsData && favsData.items) {
             favsReel.innerHTML = favsData.items.map(movie => {
-                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://via.placeholder.com/50x75?text=N/A';
-                const title = movie.title || movie.name;
+                const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : '';
                 return `
-                    <div class="fav-movie-card" title="${escapeHTML(title)}">
-                        <img src="${poster}" alt="${escapeHTML(title)}" class="fav-poster">
+                    <div class="fav-movie-card">
+                        <img src="${poster}" alt="${escapeHTML(movie.title)}" class="fav-poster">
                     </div>
                 `;
             }).join('');
         }
 
-        // Render Watchlist
-        if (watchlistData && watchlistData.items && watchlistData.items.length > 0) {
-            hasContent = true;
-            watchlistQueue.innerHTML = watchlistData.items.slice(0, 5).map(movie => {
-                const title = movie.title || movie.name;
-                const year = (movie.release_date || movie.first_air_date || '').split('-')[0];
+        if (watchlistData && watchlistData.items) {
+            watchlistQueue.innerHTML = watchlistData.items.slice(0, 3).map(movie => {
                 const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
                 return `
                     <div class="watchlist-item">
-                        <div class="watchlist-info">
-                            <span class="watchlist-title">${escapeHTML(title)}</span>
-                            <span class="watchlist-meta">${year}</span>
-                        </div>
+                        <span class="watchlist-title">${escapeHTML(movie.title)}</span>
                         <span class="watchlist-rating">★ ${rating}</span>
                     </div>
                 `;
             }).join('');
         }
 
-        if (hasContent) {
-            cinemaSection.style.display = 'block';
-            cinemaDataLoaded = true;
-        }
+        // 3. Render Audio Tab (Surprise Curated List)
+        const curatedTracks = [
+            { name: "Interstellar Theme", artist: "Hans Zimmer", art: "https://i.scdn.co/image/ab67616d0000b2737645ef6f90d6327812024503" },
+            { name: "After Hours", artist: "The Weeknd", art: "https://i.scdn.co/image/ab67616d0000b273881da7e3137996c0d0c382f6" },
+            { name: "Experience", artist: "Ludovico Einaudi", art: "https://i.scdn.co/image/ab67616d0000b27394f475f4886616428c063124" },
+            { name: "Nightcall", artist: "Kavinsky", art: "https://i.scdn.co/image/ab67616d0000b27341e310065a4c9b291584c62c" }
+        ];
+
+        musicList.innerHTML = curatedTracks.map((track, i) => `
+            <div class="vibe-music-item" style="animation-delay: ${i * 0.1}s">
+                <img src="${track.art}" alt="${track.name}" class="vibe-album-art">
+                <div class="vibe-track-info">
+                    <span class="vibe-track-name">${escapeHTML(track.name)}</span>
+                    <span class="vibe-artist-name">${escapeHTML(track.artist)}</span>
+                </div>
+            </div>
+        `).join('');
+
+        vibeSection.style.display = 'block';
+        vibeDataLoaded = true;
     } catch (err) {
-        console.error('Cinema Fetch Error:', err);
+        console.error('Vibe Fetch Error:', err);
     }
 }
 
