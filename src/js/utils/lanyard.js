@@ -744,6 +744,13 @@ async function handleVibeIntegration() {
                 } while (currentPage <= 5); // Failsafe cap at 100 items (5 pages)
 
                 if (allItems.length > 0) {
+                    // Sort items: Oldest First (based on release_date or first_air_date)
+                    allItems.sort((a, b) => {
+                        const dateA = a.release_date || a.first_air_date || '9999-99-99';
+                        const dateB = b.release_date || b.first_air_date || '9999-99-99';
+                        return dateA.localeCompare(dateB);
+                    });
+
                     list.container.innerHTML = allItems.map(item => {
                         const poster = item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : '';
                         const rating = (item.vote_average && item.vote_average > 0) ? item.vote_average.toFixed(1) : null;
