@@ -14,7 +14,7 @@ const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
  * Initializes the music history.
  */
 export function initMusicHistory() {
-    const tracksContainer = document.getElementById('music-history-container');
+    const tracksContainer = document.getElementById('track-list');
     if (!tracksContainer) return;
 
     fetchMediaLog();
@@ -24,7 +24,7 @@ export function initMusicHistory() {
  * Orchestrates fetching with caching and skeleton states.
  */
 async function fetchMediaLog() {
-    const tracksContainer = document.getElementById('music-history-container');
+    const tracksContainer = document.getElementById('track-list');
     if (!tracksContainer) return;
 
     try {
