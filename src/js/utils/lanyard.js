@@ -822,12 +822,12 @@ function initChatSystem() {
 
     // Back to Main
     const closeChat = () => {
-        gsap.to(chatScreen, { opacity: 0, x: 20, duration: 0.4, ease: "power2.inOut", onComplete: () => {
+        gsap.to(chatScreen, { opacity: 0, x: 20, duration: 0.3, ease: "power2.in", onComplete: () => {
             chatScreen.style.display = 'none';
-            mainScreen.style.display = 'block';
+            mainScreen.style.display = 'flex'; // Use flex to match original CSS
             gsap.fromTo(mainScreen, 
-                { opacity: 0, x: -20 },
-                { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" }
+                { opacity: 0, x: -10 },
+                { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }
             );
             // Reset form if success was shown
             chatForm.style.display = 'flex';
