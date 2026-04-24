@@ -65,27 +65,53 @@ export function initLanyardWidget() {
                 width: 54,
                 height: 54,
                 borderRadius: 16,
-                duration: 0.6,
-                delay: 0.1,
+                duration: 0.5,
                 ease: "expo.out",
                 clearProps: "all"
             });
 
-            gsap.to(toggleBtn, {
-                height: 68, 
-                width: 68, 
-                padding: 6,
-                borderRadius: 22, 
-                duration: 0.6, 
-                delay: 0.1,
-                ease: "expo.out", 
-                clearProps: "all",
-                onComplete: () => {
-                    toggleBtn.classList.remove('active');
-                    gsap.set(content, { clearProps: "all" });
-                    isAnimating = false;
-                }
-            });
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Measure the target corner position
+                toggleBtn.classList.remove('active');
+                const targetRect = toggleBtn.getBoundingClientRect();
+                toggleBtn.classList.add('active'); // Put it back to animate from center
+                
+                gsap.to(toggleBtn, {
+                    top: targetRect.top,
+                    left: targetRect.left,
+                    transform: "translate(0, 0)", // Neutralize centering
+                    height: 68, 
+                    width: 68, 
+                    padding: 6,
+                    borderRadius: 22, 
+                    duration: 0.7, 
+                    ease: "expo.inOut", 
+                    onComplete: () => {
+                        toggleBtn.classList.remove('active');
+                        gsap.set(toggleBtn, { clearProps: "all" });
+                        gsap.set(content, { clearProps: "all" });
+                        isAnimating = false;
+                    }
+                });
+            } else {
+                // Standard desktop shrink in place
+                gsap.to(toggleBtn, {
+                    height: 68, 
+                    width: 68, 
+                    padding: 6,
+                    borderRadius: 22, 
+                    duration: 0.5, 
+                    ease: "expo.out", 
+                    onComplete: () => {
+                        toggleBtn.classList.remove('active');
+                        gsap.set(toggleBtn, { clearProps: "all" });
+                        gsap.set(content, { clearProps: "all" });
+                        isAnimating = false;
+                    }
+                });
+            }
         }
     });
     

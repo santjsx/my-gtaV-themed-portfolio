@@ -692,7 +692,7 @@
         height: calc(100dvh - 40px);
         border-radius: 40px;
         border-width: 4px;
-        z-index: 1001;
+        z-index: 3000; /* Set very high to cover header and nav buttons */
 
         /* Mobile-specific avatar position */
         --expanded-avatar-top: 54px;

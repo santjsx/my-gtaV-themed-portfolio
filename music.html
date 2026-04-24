@@ -118,19 +118,65 @@
 
   <!-- 8. Floating Lanyard Status Widget -->
   <div id="lanyard-widget" class="lanyard-container">
+    <div class="lanyard-hint wobble-hint">
+      <div class="hint-icon-wrapper">
+        <svg class="hint-icon-svg" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="hint-badge">1</span>
+      </div>
+      <span class="hint-text">Santhosh sent you a message</span>
+    </div>
     <div class="lanyard-island" id="lanyard-toggle">
       <div class="island-avatar-wrapper">
-        <img src="images/pixel%20art.jpg" alt="Santhosh" class="lanyard-avatar">
+        <img src="images/santhoshh.webp" alt="Santhosh" class="lanyard-avatar" id="lanyard-avatar-img" loading="lazy" decoding="async">
         <div class="lanyard-indicator" id="lanyard-indicator"></div>
       </div>
-      <div class="island-content">
-        <div class="island-header">
-          <span class="island-status-dot" id="lanyard-status-dot"></span>
-          <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+      <div class="phone-status-bar" id="phone-status-bar">
+        <span class="phone-time" id="phone-time">12:30</span>
+        <div class="phone-status-icons">
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2zm10-10L2 22h20z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="18" height="12" rx="2"/><rect x="4" y="8" width="11" height="8" rx="1" fill="currentColor" stroke="none"/><path d="M22 10v4" stroke-linecap="round"/></svg>
         </div>
-        <div class="island-activities" id="lanyard-activities"></div>
       </div>
-      <button class="island-close-btn" id="lanyard-close">&times;</button>
+      <div class="island-content">
+        <div class="phone-screen-scroll">
+          <div class="lanyard-section">
+            <span class="lanyard-section-label">MESSAGE</span>
+            <div class="island-message-box imessage-style">
+              <div class="msg-bubble">
+                <p class="island-greeting">Hey! Glad you're here.<br>Digging my style? Let's make something happen.</p>
+                <a href="#contact" class="msg-contact-btn" id="lanyard-contact-btn">Reply</a>
+              </div>
+            </div>
+          </div>
+          <div class="lanyard-section">
+            <span class="lanyard-section-label">MOOD</span>
+            <div class="island-header">
+              <span class="island-status-dot" id="lanyard-status-dot"></span>
+              <span class="island-status-text" id="lanyard-status-text">Connecting...</span>
+            </div>
+          </div>
+          <div class="lanyard-section">
+            <span class="lanyard-section-label">ACTIVITY</span>
+            <div class="island-activities" id="lanyard-activities">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-nav-bar">
+        <button class="phone-nav-btn" aria-label="Back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="phone-nav-btn" id="lanyard-close" aria-label="Close widget">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+        </button>
+        <button class="phone-nav-btn" aria-label="Recent">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+        </button>
+      </div>
+      <div class="phone-gesture-bar"></div>
     </div>
   </div>
 
