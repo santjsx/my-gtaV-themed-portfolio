@@ -326,7 +326,7 @@
 .lanyard-section {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -343,7 +343,19 @@
 }
 
 .lanyard-section-label {
-    display: none; /* Hidden in Phone UI for a cleaner look and to prevent overlap */
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 4px;
+    padding-left: 4px;
+}
+
+.mood-section .lanyard-section-label {
+    display: none;
 }
 
 /* ── Expanded Message Box (iMessage Style) ── */
