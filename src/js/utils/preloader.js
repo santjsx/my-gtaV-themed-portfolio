@@ -7,6 +7,16 @@ import gsap from 'gsap';
 export function initPreloader() {
     return new Promise((resolve) => {
         const loader = document.getElementById('premium-preloader');
+        
+        // ── SKIP LOADER IF REQUESTED ──
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('skipLoader') === 'true') {
+            if (loader) loader.remove();
+            document.body.style.overflow = '';
+            resolve();
+            return;
+        }
+
         if (!loader) {
             resolve();
             return;
