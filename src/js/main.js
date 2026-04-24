@@ -8,7 +8,6 @@ import { initHeroEffects } from './utils/hero-effects.js';
 import { initContactSection } from './utils/contact.js';
 import { initLanyardWidget } from './utils/lanyard.js';
 import { initGSAPAnimations } from './utils/gsap-animations.js';
-import { initHeroCorrection } from './utils/hero-correction.js';
 import { initAboutReveal } from './utils/about-reveal.js';
 import { initMusicHistory } from './utils/music.js';
 import { initNavHighlighter } from './utils/nav-highlighter.js';
@@ -93,8 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. Initialize Parallax & Interactions via GSAP
         initGSAPAnimations();
         
-        // 3.5. Hero correction sequence (Strike + Arrow)
-        initHeroCorrection();
 
         // 3.6. About cinematic reveal
         initAboutReveal();
